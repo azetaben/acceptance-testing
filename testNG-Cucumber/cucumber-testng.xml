@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="ecommerce saucedemo.com">
+
+    <test thread-count="2" name="ecommerce saucedemo.com">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.saucedemo.runners.MainRunner"/>
+        </classes>
+    </test> <!-- Test -->
+</suite> <!-- Suite -->

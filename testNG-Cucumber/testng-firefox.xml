@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Firefox Suite">
+    <test name="Firefox Run">
+        <parameter name="Browser" value="firefox"/>
+        <classes>
+            <class name="com.saucedemo.runners.RunCucumberNGTest"/>
+        </classes>
+    </test>
+</suite>

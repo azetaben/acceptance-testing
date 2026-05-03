@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenium4 Feature Demos" verbose="1">
+
+    <test name="Selenium4 Feature Examples" thread-count="1">
+        <classes>
+            <class name="com.saucedemo.tests.selenium_4_features.CdpNetworkAndDebugDemoTest"/>
+            <class name="com.saucedemo.tests.selenium_4_features.WindowSwitchingDemoTest"/>
+            <class name="com.saucedemo.tests.selenium_4_features.RelativeLocatorsDemoTest"/>
+            <class name="com.saucedemo.tests.selenium_4_features.WebDriverListenerHooksDemoTest"/>
+            <class name="com.saucedemo.tests.selenium_4_features.FirefoxFullPageScreenshotDemoTest"/>
+        </classes>
+    </test>
+
+</suite>
+
