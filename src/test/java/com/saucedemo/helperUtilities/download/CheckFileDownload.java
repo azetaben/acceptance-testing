@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities;
+package com.saucedemo.helperUtilities.download;
 
 import java.io.File;
 import java.time.Duration;

@@ -2,6 +2,9 @@ package com.saucedemo.domainobjects;
 
 public class LoginDetails {
 
+    protected String username;
+    protected String password;
+
     public LoginDetails(String username, String password) {
         this.username = username;
         this.password = password;
@@ -22,7 +25,4 @@ public class LoginDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    protected String username;
-    protected String password;
 }

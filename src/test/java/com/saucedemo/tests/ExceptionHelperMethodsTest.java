@@ -1,5 +1,9 @@
-package com.saucedemo.exceptions;
+package com.saucedemo.tests;
 
+import com.saucedemo.exceptions.CriteriaSetNotMoreThanOneException;
+import com.saucedemo.exceptions.NoSuchElementsException;
+import com.saucedemo.exceptions.NotOnExpectedPageException;
+import com.saucedemo.exceptions.TableRowDoesNotExistException;
 import com.saucedemo.helperUtilities.pageException.PageException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

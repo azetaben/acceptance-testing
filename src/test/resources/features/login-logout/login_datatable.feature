@@ -1,4 +1,4 @@
-@login&Logout @dataDriven @all
+@login_logout @dataDriven @all
 Feature: Login Data-Driven Tests
   As a user
   I want to verify login behaviour across all user types and credential combinations

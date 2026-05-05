@@ -1,7 +1,10 @@
 package com.saucedemo.exceptions;
 
+import java.io.Serial;
+
 public class CriteriaSetNotMoreThanOneException extends CriteriaSetNumberException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private static final String DEFAULT_MESSAGE = "Criteria set number must be greater than one.";
 

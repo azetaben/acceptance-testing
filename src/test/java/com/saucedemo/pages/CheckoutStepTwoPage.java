@@ -16,9 +16,10 @@ public class CheckoutStepTwoPage extends Page {
     private static final Logger log = LogManager.getLogger(CheckoutStepTwoPage.class);
 
     // Locators for stream sub-element lookups and fallback strategies
-    private static final By ITEM_NAMES             = By.className("inventory_item_name");
-    private static final By ITEM_QUANTITIES        = By.className("summary_quantity");
-    private static final By ITEM_PRICES            = By.className("inventory_item_price");
+    private static final By ITEM_NAMES             = By.cssSelector(".inventory_item_name, [data-test='inventory-item-name']");
+    private static final By ITEM_QUANTITIES        = By.cssSelector(".cart_quantity, .summary_quantity, [data-test='item-quantity']");
+    private static final By ITEM_PRICES            = By.cssSelector(".inventory_item_price, [data-test='inventory-item-price']");
+    private static final By ITEM_DESCRIPTIONS      = By.cssSelector(".inventory_item_desc, [data-test='inventory-item-desc']");
     private static final By SAUCE_CARD_LABEL       = By.cssSelector("div[class='summary_info'] div:nth-child(2)");
     private static final By FREE_PONY_EXPRESS_LABEL = By.cssSelector("div[class='summary_info'] div:nth-child(4)");
     private static final By CANCEL_BUTTON          = By.className("cart_cancel_link");
@@ -27,6 +28,7 @@ public class CheckoutStepTwoPage extends Page {
 
     private static final String DEFAULT_QUANTITY        = "0";
     private static final String DEFAULT_PRICE           = "$0.00";
+    private static final String DEFAULT_DESCRIPTION     = "";
     private static final String TOTAL_LABEL_TEXT        = "Total:";
     private static final String LABEL_ITEM_QUANTITIES   = "Item quantities";
 
@@ -45,13 +47,13 @@ public class CheckoutStepTwoPage extends Page {
     @FindBy(className = "cart_list")
     private WebElement cartList;
 
-    @FindBy(className = "summary_quantity")
+    @FindBy(css = ".cart_quantity, .summary_quantity, [data-test='item-quantity']")
     private List<WebElement> itemQuantities;
 
-    @FindBy(className = "inventory_item_name")
+    @FindBy(css = ".inventory_item_name, [data-test='inventory-item-name']")
     private List<WebElement> itemNames;
 
-    @FindBy(className = "inventory_item_price")
+    @FindBy(css = ".inventory_item_price, [data-test='inventory-item-price']")
     private List<WebElement> itemPrices;
 
     @FindBy(className = "summary_subtotal_label")
@@ -158,11 +160,11 @@ public class CheckoutStepTwoPage extends Page {
     }
 
     public String getFinishButtonText() {
-        return verificationHelper.getText(finishButton);
+        return getElementLabel(finishButton);
     }
 
     public String getCancelButtonText() {
-        return verificationHelper.getText(cancelButton);
+        return getElementLabel(cancelButton);
     }
 
     public String getItemQuantityByName(String productName) {
@@ -179,6 +181,14 @@ public class CheckoutStepTwoPage extends Page {
                 .map(item -> item.findElement(ITEM_PRICES).getText())
                 .findFirst()
                 .orElse(DEFAULT_PRICE);
+    }
+
+    public String getItemDescriptionByName(String productName) {
+        return cartItems.stream()
+                .filter(item -> item.findElement(ITEM_NAMES).getText().equals(productName))
+                .map(item -> item.findElement(ITEM_DESCRIPTIONS).getText())
+                .findFirst()
+                .orElse(DEFAULT_DESCRIPTION);
     }
 
     public String getTotalAmount() {
@@ -272,6 +282,20 @@ public class CheckoutStepTwoPage extends Page {
             log.error("Error checking if " + label + " are displayed: " + e.getMessage(), e);
             return false;
         }
+    }
+
+    private String getElementLabel(WebElement element) {
+        if (element == null) {
+            return "";
+        }
+
+        String text = verificationHelper.getText(element);
+        if (text != null && !text.trim().isEmpty()) {
+            return text;
+        }
+
+        String value = element.getDomAttribute("value");
+        return value == null ? "" : value;
     }
 
     private boolean areQuantitiesDisplayedWithFallbacks() {

@@ -1,11 +1,11 @@
-@login&Logout @all
+@login_logout @all
 Feature: Logout Functionality
 
   Background: Navigate to the login page and log in
     Given I navigate to "https://www.saucedemo.com"
     And the login form is displayed
 
-  @TC_L&LF_022
+  @TC_L_LF_022
   Scenario Outline: Valid logout
     When I enter username "<username>" and password "secret_sauce"
     And I click the "Login" button

@@ -221,12 +221,26 @@ public class CheckoutStepOnePage extends Page {
 
     public String getCancelButtonText() {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, CANCEL_BUTTON);
-        return element == null ? "" : verificationHelper.getText(element);
+        return getElementLabel(element);
     }
 
     public String getContinueButtonText() {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, CONTINUE_BUTTON);
-        return element == null ? "" : verificationHelper.getText(element);
+        return getElementLabel(element);
+    }
+
+    private String getElementLabel(WebElement element) {
+        if (element == null) {
+            return "";
+        }
+
+        String text = verificationHelper.getText(element);
+        if (text != null && !text.trim().isEmpty()) {
+            return text;
+        }
+
+        String value = element.getDomAttribute("value");
+        return value == null ? "" : value;
     }
 
     @Deprecated

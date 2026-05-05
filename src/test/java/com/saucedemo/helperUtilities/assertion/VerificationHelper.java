@@ -17,42 +17,30 @@ public class VerificationHelper {
 
     public static Map<String, String> HexAndGetCssValue(WebElement element) {
         Map<String, String> cssValues = new HashMap<>();
-        String color = element.getCssValue("color");
-        String backgroundColor = element.getCssValue("background-color");
-        cssValues.put("color", color);
-        cssValues.put("background-color", backgroundColor);
+        cssValues.put("color", element.getCssValue("color"));
+        cssValues.put("background-color", element.getCssValue("background-color"));
         return cssValues;
     }
 
-    // Method to convert RGB to Hex
     public static String rgbToHex(int red, int green, int blue) {
-        // Ensure the RGB values are within the valid range (0-255)
         if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255) {
             throw new IllegalArgumentException("RGB values must be between 0 and 255.");
         }
-
-        // Convert RGB to Hex
         return String.format("#%02X%02X%02X", red, green, blue);
     }
 
-    // Method to convert Hex to RGB
     public static int[] hexToRgb(String hex) {
-        // Check if the hex string is valid
         if (hex == null || !hex.matches("^#([0-9A-Fa-f]{6})$")) {
             throw new IllegalArgumentException("Invalid hex color format. Use #RRGGBB.");
         }
-
-        // Parse the hex string to get the RGB values
         int red = Integer.parseInt(hex.substring(1, 3), 16);
         int green = Integer.parseInt(hex.substring(3, 5), 16);
         int blue = Integer.parseInt(hex.substring(5, 7), 16);
-
         return new int[]{red, green, blue};
     }
 
     public boolean isDisplayed(WebElement element) {
         log.info("Checking if element is displayed");
-
         try {
             boolean displayed = element.isDisplayed();
             if (displayed) {
@@ -79,13 +67,11 @@ public class VerificationHelper {
             log.warn("List of WebElements is null or empty.");
             return false;
         }
-
         boolean allDisplayed = elements.stream().allMatch(this::isDisplayed);
         if (!allDisplayed) {
             log.error("One or more elements are not displayed.");
             return false;
         }
-
         log.info("All elements are displayed:: " + elements);
         return true;
     }
@@ -172,12 +158,10 @@ public class VerificationHelper {
 
     public boolean isNotDisplayed(WebElement element) {
         log.info("Checking if element is NOT displayed: " + element);
-
         if (element == null) {
             log.info("Element reference is null; treating as not displayed.");
             return true;
         }
-
         try {
             boolean displayed = element.isDisplayed();
             if (displayed) {
@@ -200,7 +184,7 @@ public class VerificationHelper {
 
     public String readValueFromElement(WebElement element) {
         log.info("Reading value from element: " + element);
-        if (null == element) {
+        if (element == null) {
             log.info("WebElement is null..");
             return null;
         }
@@ -225,7 +209,7 @@ public class VerificationHelper {
 
     public String getText(List<WebElement> elements) {
         log.info("Getting text from list of elements.");
-        if (null == elements || elements.isEmpty()) {
+        if (elements == null || elements.isEmpty()) {
             log.warn("List of WebElement is null or empty..");
             return null;
         }
@@ -239,7 +223,7 @@ public class VerificationHelper {
 
     public String getDomAttribute(WebElement element, String attribute) {
         log.info("Getting DOM attribute: " + attribute + " from element: " + element);
-        if (null == element) {
+        if (element == null) {
             log.info("WebElement is null..");
             return null;
         }
@@ -272,7 +256,6 @@ public class VerificationHelper {
         return url;
     }
 
-    // Method to check if an element is present by ID
     public boolean isElementPresent(By locator) {
         try {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, locator);
@@ -302,7 +285,6 @@ public class VerificationHelper {
         }
     }
 
-    // Method to get text from a WebElement
     public String getTheText(WebElement element) {
         return element.isDisplayed() ? element.getText() : "";
     }
@@ -321,14 +303,12 @@ public class VerificationHelper {
             return false;
         } catch (Exception e) {
             log.error("An error occurred while checking if the element is displayed: " + element + ". Error: " + e.getMessage());
-
             return false;
         }
     }
 
     public synchronized boolean verifyElementNotPresent(WebElement element) {
         log.info("Verifying if element is NOT present: " + element);
-        ////// logExtentReport("Verifying if element is NOT present: " + element);
         try {
             element.isDisplayed();
             log.info(element.getText() + " is displayed");
@@ -347,7 +327,6 @@ public class VerificationHelper {
 
     public synchronized boolean verifyTextEquals(WebElement element, String expectedText) {
         log.info("Verifying if element text equals: " + expectedText);
-        boolean flag = false;
         try {
             String actualText = element.getText();
             if (actualText.equals(expectedText)) {
@@ -417,12 +396,9 @@ public class VerificationHelper {
             log.warn("List of WebElements is null or empty.");
             return false;
         }
-
         List<String> elementTexts = elements.stream().map(WebElement::getText).map(String::trim).toList();
-
         List<String> sortedTexts = elementTexts.stream().sorted().toList();
         boolean isInOrder = elementTexts.equals(sortedTexts);
-
         if (isInOrder) {
             log.info("List of elements is in ascending order: " + elementTexts);
         } else {
@@ -437,12 +413,9 @@ public class VerificationHelper {
             log.warn("List of WebElements is null or empty.");
             return false;
         }
-
         List<String> elementTexts = elements.stream().map(WebElement::getText).map(String::trim).toList();
-
         List<String> sortedTexts = elementTexts.stream().sorted(Collections.reverseOrder()).toList();
         boolean isInOrder = elementTexts.equals(sortedTexts);
-
         if (isInOrder) {
             log.info("List of elements is in descending order: " + elementTexts);
         } else {
@@ -469,23 +442,14 @@ public class VerificationHelper {
         }
     }
 
-    // Method to check if an element is visible, enabled, and present
     public boolean isElementVisibleEnabledAndPresent(WebElement element) {
         try {
-            // Check if the element is present in the DOM
             if (element != null) {
-                // Check if the element is displayed (visible)
-                boolean isDisplayed = element.isDisplayed();
-                // Check if the element is enabled
-                boolean isEnabled = element.isEnabled();
-                return isDisplayed && isEnabled;
+                return element.isDisplayed() && element.isEnabled();
             }
         } catch (Exception e) {
-            // Handle any exceptions (e.g., StaleElementReferenceException)
-            System.err.println("Element is not present or not interactable: " + e.getMessage());
+            log.error("Element is not present or not interactable: " + e.getMessage());
         }
         return false;
     }
-
 }
-

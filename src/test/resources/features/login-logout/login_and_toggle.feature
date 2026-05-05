@@ -1,4 +1,4 @@
-@login&Logout @filter @regression @all
+@login_logout @filter @regression @all
 Feature: Login to top menu toggle links Functionalities
 
   Background: navigate from home page to sign up or login page to logout
@@ -17,22 +17,22 @@ Feature: Login to top menu toggle links Functionalities
       | Logout          |
       | Reset App State |
 
-  @TC_L&LF_014 @filter @regression
+  @TC_L_LF_014 @filter @regression
   Scenario: verify All Items link is clickable
     When I click on the "All Items" link
     And page url should be "https://www.saucedemo.com/inventory.html"
 
-  @TC_L&LF_015 @filter @regression
+  @TC_L_LF_015 @filter @regression
   Scenario: verify About link is clickable
     When I click on the "About" link
     And page url should be "https://saucelabs.com/"
 
-  @TC_L&LF_016 @filter @regression
+  @TC_L_LF_016 @filter @regression
   Scenario: verify Logout link is clickable
     When I click on the "Logout" link
     And page url should be "https://www.saucedemo.com/"
 
-  @TC_L&LF_017 @filter @regression
+  @TC_L_LF_017 @filter @regression
   Scenario: verify Reset App State link is clickable
     When I click on the "Reset App State" link
 

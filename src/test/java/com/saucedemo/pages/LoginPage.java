@@ -427,6 +427,28 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         }
     }
 
+    // -- Element accessors (for AssertionHelper-based step assertions) --------
+
+    public WebElement getLoginButtonElement() {
+        return loginButton;
+    }
+
+    public WebElement getUsernameInputElement() {
+        return usernameInputField;
+    }
+
+    public WebElement getPasswordInputElement() {
+        return passwordInputField;
+    }
+
+    public WebElement getLoginFormElement() {
+        return loginForm;
+    }
+
+    public WebElement getLoginErrorElement() {
+        return loginErrorWarningMessage;
+    }
+
     // -- Flow methods ----------------------------------------------------------
 
     public InventoryPage login(String username, String password) {

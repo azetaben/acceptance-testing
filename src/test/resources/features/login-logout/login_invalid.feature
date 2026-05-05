@@ -1,4 +1,4 @@
-@login&Logout @all @error_validation_tests
+@login_logout @all @error_validation_tests
 Feature: Login Functionality
 
   Background: Navigate to the login page

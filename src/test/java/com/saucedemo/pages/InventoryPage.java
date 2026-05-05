@@ -215,6 +215,14 @@ public class InventoryPage extends Page {
                 .collect(Collectors.toList());
     }
 
+    public List<String> getDisplayedPriceTexts() {
+        List<WebElement> elements = ExplicitWaitFactory.performExplicitWaitForList(
+                WaitStrategy.VISIBILITY_OF_ALL_ELEMENTS, By.className(INVENTORY_ITEM_PRICE_CLASS));
+        return elements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+
     public boolean areProductNamesSortedAtoZ() {
         List<String> productNames = getDisplayedProductNames();
         List<String> sortedNames = productNames.stream().sorted().toList();
@@ -295,6 +303,12 @@ public class InventoryPage extends Page {
         dropdown.selectByVisibleText(option);
     }
 
+    public String getSelectedSortOptionText() {
+        WebElement dropdownElement = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, sortDropdown);
+        Select dropdown = new Select(dropdownElement == null ? sortDropdown : dropdownElement);
+        return dropdown.getFirstSelectedOption().getText().trim();
+    }
+
     public boolean isButtonDisplayedForProduct(String productName, String buttonLabel) {
         if (productName == null || productName.isBlank()) {
             throw new IllegalArgumentException("Product name must not be null or blank");
@@ -308,5 +322,38 @@ public class InventoryPage extends Page {
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    public boolean hasAnyProductButtonWithLabel(String buttonLabel) {
+        if (buttonLabel == null || buttonLabel.isBlank()) {
+            throw new IllegalArgumentException("Button label must not be null or blank");
+        }
+        List<WebElement> buttons = ExplicitWaitFactory.performExplicitWaitForList(
+                WaitStrategy.VISIBILITY_OF_ALL_ELEMENTS, By.cssSelector("div.inventory_item button"));
+        String expectedLabel = buttonLabel.trim();
+        return !buttons.isEmpty()
+                && buttons.stream()
+                .map(WebElement::getText)
+                .map(String::trim)
+                .anyMatch(text -> text.equalsIgnoreCase(expectedLabel));
+    }
+
+    public String getProductImageSrcByName(String productName) {
+        if (productName == null || productName.isBlank()) {
+            throw new IllegalArgumentException("Product name must not be null or blank");
+        }
+
+        String trimmedName = productName.trim();
+        By productCard = By.xpath("//div[contains(@class,'inventory_item')][.//div[contains(@class,'inventory_item_name') and normalize-space()=\""
+                + trimmedName
+                + "\"]]");
+        WebElement cardElement = ExplicitWaitFactory.performExplicitWait(WaitStrategy.PRESENCE, productCard);
+        if (cardElement == null) {
+            return "";
+        }
+
+        WebElement image = cardElement.findElement(By.cssSelector("img.inventory_item_img, [data-test='inventory-item-img']"));
+        String src = image.getDomAttribute("src");
+        return src == null ? "" : src.trim();
     }
 }

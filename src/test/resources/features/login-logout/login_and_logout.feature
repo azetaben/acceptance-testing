@@ -1,7 +1,7 @@
-@login&Logout @all
+@login_logout @all
 Feature: Login to logout Functionality
 
-  @TC_L&LF_012
+  @TC_L_LF_012
   Scenario: navigate from home page to sign up or login page to logout
     Given I navigate to "https://saucedemo.com/"
     And page url should be "saucedemo.com/"

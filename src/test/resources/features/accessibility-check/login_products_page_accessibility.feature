@@ -1,7 +1,7 @@
 @miscellaneous
 @Accessibility
-@login&Logout
-@login&Logout
+@login_logout
+@login_logout
 @all
 Feature: Web Page Accessibility
 

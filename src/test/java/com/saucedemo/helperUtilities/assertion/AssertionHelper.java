@@ -1,5 +1,6 @@
 package com.saucedemo.helperUtilities.assertion;
 
+import com.saucedemo.webdriverutilities.WebDrv;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -12,60 +13,54 @@ import java.util.List;
 
 public class AssertionHelper {
     private static final Logger log = LogManager.getLogger(AssertionHelper.class);
-    private static WebDriver driver;
+
+    private static WebDriver driver() {
+        return WebDrv.getInstance().getWebDriver();
+    }
 
     public static void verifyText(String s1, String s2) {
         log.info("Verifying testScripts: " + s1 + " with " + s2);
-        //////// logExtentReport("Verifying testScripts: " + s1 + " with " + s2);
         Assert.assertEquals(s1, s2);
     }
 
     public static void markPass() {
         log.info("Making script PASS..");
-        //////// logExtentReport("Making script PASS..");
-        Assert.assertTrue(true);
+        pass();
     }
 
     public static void markPass(String message) {
         log.info("Making script PASS => " + message);
-        //////// logExtentReport("Making script PASS => " + message);
         Assert.assertTrue(true, message);
     }
 
     public static void markFail() {
         log.info("Making script FAIL..");
-        //////// logExtentReport("Making script FAIL..");
-        Assert.fail();
+        fail();
     }
 
     public static void markFail(String message) {
-        log.info("Making script FAIL.." + message);
-        //////// logExtentReport("Making script FAIL.." + message);
+        log.info("Making script FAIL => " + message);
         Assert.fail(message);
     }
 
     public static void verifyTrue(boolean status) {
         log.info("Verify object is True..");
-        //////// logExtentReport("Verify object is True..");
         Assert.assertTrue(status);
     }
 
     public static void verifyFalse(boolean status) {
         log.info("Verify object is False..");
-        ////// logExtentReport("Verify object is False..");
         Assert.assertFalse(status);
     }
 
-    public static void verifyNull(String s1) {
+    public static void verifyNull(Object obj) {
         log.info("Verify object is null..");
-        ////// logExtentReport("Verify object is null..");
-        Assert.assertNull(s1);
+        Assert.assertNull(obj);
     }
 
-    public static void verifyNotNull(String s1) {
+    public static void verifyNotNull(Object obj) {
         log.info("Verify object is not null..");
-        ////// logExtentReport("Verify object is not null..");
-        Assert.assertNotNull(s1);
+        Assert.assertNotNull(obj);
     }
 
     public static void fail() {
@@ -78,92 +73,70 @@ public class AssertionHelper {
 
     public static void updateTestStatus(boolean status) {
         if (status) {
-            pass();
             log.info("UpdateTestStatus => PASSED");
-            ////// logExtentReport("UpdateTestStatus => PASSED");
+            pass();
         } else {
-            fail();
             log.info("UpdateTestStatus => FAILED");
-            ////// logExtentReport("UpdateTestStatus => FAILED");
+            fail();
         }
     }
 
     public static void assertNewTabIsOpenedWithExpectedPage(String expectedPageName) {
-        List<String> browserTabs = new ArrayList<String>(driver.getWindowHandles());
-        // switch to new tab
-        driver.switchTo().window(browserTabs.get(1));
-        // check is it correct page opened or not (e.g. check page's title)
-        Assert.assertEquals(expectedPageName, driver.findElement(By.id("heading")).getText(), "The opened page is not what was expected");
-        // then close tab and get back
-        driver.close();
-        driver.switchTo().window(browserTabs.get(0));
+        List<String> browserTabs = new ArrayList<>(driver().getWindowHandles());
+        driver().switchTo().window(browserTabs.get(1));
+        Assert.assertEquals(driver().findElement(By.id("heading")).getText(), expectedPageName, "The opened page is not what was expected");
+        driver().close();
+        driver().switchTo().window(browserTabs.get(0));
     }
 
     public static void assertNewTabOpenedWithExpectedTitle(String pageTitle) {
-        List<String> browserTabs = new ArrayList<String>(driver.getWindowHandles());
-        // switch to new tab
-        driver.switchTo().window(browserTabs.get(1));
-        // check is it correct page opened or not (check page's title)
-        Assert.assertEquals(pageTitle, "The opened page title did not match", driver.getTitle());
-        // then close tab and get back
-        driver.close();
-        driver.switchTo().window(browserTabs.get(0));
+        List<String> browserTabs = new ArrayList<>(driver().getWindowHandles());
+        driver().switchTo().window(browserTabs.get(1));
+        Assert.assertEquals(driver().getTitle(), pageTitle, "The opened page title did not match");
+        driver().close();
+        driver().switchTo().window(browserTabs.get(0));
     }
 
     public static List<String> getModifiableIdListOfExpectedChildElements(List<String> elementIds) {
-        List<String> ids = new ArrayList<>();
-        for (String elementId : elementIds) {
-            ids.add(elementId);
-        }
-        return ids;
+        return new ArrayList<>(elementIds);
     }
 
-    public static synchronized boolean verifyElementPresent(WebElement element) {
-        boolean isDispalyed = false;
-        try {
-            isDispalyed = element.isDisplayed();
-            log.info(element.getText() + " is displayed");
-            ////// logExtentReport(element.getText() + " is displayed");
-        } catch (Exception ex) {
-            log.error("Element not found " + ex);
-        }
-
-        return isDispalyed;
-    }
-
-    public static synchronized boolean verifyElementNotPresent(WebElement element) {
+    public static boolean verifyElementPresent(WebElement element) {
         boolean isDisplayed = false;
         try {
-            element.isDisplayed();
+            isDisplayed = element.isDisplayed();
             log.info(element.getText() + " is displayed");
-            ////// logExtentReport(element.getText() + " is displayed");
-            isDisplayed = false;
         } catch (Exception ex) {
             log.error("Element not found " + ex);
-            isDisplayed = true;
         }
         return isDisplayed;
     }
 
-    public static synchronized boolean verifyTextEquals(WebElement element, String expectedText) {
-        boolean flag = false;
+    public static boolean verifyElementNotPresent(WebElement element) {
+        boolean isNotPresent = false;
+        try {
+            element.isDisplayed();
+            log.info(element.getText() + " is displayed");
+        } catch (Exception ex) {
+            log.error("Element not found " + ex);
+            isNotPresent = true;
+        }
+        return isNotPresent;
+    }
+
+    public static boolean verifyTextEquals(WebElement element, String expectedText) {
         try {
             String actualText = element.getText();
             if (actualText.equals(expectedText)) {
                 log.info("actualText is :" + actualText + " expected text is: " + expectedText);
-                ////// logExtentReport("actualText is :" + actualText + " expected text is: " +
-                // expectedText);
-                return flag = true;
+                return true;
             } else {
                 log.error("actualText is :" + actualText + " expected text is: " + expectedText);
-                ////// logExtentReport("actualText is :" + actualText + " expected text is: " +
-                // expectedText);
-                return flag;
+                return false;
             }
         } catch (Exception ex) {
-            log.error("actualText is :" + element.getText() + " expected text is: " + expectedText);
-            log.info("text not matching" + ex);
-            return flag;
+            log.error("Could not read element text, expected: " + expectedText + ". Error: " + ex.getMessage());
+            return false;
         }
     }
 }

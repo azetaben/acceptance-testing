@@ -142,6 +142,9 @@ public class LoginSteps {
     }
 
     private LoginPage loginPage() {
+        if (WebDrv.getInstance().getWebDriver() == null) {
+            WebDrv.getInstance().openBrowser(GlobalVarsHelper.getLoginPageUrl());
+        }
         return this.pm.getPage(LoginPage.class);
     }
 
@@ -183,6 +186,11 @@ public class LoginSteps {
 
     @When("I login with valid credentials as standard user")
     public void iLoginWithValidCredentialsAsStandardUser(DataTable dataTable) {
+        loginWithCredentials(dataTable.cell(1, 0), dataTable.cell(1, 1));
+    }
+
+    @When("I attempt login with invalid credentials as lockout user")
+    public void i_attempt_login_with_invalid_locked_out_user(DataTable dataTable) {
         loginWithCredentials(dataTable.cell(1, 0), dataTable.cell(1, 1));
     }
 

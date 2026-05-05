@@ -11,15 +11,13 @@ import org.testng.annotations.Parameters;
 
 @CucumberOptions(
         monochrome = true,
-        features  = {RunnerConstants.FEATURE_ROOT},
-        glue      = {RunnerConstants.GLUE_STEPS},
-        plugin    = {
-                RunnerConstants.REPORT_PRETTY,
+        features = {RunnerConstants.FEATURE_ROOT},
+        glue = {RunnerConstants.GLUE_STEPS},
+        plugin = {RunnerConstants.REPORT_PRETTY,
                 RunnerConstants.REPORT_HTML,
                 RunnerConstants.REPORT_JSON,
                 RunnerConstants.REPORT_CUCUMBER_HTML,
-                RunnerConstants.REPORT_EXTENT
-        },
+                RunnerConstants.REPORT_EXTENT},
         tags = "@Add2Cart")
 public class RunCucumberNGTest extends AbstractTestNGCucumberTests {
 

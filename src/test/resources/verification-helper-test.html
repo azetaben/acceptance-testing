@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VerificationHelper Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        #colored-element {
+            background-color: rgb(0, 255, 0);
+            color: rgb(255, 0, 0);
+            padding: 10px;
+        }
+        #sorted-asc li, #sorted-desc li {
+            margin: 5px 0;
+        }
+        .display-test-items {
+            display: flex;
+            gap: 10px;
+        }
+        .display-test-items div {
+            padding: 10px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>VerificationHelper Test Page</h1>
+
+    <!-- Display/Visibility Tests Section -->
+    <div class="test-section">
+        <h2>Display/Visibility Tests</h2>
+        <div id="visible-element" class="visible">
+            This element is visible
+        </div>
+        <div id="hidden-element" class="hidden">
+            This element is hidden
+        </div>
+        <input type="text" id="empty-element" value="" placeholder="Empty input field">
+    </div>
+
+    <!-- Enabled/Disabled Tests Section -->
+    <div class="test-section">
+        <h2>Enabled/Disabled Tests</h2>
+        <button id="enabled-element">I am enabled</button>
+        <button id="disabled-element" disabled>I am disabled</button>
+        <div id="displayed-enabled-element" style="border: 1px solid green; padding: 10px;">
+            Displayed &amp; Enabled
+        </div>
+        <div id="displayed-disabled-element" style="border: 1px solid red; padding: 10px; opacity: 0.5;">
+            Displayed but Disabled
+        </div>
+    </div>
+
+    <!-- Text Content Tests Section -->
+    <div class="test-section">
+        <h2>Text Content Tests</h2>
+        <div id="text-content">Lorem ipsum dolor sit amet</div>
+        <p id="element-with-attr" data-test="test-value" class="test-class">
+            Element with attributes
+        </p>
+    </div>
+
+    <!-- Selection Tests Section -->
+    <div class="test-section">
+        <h2>Selection Tests</h2>
+        <label>
+            <input type="checkbox" id="checkbox-selected" checked> I am selected
+        </label>
+        <label>
+            <input type="checkbox" id="checkbox-unselected"> I am unselected
+        </label>
+        <label>
+            <input type="radio" name="test-radio" id="radio-selected" checked> I am selected
+        </label>
+        <label>
+            <input type="radio" name="test-radio" id="radio-unselected"> I am unselected
+        </label>
+    </div>
+
+    <!-- Dropdown Tests Section -->
+    <div class="test-section">
+        <h2>Dropdown Tests</h2>
+        <select id="dropdown-select">
+            <option value="">Select an option</option>
+            <option value="opt1">Option 1</option>
+            <option value="opt2" selected>Option 2</option>
+            <option value="opt3">Option 3</option>
+            <option value="opt4">Option 4</option>
+        </select>
+    </div>
+
+    <!-- List Items Tests Section -->
+    <div class="test-section">
+        <h2>List Items Tests</h2>
+
+        <!-- Generic Item List -->
+        <h3>Generic Item List</h3>
+        <ul id="item-list">
+            <li>Item One</li>
+            <li>Item Two</li>
+            <li>Item Three</li>
+            <li>Item Four</li>
+            <li>Item Five</li>
+        </ul>
+
+        <!-- Sorted Ascending List -->
+        <h3>Sorted Ascending</h3>
+        <ul id="sorted-asc">
+            <li>Apple</li>
+            <li>Banana</li>
+            <li>Cherry</li>
+            <li>Date</li>
+            <li>Elderberry</li>
+        </ul>
+
+        <!-- Sorted Descending List -->
+        <h3>Sorted Descending</h3>
+        <ul id="sorted-desc">
+            <li>Zebra</li>
+            <li>Yak</li>
+            <li>Xylophone</li>
+            <li>Wolf</li>
+            <li>Vulture</li>
+        </ul>
+    </div>
+
+    <!-- Color/CSS Tests Section -->
+    <div class="test-section">
+        <h2>Color/CSS Tests</h2>
+        <div id="colored-element">
+            This element has background color rgb(0, 255, 0) and text color rgb(255, 0, 0)
+        </div>
+    </div>
+
+    <!-- Clickability Tests Section -->
+    <div class="test-section">
+        <h2>Clickability Tests</h2>
+        <button id="clickable-button" onclick="alert('Button clicked!')">
+            I am clickable
+        </button>
+        <div id="non-clickable-element" style="cursor: not-allowed; opacity: 0.5;">
+            I am not clickable
+        </div>
+    </div>
+
+    <!-- Display Test Items -->
+    <div class="test-section">
+        <h2>Multiple Display Test Items</h2>
+        <div class="display-test-items">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+            <div>Item 4</div>
+        </div>
+    </div>
+
+    <!-- Enabled Test Items -->
+    <div class="test-section">
+        <h2>Multiple Enabled Test Items</h2>
+        <div class="enabled-test-items">
+            <div class="item">
+                <button>Button 1</button>
+            </div>
+            <div class="item">
+                <button>Button 2</button>
+            </div>
+            <div class="item">
+                <button>Button 3</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log("Test page loaded successfully");
+    </script>
+</body>
+</html>
+

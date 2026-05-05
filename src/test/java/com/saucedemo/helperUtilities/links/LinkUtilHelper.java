@@ -5,7 +5,6 @@ import java.net.URL;
 
 public class LinkUtilHelper {
 
-    // hits the given url and returns the HTTP response code
     public static int getResponseCode(String link) {
         URL url;
         HttpURLConnection con = null;

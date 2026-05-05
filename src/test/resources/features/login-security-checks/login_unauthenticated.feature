@@ -3,7 +3,7 @@ Feature: Login security checks for Sauce Demo
   I want to ensure that the login functionality is secure against common attack vectors
   So that my account and data are protected.
 
-  @TC_L&LF_031 @security @login @invalidLogin @regression
+  @TC_L_LF_031 @security @login @invalidLogin @regression
   Scenario Outline: 031 - block unauthenticated direct navigation to protected routes
     When I navigate to "<protected_url>"
     Then I should be redirected to the login page

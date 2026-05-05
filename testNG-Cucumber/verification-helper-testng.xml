@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="VerificationHelper Test Suite" verbose="2" parallel="false">
+    <test name="VerificationHelper Unit Tests" preserve-order="true">
+        <classes>
+            <class name="com.saucedemo.tests.VerificationHelperTest">
+                <methods>
+                    <!-- Color Conversion Tests -->
+                    <include name="testRgbToHexWithValidValues"/>
+                    <include name="testRgbToHexEdgeCases"/>
+                    <include name="testHexToRgbWithValidValues"/>
+                    <include name="testRgbToHexParametrized"/>
+                    <include name="testHexToRgbParametrized"/>
+                    <include name="testHexAndGetCssValue"/>
+
+                    <!-- Display State Verification Tests -->
+                    <include name="testIsDisplayedWithVisibleElement"/>
+                    <include name="testIsDisplayedWithHiddenElement"/>
+                    <include name="testIsDisplayedWithElementNotFound"/>
+                    <include name="testIsNotDisplayedWithHiddenElement"/>
+                    <include name="testIsNotDisplayedWithNullElement"/>
+
+                    <!-- Enabled State Verification Tests -->
+                    <include name="testIsEnabledWithEnabledElement"/>
+                    <include name="testIsEnabledWithDisabledElement"/>
+                    <include name="testIsDisplayedAndEnabledBothTrue"/>
+                    <include name="testIsDisplayedAndEnabledHiddenElement"/>
+
+                    <!-- Selection State Verification Tests -->
+                    <include name="testIsSelectedWithSelectedElement"/>
+                    <include name="testIsSelectedWithUnselectedElement"/>
+                    <include name="testVerifyNotSelectedWithUnselectedElement"/>
+
+                    <!-- Text Content Verification Tests -->
+                    <include name="testGetTextWithContent"/>
+                    <include name="testGetTextWithListOfElements"/>
+                    <include name="testReadValueFromElement"/>
+                    <include name="testReadValueFromElementWithNull"/>
+                    <include name="testVerifyTextEqualsMatching"/>
+                    <include name="testVerifyTextEqualsNonMatching"/>
+                    <include name="testVerifyElementContainsText"/>
+                    <include name="testTextVerificationParametrized"/>
+
+                    <!-- Attribute Verification Tests -->
+                    <include name="testGetDomAttribute"/>
+                    <include name="testGetDomAttributeWithNull"/>
+
+                    <!-- Page Title/URL Tests -->
+                    <include name="testGetTitle"/>
+                    <include name="testGetCurrentPageTitle"/>
+                    <include name="testGetCurrentPageUrl"/>
+
+                    <!-- Element Presence Tests -->
+                    <include name="testIsElementPresentWithExistingElement"/>
+                    <include name="testIsElementPresentWithNonExistentElement"/>
+                    <include name="testVerifyElementPresent"/>
+                    <include name="testVerifyElementNotPresent"/>
+
+                    <!-- List Element Tests -->
+                    <include name="testAreElementsDisplayedAllVisible"/>
+                    <include name="testAssertItemDisplayedFromList"/>
+                    <include name="testVerifyListOfElementInAscendingOrder"/>
+                    <include name="testVerifyListOfElementInDescendingOrder"/>
+
+                    <!-- Clickability Tests -->
+                    <include name="testVerifyElementIsClickable"/>
+                    <include name="testIsElementVisibleEnabledAndPresent"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="VerificationHelper Exception Tests" preserve-order="true">
+        <classes>
+            <class name="com.saucedemo.tests.VerificationHelperTest">
+                <methods>
+                    <include name="testRgbToHexWithInvalidValues"/>
+                    <include name="testHexToRgbWithInvalidFormat"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
+

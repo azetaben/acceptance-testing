@@ -18,6 +18,7 @@ public class CheckPageIsLoaded {
 
     public static void setDriver(WebDriver driver) {
         CheckPageIsLoaded.driver = driver;
+
     }
 
     public static void checkPageIsFullyLoaded() throws Exception {

@@ -1,6 +1,9 @@
 package com.saucedemo.domainobjects;
 
 public class Product {
+
+    private String name;
+
     public Product(String name) {
         this.name = name;
     }
@@ -12,6 +15,4 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
 }

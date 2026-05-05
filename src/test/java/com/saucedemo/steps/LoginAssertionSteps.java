@@ -19,10 +19,11 @@ import java.util.Locale;
 public class LoginAssertionSteps {
     private static final Logger log = LogManager.getLogger(LoginAssertionSteps.class);
     private final PageManager pm;
-    private LoginPage loginPage;
+    private final LoginPage loginPage;
 
     public LoginAssertionSteps() {
         this.pm = PageManager.getInstance();
+        this.loginPage = this.pm.getPage(LoginPage.class);
     }
 
     private static String normalizeWhitespace(String value) {
@@ -40,7 +41,6 @@ public class LoginAssertionSteps {
     }
 
     private LoginPage loginPage() {
-        this.loginPage = this.pm.getPage(LoginPage.class);
         return this.loginPage;
     }
 
@@ -146,10 +146,18 @@ public class LoginAssertionSteps {
 
     @And("I can see Accepted usernames are:")
     public void iCanSeeAcceptedUsernamesAre(DataTable dataTable) {
-        Assert.assertTrue(loginPage().getAcceptedUsernames().contains(dataTable.cell(0, 0)));
-        Assert.assertTrue(loginPage().getAcceptedUsernames().contains(dataTable.cell(1, 0)));
-        Assert.assertTrue(loginPage().getAcceptedUsernames().contains(dataTable.cell(2, 0)));
-        Assert.assertTrue(loginPage().getAcceptedUsernames().contains(dataTable.cell(3, 0)));
+        List<String> expectedUsernames = dataTable.asList();
+        Assert.assertFalse(expectedUsernames.isEmpty(), "Expected at least one username in the data table.");
+
+        String acceptedUsernames = loginPage().getAcceptedUsernames();
+        for (String expectedUsername : expectedUsernames) {
+            String username = expectedUsername == null ? "" : expectedUsername.trim();
+            if (username.isBlank()) {
+                continue;
+            }
+            Assert.assertTrue(acceptedUsernames.contains(username),
+                    "Expected accepted usernames to contain '" + username + "' but got: '" + acceptedUsernames + "'");
+        }
     }
 
     @Then("I should see an error message {string}")

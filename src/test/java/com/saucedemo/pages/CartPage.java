@@ -60,9 +60,13 @@ public class CartPage extends Page {
     }
 
     public CheckoutStepOnePage clickCheckoutButton() {
-        checkoutButton.click();
+        WebElement button = checkoutButton;
+        if (button == null) {
+            button = driver.findElement(By.cssSelector(".btn_action.checkout_button, [data-test='checkout']"));
+        }
+        button.click();
         log.info("Clicked on Checkout button");
-        return new CheckoutStepOnePage();
+        return PageManager.getInstance().getPage(CheckoutStepOnePage.class);
     }
 
     public String getItemQuantityByTitle(String productTitle) {
@@ -140,6 +144,18 @@ public class CartPage extends Page {
 
     }
 
+    public ProductDetailsPage clickFirstProductItemInCart() {
+        List<WebElement> currentCartItems = driver.findElements(CART_ITEM);
+        if (currentCartItems.isEmpty()) {
+            throw new NoSuchElementException("Cannot click first product item because the cart is empty.");
+        }
+
+        WebElement firstItemName = currentCartItems.get(0).findElement(ITEM_NAME);
+        waitAndClick(firstItemName);
+        log.info("Clicked the first product item in the cart.");
+        return PageManager.getInstance().getPage(ProductDetailsPage.class);
+    }
+
     public boolean hasProductInCart(String productName, int expectedQuantity) {
         return hasItemWithQuantityByName(productName, expectedQuantity);
     }
@@ -152,6 +168,11 @@ public class CartPage extends Page {
 
     public String getCheckoutButton() {
         return verificationHelper.getText(checkoutButton);
+    }
+
+    public boolean hasAnyRemoveButton() {
+        List<WebElement> removeButtons = driver.findElements(REMOVE_BUTTON);
+        return !removeButtons.isEmpty() && removeButtons.stream().anyMatch(verificationHelper::isDisplayed);
     }
 
     public boolean hasItemWithQuantityByName(String expectedItemName, int expectedQuantity) {

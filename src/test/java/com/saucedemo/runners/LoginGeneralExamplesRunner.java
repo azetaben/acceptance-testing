@@ -8,15 +8,12 @@ import io.cucumber.testng.CucumberOptions;
         monochrome = true,
         features = {RunnerConstants.FEATURE_ROOT + "login-logout/login_general_interface_examples.feature"},
         glue = {RunnerConstants.GLUE_STEPS},
-        plugin = {
-                RunnerConstants.REPORT_PRETTY,
+        plugin = {RunnerConstants.REPORT_PRETTY,
                 RunnerConstants.REPORT_HTML,
                 RunnerConstants.REPORT_JSON,
                 RunnerConstants.REPORT_CUCUMBER_HTML,
-                RunnerConstants.REPORT_EXTENT
-        },
-        tags = "@login_general_examples"
-)
+                RunnerConstants.REPORT_EXTENT},
+        tags = "@login_general_examples")
 public class LoginGeneralExamplesRunner extends AbstractTestNGCucumberTests {
-}
 
+}

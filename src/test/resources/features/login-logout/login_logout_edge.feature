@@ -1,4 +1,4 @@
-@login&Logout @edgeUrlOuterHtml @all
+@login_logout @edgeUrlOuterHtml @all
 Feature: Login and logout edge coverage with URL and outerHtml checks
 
   Background: Open login page

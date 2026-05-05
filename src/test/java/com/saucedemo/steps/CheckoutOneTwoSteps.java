@@ -4,8 +4,13 @@ import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.pages.CheckoutStepOnePage;
 import com.saucedemo.pages.CheckoutStepTwoPage;
 import com.saucedemo.pages.PageManager;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
+
+import java.util.Locale;
+import java.util.Map;
 
 public class CheckoutOneTwoSteps {
     private final PageManager pm;
@@ -38,9 +43,29 @@ public class CheckoutOneTwoSteps {
         checkoutYourInformationPage().clickContinueButton();
     }
 
+    @And("I fill the checkout information form with:")
+    public void iFillTheCheckoutInformationFormWith(DataTable dataTable) {
+        Map<String, String> formData = dataTable.asMap(String.class, String.class);
+
+        String firstName = getRequiredFormValue(formData, "First Name");
+        String lastName = getRequiredFormValue(formData, "Last Name");
+        String postalCode = getRequiredFormValue(formData, "Postal Code", "Zip Code");
+
+        checkoutYourInformationPage().enterFirstName(firstName);
+        checkoutYourInformationPage().enterLastName(lastName);
+        checkoutYourInformationPage().enterPostalCode(postalCode);
+    }
+
     @When("I click on the {string} button")
     public void iClickOnTheContinueButton(String continueButtonName) {
         if (SauceDemoConstants.BUTTON_LABEL_CONTINUE.equalsIgnoreCase(continueButtonName)) {
+            checkoutYourInformationPage().clickContinueButton();
+        }
+    }
+
+    @And("I tap {string}")
+    public void iTap(String buttonText) {
+        if (SauceDemoConstants.BUTTON_LABEL_CONTINUE.equalsIgnoreCase(buttonText)) {
             checkoutYourInformationPage().clickContinueButton();
         }
     }
@@ -77,6 +102,17 @@ public class CheckoutOneTwoSteps {
         return actualText != null
                 && expectedText != null
                 && actualText.trim().equalsIgnoreCase(expectedText.trim());
+    }
+
+    private String getRequiredFormValue(Map<String, String> formData, String... keys) {
+        for (String key : keys) {
+            for (Map.Entry<String, String> entry : formData.entrySet()) {
+                if (entry.getKey() != null && entry.getKey().trim().toLowerCase(Locale.ROOT).equals(key.toLowerCase(Locale.ROOT))) {
+                    return entry.getValue() == null ? "" : entry.getValue().trim();
+                }
+            }
+        }
+        throw new IllegalArgumentException("Missing required checkout form field. Expected one of: " + String.join(", ", keys));
     }
 
     @When("I click on the finish button")

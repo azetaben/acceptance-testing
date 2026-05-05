@@ -1,11 +1,11 @@
-@login&Logout @all
+@login_logout @all
 Feature: Login to top menu toggle links Functionalities
 
 
   Background: navigate from home page to sign up or login page
     Given I navigate to "https://saucedemo.com/"
 
-  @TC_L&LF_013
+  @TC_L_LF_013
   Scenario: verify online order flow to cart page and reset app state from the top menu toggle links
     When I login with valid credentials as standard user
       | username      | password     |
@@ -34,7 +34,7 @@ Feature: Login to top menu toggle links Functionalities
     Then Cart should be empty
     And cart should be empty "0"
 
-  @TC_L&LF_013A
+  @TC_L_LF_013A
   Scenario: verify online order flow to cart page and logout from the top menu toggle links
     When I login with valid credentials as standard user
       | username      | password     |
@@ -57,7 +57,7 @@ Feature: Login to top menu toggle links Functionalities
     And the login form is displayed
 
 
-  @TC_L&LF_013B
+  @TC_L_LF_013B
   Scenario: verify online order flow to cart page and click about from the top menu toggle links
     When I login with valid credentials as standard user
       | username      | password     |
@@ -77,7 +77,7 @@ Feature: Login to top menu toggle links Functionalities
     And page title should be "Sauce Labs: Cross Browser Testing, Selenium Testing & Mobile Testing"
 
 
-  @TC_L&LF_013B
+  @TC_L_LF_013B
   Scenario: verify online order flow to cart page and click all items from the top menu toggle links
     When I login with valid credentials as standard user
       | username      | password     |

@@ -1,4 +1,4 @@
-@login&Logout @edge @all
+@login_logout @edge @all
 Feature: Login and logout edge cases
 
   Background: Open login page with expected baseline state

@@ -1,11 +1,14 @@
 @login_logout @all
-Feature: Login Functionality
+Feature: Login Functionality - With VerificationHelper Integration
   As a user,
   I want to login into the application
   inorder to make online purchase.
 
+  This feature also tests VerificationHelper methods on login page elements
+
   Background: navigate from home page to sign up or login page
     Given I navigate to "/"
+    And I am on "login" page
     #And I check for broken buttons, input fields and links on the webpage
     And page url should be "saucedemo.com/"
     And page title should be "Swag Labs"
@@ -44,6 +47,8 @@ Feature: Login Functionality
 
   Scenario Outline: login with different Accepted usernames and Password for all users
     When I login in login page with all "<allAccepted usernames>" and password for all users "secret_sauce"
+    And I am on "inventory" page
+    And page url should be "inventory.html"
     Then I should see "<expected confirmation message>"
     Examples:
       | allAccepted usernames   | expected confirmation message                       |
@@ -67,7 +72,7 @@ Feature: Login Functionality
       | visual_user             | secret_sauce           | Products                                            |
 
 
-  @TC_LLF_001 @validLogin @regression @smoke @sanity
+  @TC_LLF_001 @validLogin @regression @smoke @sanity @VerificationHelper
   Scenario:  001 - login with valid credentials as a standard user
     When I login with valid credentials as standard user
       | username      | password     |
@@ -79,6 +84,7 @@ Feature: Login Functionality
     Then I can see product page header "Products" displayed
     And Product count is greater than 0
     And I should see a list of products
+
     And I should see 6 products displayed
 
   @TC_LLF_002 @validLogin @regression
@@ -89,7 +95,7 @@ Feature: Login Functionality
     And Product count is greater than 0
     And I should see 6 products displayed
 
-  @TC_LLF_003 @invalidLogin @regression
+  @TC_LLF_003 @invalidLogin @regression @VerificationHelper
   Scenario:  003 - login with invalid credentials as a locked_out_user
     When I login with valid credentials as standard user
       | username        | password     |
@@ -99,7 +105,7 @@ Feature: Login Functionality
     Then an error message "Epic sadface: Sorry, this user has been locked out." should be displayed
     And "Epic sadface: Sorry, this user has been locked out." should be displayed
 
-  @TC_LLF_004 @validLogin @regression
+  @TC_LLF_004 @validLogin @regression @VerificationHelper
   Scenario:  004 - login with valid credentials as a problem_user
     When I login with valid credentials as standard user
       | username     | password     |
@@ -109,11 +115,12 @@ Feature: Login Functionality
     And I should see a list of products
     And I should see 6 products displayed
 
-  @TC_LLF_005 @validLogin @regression
+  @TC_LLF_005 @validLogin @regression @VerificationHelper
   Scenario:  005 - login with valid credentials as a performance_glitch_user
     When I login with valid credentials as standard user
       | username                | password     |
       | performance_glitch_user | secret_sauce |
+    And I am on "inventory" page
     And page url should be "inventory.html"
     Then I can see product page header "Products" displayed
     And I should see a list of products
@@ -123,6 +130,7 @@ Feature: Login Functionality
   Scenario Outline: 006 - login with Accepted usernames valid credentials
     When I login with username "<username>" and "<password>"
     Then I should see "<confirmation message>" is displayed
+    And I am on "inventory" page
     And I should be taken to the "Products" page
     And I should be redirected to the products page
     And I can see product page header "Products" displayed
@@ -134,23 +142,25 @@ Feature: Login Functionality
       | problem_user            | secret_sauce | Products             |
       | performance_glitch_user | secret_sauce | Products             |
 
-  @TC_LLF_007 @login @validLogin @regression
+  @TC_LLF_007 @login @validLogin @regression @VerificationHelper
   Scenario: 007 - Successful login with standard user
     And I enter username "standard_user" and password "secret_sauce"
-    When I tap "Login" button
+    And I tap "Login" button
+    And I am on "inventory" page
     And I should be taken to the "Products" page
     Then I should be redirected to the products page
     And I should see a list of products
     And I should see 6 products displayed
 
-  @ErrorValidation
+  @ErrorValidation @VerificationHelper
   @TC_LLF_008 @login @invalidLogin @regression
   Scenario: 008 - Failed login with invalid Accepted usernames credentials
     And I enter username "standard_user" and password "secret_sauce00"
     When I tap "Login" button
+    And I am on "Login" page
     Then an error message "Epic sadface: Username and password do not match any user in this service" should be displayed
 
-  @ErrorValidation
+  @ErrorValidation @VerificationHelper
   @TC_LLF_009 @login @invalidLogin @regression
   Scenario: 009 - Failed login with invalid Accepted usernames credentials- locked out user
     When I enter username "locked_out_user" and password "secret_sauce"
@@ -176,7 +186,7 @@ Feature: Login Functionality
       |                                               | secret_sauce                                  | Epic sadface: Username is required                                        |
       |                                               |                                               | Epic sadface: Username is required                                        |
       | wet                                           |                                               | Epic sadface: Password is required                                        |
-      | £$%&*=                                        |                                               | Epic sadface: Password is required                                        |
+      | ()$%&*=                                        |                                               | Epic sadface: Password is required                                        |
       | 1                                             | 1                                             | Epic sadface: Username and password do not match any user in this service |
       | a                                             | a                                             | Epic sadface: Username and password do not match any user in this service |
       | ^                                             | ^                                             | Epic sadface: Username and password do not match any user in this service |

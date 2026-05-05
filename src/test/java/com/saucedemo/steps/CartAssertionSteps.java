@@ -63,6 +63,30 @@ public class CartAssertionSteps {
         Assert.assertTrue(actualButtonText.toLowerCase(java.util.Locale.ROOT).contains(contShoppingBtn.toLowerCase(java.util.Locale.ROOT)));
     }
 
+    @And("I can see cart page management related controls:")
+    public void iCanSeeCartPageManagementRelatedControls(DataTable controlsTable) {
+        List<String> controls = controlsTable.asList(String.class);
+        Assert.assertFalse(controls.isEmpty(), "Controls table must include at least one expected cart control.");
+
+        for (String control : controls) {
+            String normalizedControl = control == null ? "" : control.trim();
+            switch (normalizedControl.toLowerCase(java.util.Locale.ROOT)) {
+                case "checkout" -> Assert.assertEquals(
+                        cartPage().getCheckoutButton().trim(),
+                        "Checkout",
+                        "Expected Checkout button to be visible on cart page.");
+                case "continue shopping" -> Assert.assertEquals(
+                        cartPage().getContinueShoppingButton().trim(),
+                        "Continue Shopping",
+                        "Expected Continue Shopping button to be visible on cart page.");
+                case "remove" -> Assert.assertTrue(
+                        cartPage().hasAnyRemoveButton(),
+                        "Expected at least one Remove button to be visible on cart page.");
+                default -> throw new IllegalArgumentException("Unsupported cart control expectation: " + normalizedControl);
+            }
+        }
+    }
+
     @Then("I can see the following items in the cart")
     public void iCanSeeTheFollowingItemsInTheCart(DataTable dataTable) {
         if (!cartPage().isCartEmpty()) {

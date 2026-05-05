@@ -1,4 +1,4 @@
-@login&Logout @dataDriven @externalData18 @all
+@login_logout @dataDriven @externalData18 @all
 Feature: Login Data-Driven Tests From External Sources
   As a user
   I want to execute login validations using external test data

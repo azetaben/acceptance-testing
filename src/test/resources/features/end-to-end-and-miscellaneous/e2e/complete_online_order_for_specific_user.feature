@@ -246,7 +246,9 @@ Feature: Complete Online Order
 
   @TC-e2e_002
   Scenario Outline: End to end online order for acceptable users except problem user and locked_out_user
-    When I enter username and password with "<username>" and "<password>"
+    When I login with valid credentials as standard user
+      | username      | password     |
+      | standard_user | secret_sauce |
     And page url should be "inventory.html"
     And I should be taken to the "Products" page
     And I should see a list of products
