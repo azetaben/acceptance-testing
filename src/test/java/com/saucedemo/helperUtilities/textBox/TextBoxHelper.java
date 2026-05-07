@@ -1,13 +1,9 @@
-/**
- * @author rahul.rathore
- * <p>07-Aug-2016
- */
-package com.saucedemo.helperUtilities.textBox;
+package com.saucedemo.helperutilities.textbox;
 
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.generic.GenericHelper;
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
+import com.saucedemo.helperutilities.generic.GenericHelper;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

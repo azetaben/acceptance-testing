@@ -26,10 +26,10 @@ public class AccessibilityTestUtil {
 
     private static void runAccessibilityTest(WebDriver driver, WebElement contextElement, String contextDescription) {
         AxeBuilder axeBuilder = new AxeBuilder();
-        // Example: focus on WCAG 2 A and AA. Requires import java.util.Arrays;
+
         axeBuilder.withTags(Arrays.asList("wcag2a", "wcag2aa", "wcag21a", "wcag21aa"));
         log.info("Running accessibility test on " + contextDescription);
-        // Example: disable a specific rule. Requires import java.util.Arrays;
+
         axeBuilder.disableRules(List.of("color-contrast"));
 
         Results results;
@@ -39,58 +39,58 @@ public class AccessibilityTestUtil {
         } else {
             results = axeBuilder.analyze(driver);
             log.info("Analyzing accessibility for entire page");
-            // Log statement here
-            System.err.println("Page URL: " + driver.getCurrentUrl());
+
+            log.error(String.valueOf("Page URL: " + driver.getCurrentUrl()));
 
         }
 
         List<Rule> violations = results.getViolations();
 
         if (!violations.isEmpty()) {
-            System.err.println("ACCESSIBILITY VIOLATIONS FOUND for: " + contextDescription);
+            log.error(String.valueOf("ACCESSIBILITY VIOLATIONS FOUND for: " + contextDescription));
             log.error("Accessibility violations found for: " + contextDescription);
 
-            System.err.println("==================================================");
-            System.err.println("Page URL: " + driver.getCurrentUrl());
+            log.error(String.valueOf("=================================================="));
+            log.error(String.valueOf("Page URL: " + driver.getCurrentUrl()));
             log.error("Page URL: " + driver.getCurrentUrl());
-            System.err.println("Timestamp: " + results.getTimestamp());
+            log.error(String.valueOf("Timestamp: " + results.getTimestamp()));
             log.error("Timestamp: " + results.getTimestamp());
-            System.err.println("User Agent: " + results.getTestEnvironment().getUserAgent());
+            log.error(String.valueOf("User Agent: " + results.getTestEnvironment().getUserAgent()));
             log.error("User Agent: " + results.getTestEnvironment().getUserAgent());
-            System.err.println("Axe Core Version: " + results.getTestEngine().getVersion());
+            log.error(String.valueOf("Axe Core Version: " + results.getTestEngine().getVersion()));
             log.error("Axe Core Version: " + results.getTestEngine().getVersion());
-            System.err.println("Total Violations: " + violations.size());
+            log.error(String.valueOf("Total Violations: " + violations.size()));
             log.error("Total Violations: " + violations.size());
-            System.err.println("--------------------------------------------------");
+            log.error(String.valueOf("--------------------------------------------------"));
 
             for (int i = 0; i < violations.size(); i++) {
                 Rule violation = violations.get(i);
-                System.err.println("Violation " + (i + 1) + ": " + violation.getId() + " (Impact: " + violation.getImpact() + ")");
-                System.err.println("  Description: " + violation.getDescription());
-                System.err.println("  Help: " + violation.getHelp());
-                System.err.println("  Help URL: " + violation.getHelpUrl());
-                System.err.println("  Tags: " + String.join(", ", violation.getTags()));
+                log.error(String.valueOf("Violation " + (i + 1) + ": " + violation.getId() + " (Impact: " + violation.getImpact() + ")"));
+                log.error(String.valueOf("  Description: " + violation.getDescription()));
+                log.error(String.valueOf("  Help: " + violation.getHelp()));
+                log.error(String.valueOf("  Help URL: " + violation.getHelpUrl()));
+                log.error(String.valueOf("  Tags: " + String.join(", ", violation.getTags())));
 
-                List<CheckedNode> nodes = violation.getNodes(); // This correctly returns List<CheckedNode>
+                List<CheckedNode> nodes = violation.getNodes();
                 if (!nodes.isEmpty()) {
-                    System.err.println("  Affected Nodes (" + nodes.size() + "):");
+                    log.error(String.valueOf("  Affected Nodes (" + nodes.size() + "):"));
                     for (int j = 0; j < nodes.size(); j++) {
-                        CheckedNode node = nodes.get(j); // Changed from Node to CheckedNode for type consistency
-                        System.err.println("    Node " + (j + 1) + ":");
-                        System.err.println("      HTML: " + node.getHtml());
-                        System.err.println("      Impact: " + node.getImpact());
+                        CheckedNode node = nodes.get(j);
+                        log.error(String.valueOf("    Node " + (j + 1) + ":"));
+                        log.error(String.valueOf("      HTML: " + node.getHtml()));
+                        log.error(String.valueOf("      Impact: " + node.getImpact()));
 
-                        // Print Failure Summary - Refined Logic
+
                         if (node.getFailureSummary() != null && !node.getFailureSummary().isEmpty()) {
-                            System.err.println("      Failure Summary: " + node.getFailureSummary());
+                            log.error(String.valueOf("      Failure Summary: " + node.getFailureSummary()));
                         } else {
-                            // If the main summary is not available, try to get details from individual checks
-                            final boolean[] detailsPrinted = {false}; // Use an array to modify in lambda
+
+                            final boolean[] detailsPrinted = {false};
 
                             if (node.getAny() != null && !node.getAny().isEmpty()) {
                                 node.getAny().forEach(check -> {
                                     if (check.getMessage() != null && !check.getMessage().isEmpty()) {
-                                        System.err.println("      Failure Detail (from 'any' check): " + check.getMessage());
+                                        log.error(String.valueOf("      Failure Detail (from 'any' check): " + check.getMessage()));
                                         detailsPrinted[0] = true;
                                     }
                                 });
@@ -98,7 +98,7 @@ public class AccessibilityTestUtil {
                             if (node.getAll() != null && !node.getAll().isEmpty()) {
                                 node.getAll().forEach(check -> {
                                     if (check.getMessage() != null && !check.getMessage().isEmpty()) {
-                                        System.err.println("      Failure Detail (from 'all' check): " + check.getMessage());
+                                        log.error(String.valueOf("      Failure Detail (from 'all' check): " + check.getMessage()));
                                         detailsPrinted[0] = true;
                                     }
                                 });
@@ -106,36 +106,30 @@ public class AccessibilityTestUtil {
                             if (node.getNone() != null && !node.getNone().isEmpty()) {
                                 node.getNone().forEach(check -> {
                                     if (check.getMessage() != null && !check.getMessage().isEmpty()) {
-                                        System.err.println("      Failure Detail (from 'none' check): " + check.getMessage());
+                                        log.error(String.valueOf("      Failure Detail (from 'none' check): " + check.getMessage()));
                                         detailsPrinted[0] = true;
                                     }
                                 });
                             }
 
                             if (!detailsPrinted[0]) {
-                                System.err.println("      Failure Summary: (No specific details found in checks, and main summary was null/empty)");
+                                log.error(String.valueOf("      Failure Summary: (No specific details found in checks, and main summary was null/empty)"));
                             }
                         }
-                        // End of Refined Failure Summary Logic
 
-                        // If you need more granular details from CheckedNode, you can access:
-                        // node.getAny() -> List of checks, any of which must pass
-                        // node.getAll() -> List of checks, all of which must pass
-                        // node.getNone() -> List of checks, none of which must pass
+
                     }
                 }
-                System.err.println("--------------------------------------------------");
+                log.error(String.valueOf("--------------------------------------------------"));
             }
 
-            // For detailed debugging, you can print the full JSON
-            // System.err.println("Full violations JSON:\n" + results.getViolationsJson());
 
             throw new AssertionError("Accessibility violations found: " + violations.size() +
                     " on " + contextDescription + " for page " + driver.getCurrentUrl() +
                     ". Check console error output (stderr) for details.");
         } else {
-            System.out.println("No accessibility violations found for " + contextDescription + " on page: " + driver.getCurrentUrl());
-            System.out.println("Axe Core Version: " + results.getTestEngine().getVersion());
+            log.info(String.valueOf("No accessibility violations found for " + contextDescription + " on page: " + driver.getCurrentUrl()));
+            log.info(String.valueOf("Axe Core Version: " + results.getTestEngine().getVersion()));
         }
     }
 }

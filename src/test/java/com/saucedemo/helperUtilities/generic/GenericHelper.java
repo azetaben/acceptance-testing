@@ -1,14 +1,14 @@
-package com.saucedemo.helperUtilities.generic;
+package com.saucedemo.helperutilities.generic;
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
-import com.saucedemo.interfaces.IwebComponent;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
+import com.saucedemo.interfaces.IWebComponent;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.testng.Reporter;
 
 import java.io.IOException;
 
-public class GenericHelper implements IwebComponent {
+public class GenericHelper implements IWebComponent {
     private static final Logger log = LoggerHelper.getLogger(GenericHelper.class);
     WebDriver driver;
 
@@ -29,11 +29,11 @@ public class GenericHelper implements IwebComponent {
 
     public WebElement getElement(By locator) {
         log.info("Getting element with locator: " + locator);
-        // test.log(Status.INFO, "Getting element with locator: " + locator);
+
         if (IsElementPresentQuick(locator)) {
             WebElement element = driver.findElement(locator);
             log.info("Element found: " + element);
-            // test.log(Status.INFO, "Element found: " + element);
+
             return element;
         }
 
@@ -47,16 +47,16 @@ public class GenericHelper implements IwebComponent {
 
     public WebElement getElementWithNull(By locator) {
         log.info("Getting element with null with locator: " + locator);
-        // test.log(Status.INFO, "Getting element with null with locator: " + locator);
+
         try {
             WebElement element = driver.findElement(locator);
             log.info("Element found: " + element);
-            // test.log(Status.INFO, "Element found: " + element);
+
             return element;
         } catch (NoSuchElementException e) {
             log.info("Element not found: " + locator);
-            // test.log(Status.INFO, "Element not found: " + locator);
-            // Ignore
+
+
         }
         return null;
     }
@@ -64,7 +64,7 @@ public class GenericHelper implements IwebComponent {
     public boolean IsElementPresentQuick(By locator) {
         boolean flag = !driver.findElements(locator).isEmpty();
         log.info("Is element present quickly? " + flag + " for locator: " + locator);
-        // test.log(Status.INFO, "Is element present quickly? " + flag + " for locator: " + locator);
+
         return flag;
     }
 
@@ -88,36 +88,36 @@ public class GenericHelper implements IwebComponent {
             displayed = isDisplayed(element);
         } catch (Exception e) {
             log.error("Error checking if element is displayed: " + e.getMessage(), e);
-            // test.log(Status.FAIL, "Error checking if element is displayed: " + e.getMessage());
+
             Reporter.log(e.fillInStackTrace().toString());
             return null;
         }
 
         if (!displayed) {
             log.info("Element is not displayed");
-            // test.log(Status.INFO, "Element is not displayed");
+
             return null;
         }
         String text = element.getText();
         log.info("Element value is: " + text);
-        // test.log(Status.INFO, "Element value is: " + text);
+
         return text;
     }
 
     public String readValueFromInput(WebElement element) {
         if (null == element) {
             log.info("WebElement is null");
-            // test.log(Status.INFO, "WebElement is null");
+
             return null;
         }
         if (!isDisplayed(element)) {
             log.info("Element is not displayed");
-            // test.log(Status.INFO, "Element is not displayed");
+
             return null;
         }
         String value = element.getDomAttribute("value");
         log.info("Element value is: " + value);
-        // test.log(Status.INFO, "Element value is: " + value);
+
         return value;
     }
 
@@ -125,11 +125,11 @@ public class GenericHelper implements IwebComponent {
         try {
             boolean isDisplayed = element.isDisplayed();
             log.info("Element is displayed: " + isDisplayed + " for element: " + element);
-            // test.log(Status.INFO, "Element is displayed: " + isDisplayed + " for element: " + element);
+
             return isDisplayed;
         } catch (Exception e) {
             log.info("Element is not displayed: " + e.getMessage());
-            // test.log(Status.INFO, "Element is not displayed: " + e.getMessage());
+
             Reporter.log(e.fillInStackTrace().toString());
             return false;
         }
@@ -139,11 +139,11 @@ public class GenericHelper implements IwebComponent {
         try {
             boolean isDisplayed = element.isDisplayed();
             log.info("Element is displayed: " + isDisplayed + " for element: " + element);
-            // test.log(Status.INFO, "Element is displayed: " + isDisplayed + " for element: " + element);
+
             return !isDisplayed;
         } catch (Exception e) {
             log.error("Element is not displayed: " + e.getMessage());
-            // test.log(Status.INFO, "Element is not displayed: " + e.getMessage());
+
             Reporter.log(e.fillInStackTrace().toString());
             return true;
         }
@@ -152,17 +152,17 @@ public class GenericHelper implements IwebComponent {
     protected String getDisplayText(WebElement element) {
         if (null == element) {
             log.info("WebElement is null");
-            // test.log(Status.INFO, "WebElement is null");
+
             return null;
         }
         if (!isDisplayed(element)) {
             log.info("Element is not displayed");
-            // test.log(Status.INFO, "Element is not displayed");
+
             return null;
         }
         String text = element.getText();
         log.info("Element text is: " + text);
-        // test.log(Status.INFO, "Element text is: " + text);
+
         return text;
     }
 }

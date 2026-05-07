@@ -1,11 +1,16 @@
-package com.saucedemo.helperUtilities.database;
+package com.saucedemo.helperutilities.database;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class Sql {
 
-    private Connection conn;
+public class Sql {
+    private static final Logger log = LogManager.getLogger(Sql.class);
+
+
+    private final Connection conn;
 
     @SuppressWarnings("unused")
     private int results;
@@ -18,7 +23,7 @@ public class Sql {
         try {
             this.conn.prepareStatement(query).executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.info(String.valueOf(e.getMessage()));
         }
     }
 
@@ -26,7 +31,7 @@ public class Sql {
         try {
             this.results = this.conn.prepareStatement(query).executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            log.info(String.valueOf(e.getMessage()));
         }
     }
 }

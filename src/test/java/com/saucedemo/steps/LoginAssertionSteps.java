@@ -2,9 +2,9 @@ package com.saucedemo.steps;
 
 import com.saucedemo.constants.AppError;
 import com.saucedemo.models.ExternalLoginDataRow;
+import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
-import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
@@ -87,7 +87,7 @@ public class LoginAssertionSteps {
 
     @And("I should see the login form with the following input fields and buttons")
     public void iShouldSeeTheLoginFormWithTheFollowingInputFieldsAndButtons(DataTable dataTable) {
-        // Single-column table e.g. Username / Password / Log In
+
         List<String> items = dataTable.asList();
         Assert.assertFalse(items.isEmpty(), "Expected at least one login form item in the data table");
 
@@ -108,7 +108,7 @@ public class LoginAssertionSteps {
                 continue;
             }
 
-            // Handle "Log In" vs configured "Login". Normalize by stripping whitespace.
+
             String normalizedButton = item.replaceAll("\\s+", "");
             if ("login".equals(normalizedButton) || "logIn".equalsIgnoreCase(normalizedButton)) {
                 Assert.assertTrue(loginPage().isLoginButtonDisplayed("Login") || loginPage().isLoginButtonDisplayed("Log In"),
@@ -128,17 +128,14 @@ public class LoginAssertionSteps {
 
     @Then("any typed character in the password field should be masked")
     public void anyTypedCharacterInThePasswordFieldShouldBeMasked() {
-        // Basic check: the input should not expose characters as plain text.
+
         Assert.assertFalse(loginPage().isPasswordVisible(), "Password field should remain masked/hidden");
     }
 
     @And("Accepted usernames and Password for all users are displayed")
     @And("login usernames and password are displayed")
     public void loginUsernamesAndPasswordAreDisplayed() {
-        /*Assert.assertTrue(loginPage().isAcceptedUsernamesBlockDisplayed(),
-                AppError.ELEMENT_NOT_FOUND_ERROR + " - Acceptable usernames block is not displayed");
-        Assert.assertTrue(loginPage().isLoginPasswordBlockDisplayed(),
-                AppError.ELEMENT_NOT_FOUND_ERROR + " - Password for all users block is not displayed");*/
+
 
         Assert.assertTrue(loginPage().getAcceptedUsernamesPasswordForAllUsersWrap() != null && !loginPage().getAcceptedUsernamesPasswordForAllUsersWrap().isBlank(),
                 AppError.ELEMENT_NOT_FOUND_ERROR + " - Accepted usernames text is not found or empty");
@@ -308,11 +305,11 @@ public class LoginAssertionSteps {
 
     @Then("I should see {string}")
     public void i_should_see(String confirmationMessage) {
-        // Check if it's an error message (contains "Epic sadface" or "Error")
+
         if (confirmationMessage.toLowerCase().contains("epic sadface") || confirmationMessage.toLowerCase().contains("error")) {
             assertLoginErrorMessage(confirmationMessage);
         } else {
-            // Otherwise assume it's a product page header or similar confirmation message
+
             InventoryPage inventoryPage = PageManager.getInstance().getPage(InventoryPage.class);
             Assert.assertEquals(confirmationMessage, inventoryPage.getHeaderText(),
                     "Expected confirmation message: '" + confirmationMessage + "' but got: '" + inventoryPage.getHeaderText() + "'");

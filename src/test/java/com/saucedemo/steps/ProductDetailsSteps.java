@@ -11,6 +11,7 @@ import java.util.Locale;
 public class ProductDetailsSteps {
     private static final Logger log = LogManager.getLogger(ProductDetailsSteps.class);
     private final PageManager pm;
+
     public ProductDetailsSteps() {
         this.pm = PageManager.getInstance();
     }

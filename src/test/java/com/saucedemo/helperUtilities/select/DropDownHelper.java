@@ -1,7 +1,7 @@
-package com.saucedemo.helperUtilities.select;
+package com.saucedemo.helperutilities.select;
 
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;

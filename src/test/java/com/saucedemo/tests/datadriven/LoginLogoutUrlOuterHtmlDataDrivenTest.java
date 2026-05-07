@@ -1,6 +1,6 @@
 package com.saucedemo.tests.datadriven;
 
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
 import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.pages.*;
 import com.saucedemo.utils.PathUtil;
@@ -25,7 +25,7 @@ public class LoginLogoutUrlOuterHtmlDataDrivenTest {
             "useruitesting.url",
             FrameworkConfig.getInstance().getString(
                     "uitesting.url",
-                    FrameworkConfig.getInstance().getString("url", "https://www.saucedemo.com/")
+                    FrameworkConfig.getInstance().getString("url", SauceDemoConstants.DEFAULT_BASE_URL)
             )
     );
 
@@ -112,7 +112,7 @@ public class LoginLogoutUrlOuterHtmlDataDrivenTest {
             return true;
         }
 
-        // Treat "index.html" as equivalent to the site root in cases where the app redirects.
+
         if (expectedContains.contains("index.html")) {
             try {
                 URI uri = new URI(actualUrl);
@@ -121,7 +121,7 @@ public class LoginLogoutUrlOuterHtmlDataDrivenTest {
                     return true;
                 }
             } catch (URISyntaxException ignored) {
-                // Fall through and fail assertion.
+
             }
         }
 

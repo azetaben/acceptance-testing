@@ -25,23 +25,23 @@ public class LighthouseUtil {
 
     public static void runLighthouseAudit(String url) {
         try {
-            // Create a process builder to run the Lighthouse command
+
             ProcessBuilder processBuilder = new ProcessBuilder("lighthouse", url);
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
 
-            // Read the output from the command
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                log.info(String.valueOf(line));
             }
 
-            // Wait for the process to complete
+
             int exitCode = process.waitFor();
-            System.out.println("Lighthouse audit completed with exit code: " + exitCode);
+            log.info(String.valueOf("Lighthouse audit completed with exit code: " + exitCode));
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
         }
     }
 }

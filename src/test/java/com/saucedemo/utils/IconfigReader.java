@@ -1,6 +1,6 @@
 package com.saucedemo.utils;
 
-public interface IconfigReader {
+public interface IConfigReader {
 
     String getUserName();
 

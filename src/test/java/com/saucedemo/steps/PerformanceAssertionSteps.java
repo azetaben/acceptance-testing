@@ -14,13 +14,13 @@ public class PerformanceAssertionSteps {
 
     @Then("the page load time should be less than {long} milliseconds")
     public void the_page_load_time_should_be_less_than_milliseconds(long thresholdMs) {
-        // Reuse existing metric plumbing; "Load" maps to Navigation Timing loadEventEnd - navigationStart.
+
         the_metric_should_be_less_than("Load", thresholdMs);
     }
 
     @Then("the First Contentful Paint should be less than {long} milliseconds")
     public void the_first_contentful_paint_should_be_less_than_milliseconds(long thresholdMs) {
-        // Reuse existing metric plumbing; "FirstContentfulPaint" maps to first-contentful-paint startTime.
+
         the_metric_should_be_less_than("FirstContentfulPaint", thresholdMs);
     }
 
@@ -60,4 +60,3 @@ public class PerformanceAssertionSteps {
         Assert.assertTrue(duration > thresholdValue, "Performance issue not observed");
     }
 }
-

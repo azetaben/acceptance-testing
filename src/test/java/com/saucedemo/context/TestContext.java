@@ -9,7 +9,7 @@ public class TestContext {
     public LoginDetails loginDetails;
     public Cookies cookies;
 
-    public TestContext(){
+    public TestContext() {
         cookies = new Cookies();
         cookies.setCookies(new io.restassured.http.Cookies());
     }

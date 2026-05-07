@@ -1,37 +1,34 @@
 package com.saucedemo.webdriverutilities;
 
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
+import com.saucedemo.constants.FrameworkConstants;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.HashMap;
+
 
 public class WebDrv {
+
     private static final Logger log = LogManager.getLogger(WebDrv.class);
     private static final String DEFAULT_BROWSER = "chrome";
+    private static final int MAX_INIT_ATTEMPTS = 2;
     private static final FrameworkConfig CONFIG = FrameworkConfig.getInstance();
 
-    private static WebDrv instance;
+    private static volatile WebDrv instance;
     private final ThreadLocal<WebDriver> driverHolder = new ThreadLocal<>();
-    private String browserType = DEFAULT_BROWSER;
 
     private WebDrv() {
-        loadConfig();
     }
 
     public static WebDrv getInstance() {
@@ -45,7 +42,8 @@ public class WebDrv {
         return instance;
     }
 
-    public static void setInstance() {
+
+    public static void resetInstance() {
         synchronized (WebDrv.class) {
             if (instance != null) {
                 instance.closeCurrentDriver();
@@ -54,123 +52,132 @@ public class WebDrv {
         }
     }
 
-    private void loadConfig() {
-        String configuredBrowser = CONFIG.getString("browserType", DEFAULT_BROWSER);
-        if (configuredBrowser == null || configuredBrowser.trim().isEmpty()) {
-            this.browserType = DEFAULT_BROWSER;
-            log.warn("browserType is missing in config. Falling back to default: " + DEFAULT_BROWSER);
-        } else {
-            this.browserType = configuredBrowser.trim();
-        }
-    }
 
     public WebDriver openBrowser(String url) {
         if (url == null || url.trim().isEmpty()) {
             throw new IllegalArgumentException("URL must not be null or blank");
         }
 
-        WebDriver existingDriver = driverHolder.get();
-        if (existingDriver != null) {
-            log.info("Reusing existing driver session - clearing cookies and navigating to: " + url);
-            existingDriver.manage().deleteAllCookies();
-            navigateWithPostLoadSetup(existingDriver, url);
-            return existingDriver;
+        WebDriver existing = driverHolder.get();
+        if (existing != null) {
+            log.info("Reusing driver on [" + Thread.currentThread().getName() + "] — navigating to: " + url);
+            existing.manage().deleteAllCookies();
+            navigate(existing, url);
+            return existing;
         }
 
-        String normalizedBrowser = browserType == null || browserType.trim().isEmpty()
-                ? DEFAULT_BROWSER
-                : browserType.trim().toLowerCase();
+        String browser = resolveBrowserType();
+        log.info("Starting '" + browser + "' driver on [" + Thread.currentThread().getName() + "]");
 
-        log.info("Opening browser '" + normalizedBrowser + "' for URL: " + url);
-        WebDriver webDriver;
-        if ("chrome".equals(normalizedBrowser)) {
-            HashMap<String, Object> chromePrefs = new HashMap<>();
-            chromePrefs.put("profile.default_content_settings.popups", false);
-            chromePrefs.put("download.prompt_for_download", false);
-            chromePrefs.put("safebrowsing.enabled", false);
-            // --- Password manager related preferences ---
-            // Disables the "Save password" prompt
-            chromePrefs.put("credentials_enable_service", false);
-            // Disables the password manager features more broadly
-            chromePrefs.put("profile.password_manager_enabled", false);
-            // *** This is the key preference to stop the "Change your password" alert for breached passwords ***
-            chromePrefs.put("profile.password_manager_leak_detection", false);
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.setExperimentalOption("prefs", chromePrefs);
-            chromeOptions.addArguments("--disable-infobars");
-            chromeOptions.addArguments("--disable-dev-shm-usage");
-            chromeOptions.addArguments("--no-sandbox");
-            chromeOptions.addArguments("--window-size=1920,1080");
-            chromeOptions.addArguments("--disable-extensions");
-            chromeOptions.addArguments("--start-maximized");
-            chromeOptions.addArguments("--disable-gpu");
-            chromeOptions.addArguments("--whitelisted-ips");
-            chromeOptions.addArguments("--ignore-certificate-errors");
-            chromeOptions.addArguments("--test-type");
-            chromeOptions.addArguments("--disable-notifications");
-            chromeOptions.addArguments("--disable-popup-blocking");
-            chromeOptions.addArguments("--disable-default-apps");
-            chromeOptions.addArguments("disable-infobars"); // Deprecated but sometimes still works
-            chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-            chromeOptions.setExperimentalOption("useAutomationExtension", false);
-            webDriver = new ChromeDriver(chromeOptions);
-        } else if ("firefox".equals(normalizedBrowser)) {
-            FirefoxOptions firefoxOptions = new FirefoxOptions();
-            webDriver = new FirefoxDriver(firefoxOptions);
-        } else if ("edge".equals(normalizedBrowser)) {
-            EdgeOptions edgeOptions = new EdgeOptions();
-            // You can set Edge preferences here if needed
-            webDriver = new EdgeDriver(edgeOptions);
-        } else if ("internet explorer".equals(normalizedBrowser)) {
-            InternetExplorerOptions ieOptions = new InternetExplorerOptions();
-            ieOptions.setCapability("ignoreProtectedModeSettings", true);
-            ieOptions.setCapability("requireWindowFocus", true);
-            webDriver = new InternetExplorerDriver(ieOptions);
-        } else if ("safari".equals(normalizedBrowser)) {
-            webDriver = new SafariDriver();
-        } else {
-            throw new IllegalArgumentException("Browser type not supported: " + normalizedBrowser);
-        }
-
-        driverHolder.set(webDriver);
-        ExplicitWaitFactory.setDriver(webDriver);
-        navigateWithPostLoadSetup(webDriver, url);
-        return webDriver;
+        WebDriver driver = createDriverWithRetry(browser);
+        applyStartupSettings(driver);
+        driverHolder.set(driver);
+        ExplicitWaitFactory.setDriver(driver);
+        navigate(driver, url);
+        return driver;
     }
 
-    private void navigateWithPostLoadSetup(WebDriver driver, String url) {
-        driver.get(url);
-        driver.manage().window().maximize();
-        waitForPageToBeReady(driver);
-    }
-
-    private void waitForPageToBeReady(WebDriver driver) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(GlobalVarsHelper.getDefaultExplicitTimeout()));
-            wait.until(webDriver -> "complete".equals(((JavascriptExecutor) webDriver).executeScript("return document.readyState")));
-        } catch (Exception e) {
-            log.warn("Explicit wait for page readiness timed out or failed.", e);
-        }
-    }
 
     public WebDriver getWebDriver() {
         return driverHolder.get();
     }
 
-    public void closeCurrentDriver() {
-        WebDriver currentDriver = driverHolder.get();
-        if (currentDriver == null) {
-            return;
-        }
 
+    public boolean isDriverActive() {
+        WebDriver driver = driverHolder.get();
+        if (driver == null) return false;
         try {
-            currentDriver.quit();
-            log.info("Browser session closed successfully");
+            driver.getTitle();
+            return true;
         } catch (Exception e) {
-            log.warn("Error while closing browser session", e);
+            return false;
+        }
+    }
+
+
+    public void closeCurrentDriver() {
+        WebDriver driver = driverHolder.get();
+        if (driver == null) return;
+        try {
+            driver.quit();
+            log.info("Driver closed on [" + Thread.currentThread().getName() + "]");
+        } catch (Exception e) {
+            log.warn("Error closing driver: " + e.getMessage(), e);
         } finally {
             ExplicitWaitFactory.setDriver(null);
             driverHolder.remove();
+        }
+    }
+
+
+    private String resolveBrowserType() {
+        String sysProp = System.getProperty("browser");
+        if (sysProp != null && !sysProp.trim().isEmpty()) {
+            return sysProp.trim().toLowerCase();
+        }
+        String configured = CONFIG.getString("browserType", DEFAULT_BROWSER);
+        return (configured == null || configured.trim().isEmpty()) ? DEFAULT_BROWSER : configured.trim().toLowerCase();
+    }
+
+    private WebDriver createDriverWithRetry(String browser) {
+        RuntimeException last = null;
+        for (int attempt = 1; attempt <= MAX_INIT_ATTEMPTS; attempt++) {
+            try {
+                return createDriver(browser);
+            } catch (RuntimeException e) {
+                last = e;
+                log.warn("Driver init attempt " + attempt + "/" + MAX_INIT_ATTEMPTS + " failed: " + e.getMessage());
+                if (attempt < MAX_INIT_ATTEMPTS) {
+                    try {
+                        Thread.sleep(1000L * attempt);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+        throw new IllegalStateException(
+                "Could not create '" + browser + "' driver after " + MAX_INIT_ATTEMPTS + " attempts", last);
+    }
+
+    private WebDriver createDriver(String browser) {
+        return switch (browser) {
+            case "chrome" -> new ChromeDriver(WebDriverConfig.buildChromeOptions());
+            case "firefox" -> new FirefoxDriver(WebDriverConfig.buildFirefoxOptions());
+            case "edge" -> new EdgeDriver(WebDriverConfig.buildEdgeOptions());
+            case "safari" -> new SafariDriver();
+            case "ie", "internet explorer" -> {
+                InternetExplorerOptions ie = new InternetExplorerOptions();
+                ie.setCapability("ignoreProtectedModeSettings", true);
+                ie.setCapability("requireWindowFocus", true);
+                yield new InternetExplorerDriver(ie);
+            }
+            default -> throw new IllegalArgumentException(
+                    "Unsupported browser: '" + browser + "'. Valid values: chrome, firefox, edge, safari, ie.");
+        };
+    }
+
+    private void applyStartupSettings(WebDriver driver) {
+        driver.manage().window().maximize();
+
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(FrameworkConstants.getExplicitWait()));
+
+        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
+    }
+
+    private void navigate(WebDriver driver, String url) {
+        driver.get(url);
+        waitForPageReady(driver);
+    }
+
+    private void waitForPageReady(WebDriver driver) {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(FrameworkConstants.getExplicitWait()))
+                    .until(d -> "complete".equals(
+                            ((JavascriptExecutor) d).executeScript("return document.readyState")));
+        } catch (Exception e) {
+            log.warn("Page-ready wait timed out — continuing anyway", e);
         }
     }
 }

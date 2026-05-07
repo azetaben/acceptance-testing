@@ -1,7 +1,8 @@
 package com.saucedemo.steps;
 
-import com.saucedemo.pages.PageManager;
+import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.pages.InventoryPage;
+import com.saucedemo.pages.PageManager;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
@@ -102,7 +103,8 @@ public class InventoryAssertionSteps {
                         !displayedPriceTexts.isEmpty() && displayedPriceTexts.stream().allMatch(text -> text.contains("$")),
                         "Expected all displayed inventory prices to contain '$'."
                 );
-                default -> throw new IllegalArgumentException("Unsupported inventory control expectation: " + normalized);
+                default ->
+                        throw new IllegalArgumentException("Unsupported inventory control expectation: " + normalized);
             }
         }
     }
@@ -135,7 +137,7 @@ public class InventoryAssertionSteps {
             return;
         }
 
-        URI uri = URI.create(currentUrl == null || currentUrl.isBlank() ? "https://www.saucedemo.com/" : currentUrl);
+        URI uri = URI.create(currentUrl == null || currentUrl.isBlank() ? SauceDemoConstants.DEFAULT_BASE_URL : currentUrl);
         String scheme = uri.getScheme() == null ? "https" : uri.getScheme();
         String host = uri.getHost() == null ? "www.saucedemo.com" : uri.getHost();
         WebDrv.getInstance().getWebDriver().navigate().to(scheme + "://" + host + "/inventory.html");
@@ -173,11 +175,10 @@ public class InventoryAssertionSteps {
                 pathOnly = uri.getPath();
             }
         } catch (Exception ignored) {
-            // Keep the original value when the src is not a valid URI.
+
         }
 
         String normalized = pathOnly.replace('\\', '/').trim().toLowerCase(Locale.ROOT);
         return normalized.replaceFirst("(?i)(\\.[a-f0-9]{6,})(\\.[a-z0-9]+)$", "$2");
     }
 }
-

@@ -1,6 +1,6 @@
 package com.saucedemo.steps;
 
-import com.saucedemo.configReader.PropertyFileReader;
+import com.saucedemo.configreader.PropertyFileReader;
 import com.saucedemo.constants.AppError;
 import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.pages.LoginPage;
@@ -184,7 +184,3 @@ public class LoginGeneralInterfaceSteps {
                 AppError.TITLE_NOT_FOUND_ERROR + " - Expected page title 'Swag Labs' but got: " + pageTitle);
     }
 }
-
-
-
-

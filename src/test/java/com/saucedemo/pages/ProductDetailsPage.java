@@ -1,7 +1,7 @@
 package com.saucedemo.pages;
 
-import com.saucedemo.helperUtilities.elements.ElementHelper;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.elements.ElementHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -14,9 +14,6 @@ import java.util.Locale;
 
 public class ProductDetailsPage extends Page {
     private static final Logger log = LogManager.getLogger(ProductDetailsPage.class);
-    private final ElementHelper elementHelper = new ElementHelper(driver, Duration.ofSeconds(GlobalVarsHelper.getDefaultExplicitTimeout()));
-
-    // Locators
     private static final By BACK_TO_PRODUCTS_BUTTON = By.xpath("//button[@data-test='back-to-products']");
     private static final By PRODUCT_DETAILS_CONTAINER = By.xpath("//div[@data-test='inventory-item']");
     private static final By PRODUCT_IMAGE = By.xpath("//img[@data-test='item-sauce-labs-backpack-img']");
@@ -26,8 +23,7 @@ public class ProductDetailsPage extends Page {
     private static final By REMOVE_BUTTON = By.cssSelector("button[data-test*='remove'], button[id*='remove']");
     private static final By DETAIL_ACTION_BUTTONS = By.cssSelector(".inventory_details_desc_container button, .inventory_details_desc_container a");
     private static final By PRODUCT_IMAGE_CONTAINER = By.className("inventory_details_img_container");
-
-    // WebElement Locators using @FindBy
+    private final ElementHelper elementHelper = new ElementHelper(driver, Duration.ofSeconds(GlobalVarsHelper.getDefaultExplicitTimeout()));
     @FindBy(xpath = "//button[@data-test='back-to-products']")
     private WebElement backToProductsButton;
 
@@ -49,7 +45,7 @@ public class ProductDetailsPage extends Page {
     @FindBy(css = "button[data-test^='remove-'], button[id^='remove-']")
     private WebElement removeButton;
 
-    // Assertion methods - Text verification
+
     public boolean isProductNameDisplayed() {
         log.info("Checking if product name is displayed");
         return isDisplayed(productName);
@@ -133,7 +129,7 @@ public class ProductDetailsPage extends Page {
         return !buttons.isEmpty() && buttons.stream().anyMatch(WebElement::isDisplayed);
     }
 
-    // Clickable methods
+
     public InventoryPage clickBackToProducts() {
         log.info("Clicking on Back to Products button");
         waitAndClick(backToProductsButton);
@@ -149,7 +145,7 @@ public class ProductDetailsPage extends Page {
         waitAndClick(buttons.get(0));
     }
 
-    // Text presence checks
+
     public boolean isProductNamePresent(String productName) {
         log.info("Checking if product name is present: " + productName);
         return getProductName().contains(productName);
@@ -165,7 +161,7 @@ public class ProductDetailsPage extends Page {
         return getProductPrice().contains(price);
     }
 
-    // Verify all elements are displayed
+
     public boolean areAllProductDetailsDisplayed() {
         log.info("Verifying all product details are displayed");
         return isProductDetailsContainerDisplayed()
@@ -177,7 +173,7 @@ public class ProductDetailsPage extends Page {
                 && isBackToProductsButtonDisplayed();
     }
 
-    // Verify all buttons are enabled
+
     public boolean isRemoveButtonEnabled() {
         log.info("Checking if remove button is enabled");
         List<WebElement> buttons = findRemoveButtons();
@@ -189,7 +185,7 @@ public class ProductDetailsPage extends Page {
         return isEnabled(backToProductsButton);
     }
 
-    // Get element states for detailed assertions
+
     public boolean isRemoveButtonClickable() {
         log.info("Checking if remove button is clickable");
         List<WebElement> buttons = findRemoveButtons();

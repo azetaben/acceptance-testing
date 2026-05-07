@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.assertion;
+package com.saucedemo.helperutilities.assertion;
 
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
@@ -44,7 +44,7 @@ public class VerificationHelper {
         try {
             boolean displayed = element.isDisplayed();
             if (displayed) {
-                log.info("Element is displayed:: " + element.getText());
+                log.info("Element is displayed.");
                 return true;
             }
             log.info("Element is present but not displayed.");
@@ -72,7 +72,7 @@ public class VerificationHelper {
             log.error("One or more elements are not displayed.");
             return false;
         }
-        log.info("All elements are displayed:: " + elements);
+        log.info("All elements are displayed");
         return true;
     }
 
@@ -210,15 +210,17 @@ public class VerificationHelper {
     public String getText(List<WebElement> elements) {
         log.info("Getting text from list of elements.");
         if (elements == null || elements.isEmpty()) {
-            log.warn("List of WebElement is null or empty..");
-            return null;
-        }
-        if (!areElementsDisplayed(elements)) {
+            log.warn("List of WebElement is null or empty.");
             return null;
         }
         WebElement element = elements.get(0);
-        log.info("Element is displayed:: " + element.getText());
-        return element.getText().trim();
+        if (!isDisplayed(element)) {
+            log.warn("First element in list is not displayed.");
+            return null;
+        }
+        String text = element.getText().trim();
+        log.info("Element text: " + text);
+        return text;
     }
 
     public String getDomAttribute(WebElement element, String attribute) {
@@ -267,7 +269,7 @@ public class VerificationHelper {
         }
     }
 
-    public synchronized boolean isElementPresent(WebElement element) {
+    public boolean isElementPresent(WebElement element) {
         log.info("Checking if element is present...");
         try {
             boolean displayed = element.isDisplayed();
@@ -289,7 +291,7 @@ public class VerificationHelper {
         return element.isDisplayed() ? element.getText() : "";
     }
 
-    public synchronized boolean verifyElementPresent(WebElement element) {
+    public boolean verifyElementPresent(WebElement element) {
         log.info("Verifying if element is present: " + element);
         try {
             boolean displayed = element.isDisplayed();
@@ -307,7 +309,7 @@ public class VerificationHelper {
         }
     }
 
-    public synchronized boolean verifyElementNotPresent(WebElement element) {
+    public boolean verifyElementNotPresent(WebElement element) {
         log.info("Verifying if element is NOT present: " + element);
         try {
             element.isDisplayed();
@@ -325,7 +327,7 @@ public class VerificationHelper {
         }
     }
 
-    public synchronized boolean verifyTextEquals(WebElement element, String expectedText) {
+    public boolean verifyTextEquals(WebElement element, String expectedText) {
         log.info("Verifying if element text equals: " + expectedText);
         try {
             String actualText = element.getText();
@@ -451,5 +453,48 @@ public class VerificationHelper {
             log.error("Element is not present or not interactable: " + e.getMessage());
         }
         return false;
+    }
+
+    public boolean areElementsPresentAndDisplayed(List<WebElement> elements) {
+        return elements.stream().allMatch(this::isElementVisibleEnabledAndPresent);
+    }
+
+    public boolean isElementPresentAndDisplayed(WebElement element) {
+        try {
+            return element.isDisplayed();
+        } catch (java.util.NoSuchElementException | StaleElementReferenceException e) {
+            log.error("Element not found or stale: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean areAllElementsDisplayed(List<WebElement> elements) {
+        log.info("Checking if all elements are displayed");
+        return elements.stream().allMatch(this::isDisplayed);
+    }
+
+    public boolean isElementVisible(WebElement element) {
+        log.info("Checking if element is visible: " + element);
+        try {
+            return element.isDisplayed();
+        } catch (java.util.NoSuchElementException | StaleElementReferenceException e) {
+            return false;
+        }
+    }
+
+    public boolean isLinkDisplayed(String linkText) {
+        return !WebDrv.getInstance().getWebDriver().findElements(By.linkText(linkText)).isEmpty();
+    }
+
+    public boolean isFramePresent(WebElement frameElement) {
+        log.info("Checking if frame is present: " + frameElement);
+        try {
+            WebDrv.getInstance().getWebDriver().switchTo().frame(frameElement);
+            WebDrv.getInstance().getWebDriver().switchTo().defaultContent();
+            return true;
+        } catch (NoSuchFrameException e) {
+            log.error("Frame not present", e);
+            return false;
+        }
     }
 }

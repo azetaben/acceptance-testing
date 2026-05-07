@@ -1,9 +1,9 @@
-package com.saucedemo.helperUtilities.navigation;
+package com.saucedemo.helperutilities.navigation;
 
+import com.saucedemo.constants.FrameworkConstants;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import com.saucedemo.constants.FrameworkConstants;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;

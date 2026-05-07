@@ -1,11 +1,11 @@
 package com.saucedemo.steps;
-
 import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.selenium.AxeBuilder;
-import com.google.common.util.concurrent.Uninterruptibles;
+import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.pageload.CheckPageIsLoaded;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
 import com.saucedemo.utils.AccessibilityChecker;
@@ -14,12 +14,15 @@ import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.openqa.selenium.By;
 
-import java.time.Duration;
 
 public class AccessibilitySteps {
+    private static final Logger log = LogManager.getLogger(AccessibilitySteps.class);
+
     private static final ThreadLocal<JSONArray> VIOLATIONS = new ThreadLocal<>();
     private static final ThreadLocal<Results> ACCESSIBILITY_RESULTS = new ThreadLocal<>();
     private final PageManager pm;
@@ -47,15 +50,15 @@ public class AccessibilitySteps {
 
     @Given("I log in to Sauce Demo successfully")
     public void iLogInToSauceDemoSuccessfully() {
-        loginPage().login(GlobalVarsHelper.get_standard_user(), GlobalVarsHelper.getPasswordForAllUsers());
-        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(GlobalVarsHelper.TWO));
+        loginPage().login(GlobalVarsHelper.getStandardUser(), GlobalVarsHelper.getPasswordForAllUsers());
+        CheckPageIsLoaded.waitForDocumentReadyState();
     }
 
     @When("I check the inventory page for accessibility violations")
     public void iCheckTheInventoryPageForAccessibilityViolations() {
-        //loginPage().login(GlobalVarsHelper.get_standard_user(), GlobalVarsHelper.getPasswordForAllUsers());
-        loginPage().login("standard_user", "secret_sauce");
-        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(GlobalVarsHelper.TWO));
+
+        loginPage().login(SauceDemoConstants.USER_STANDARD, SauceDemoConstants.USER_PASSWORD);
+        CheckPageIsLoaded.waitForDocumentReadyState();
         AccessibilityTestUtil.runAccessibilityTest(WebDrv.getInstance().getWebDriver());
     }
 
@@ -74,17 +77,17 @@ public class AccessibilitySteps {
         ACCESSIBILITY_RESULTS.set(results);
 
         if (!results.getViolations().isEmpty()) {
-            System.out.println("Accessibility Violations:");
+            log.info(String.valueOf("Accessibility Violations:"));
             results.getViolations().forEach(violation -> {
-                System.out.println("Violation: " + violation.getId());
-                System.out.println("Description: " + violation.getDescription());
-                System.out.println("Impact: " + violation.getImpact());
-                System.out.println("Help: " + violation.getHelp());
-                System.out.println("Help URL: " + violation.getHelpUrl());
-                System.out.println("Nodes: " + violation.getNodes());
+                log.info(String.valueOf("Violation: " + violation.getId()));
+                log.info(String.valueOf("Description: " + violation.getDescription()));
+                log.info(String.valueOf("Impact: " + violation.getImpact()));
+                log.info(String.valueOf("Help: " + violation.getHelp()));
+                log.info(String.valueOf("Help URL: " + violation.getHelpUrl()));
+                log.info(String.valueOf("Nodes: " + violation.getNodes()));
             });
         } else {
-            System.out.println("No accessibility violations found.");
+            log.info(String.valueOf("No accessibility violations found."));
         }
     }
 }

@@ -4,7 +4,7 @@
     <test thread-count="2" name="Sanity Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.saucedemo.runners.SanityRunner"/>
+            <class name="com.saucedemo.runners.SanityRunnerTest"/>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

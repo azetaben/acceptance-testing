@@ -1,14 +1,14 @@
 package com.saucedemo.tests.datadriven;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.saucedemo.constants.SauceDemoConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saucedemo.annotations.FrameworkAnnotation;
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
+import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.enums.CategoryType;
+import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
-import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.utils.ExcelUtils;
 import com.saucedemo.utils.PathUtil;
 import com.saucedemo.webdriverutilities.WebDrv;
@@ -38,7 +38,7 @@ public class LoginExternalDataDrivenTest {
             "useruitesting.url",
             FrameworkConfig.getInstance().getString(
                     "uitesting.url",
-                    FrameworkConfig.getInstance().getString("url", "https://saucedemo.com/")
+                    FrameworkConfig.getInstance().getString("url", SauceDemoConstants.DEFAULT_BASE_URL)
             )
     );
 
@@ -128,11 +128,11 @@ public class LoginExternalDataDrivenTest {
     }
 
     private static String inferExpectedResult(String username) {
-        if ("standard_user".equalsIgnoreCase(username)
-                || "problem_user".equalsIgnoreCase(username)
-                || "performance_glitch_user".equalsIgnoreCase(username)
-                || "error_user".equalsIgnoreCase(username)
-                || "visual_user".equalsIgnoreCase(username)) {
+        if (SauceDemoConstants.USER_STANDARD.equalsIgnoreCase(username)
+                || SauceDemoConstants.USER_PROBLEM.equalsIgnoreCase(username)
+                || SauceDemoConstants.USER_PERFORMANCE_GLITCH.equalsIgnoreCase(username)
+                || SauceDemoConstants.USER_ERROR.equalsIgnoreCase(username)
+                || SauceDemoConstants.USER_VISUAL.equalsIgnoreCase(username)) {
             return "SUCCESS";
         }
         return "FAILURE";
@@ -155,29 +155,29 @@ public class LoginExternalDataDrivenTest {
             header.createCell(3).setCellValue("expectedResult");
             header.createCell(4).setCellValue("expectedMessage");
 
-            // TC 001 - standard_user valid login
+
             addRow(sheet, 1, "XL_TC_001", SauceDemoConstants.USER_STANDARD, SauceDemoConstants.USER_PASSWORD, "SUCCESS", "");
-            // TC 002 - locked_out_user
+
             addRow(sheet, 2, "XL_TC_002", SauceDemoConstants.USER_LOCKED_OUT, SauceDemoConstants.USER_PASSWORD, "FAILURE", SauceDemoConstants.ERR_LOCKED_OUT);
-            // TC 003 - problem_user (logs in but UI has issues)
+
             addRow(sheet, 3, "XL_TC_003", SauceDemoConstants.USER_PROBLEM, SauceDemoConstants.USER_PASSWORD, "SUCCESS", "");
-            // TC 004 - performance_glitch_user
+
             addRow(sheet, 4, "XL_TC_004", SauceDemoConstants.USER_PERFORMANCE_GLITCH, SauceDemoConstants.USER_PASSWORD, "SUCCESS", "");
-            // TC 005 - error_user
+
             addRow(sheet, 5, "XL_TC_005", SauceDemoConstants.USER_ERROR, SauceDemoConstants.USER_PASSWORD, "SUCCESS", "");
-            // TC 006 - visual_user
+
             addRow(sheet, 6, "XL_TC_006", SauceDemoConstants.USER_VISUAL, SauceDemoConstants.USER_PASSWORD, "SUCCESS", "");
-            // TC 007 - completely invalid credentials
+
             addRow(sheet, 7, "XL_TC_007", SauceDemoConstants.USER_INVALID, "wrong_password", "FAILURE", SauceDemoConstants.ERR_WRONG_CREDENTIALS);
-            // TC 008 - valid user with wrong password
+
             addRow(sheet, 8, "XL_TC_008", SauceDemoConstants.USER_STANDARD, "wrong_password", "FAILURE", SauceDemoConstants.ERR_WRONG_CREDENTIALS);
-            // TC 009 - empty username
+
             addRow(sheet, 9, "XL_TC_009", "", SauceDemoConstants.USER_PASSWORD, "FAILURE", SauceDemoConstants.ERR_USERNAME_REQUIRED);
-            // TC 010 - empty password
+
             addRow(sheet, 10, "XL_TC_010", SauceDemoConstants.USER_STANDARD, "", "FAILURE", SauceDemoConstants.ERR_PASSWORD_REQUIRED);
-            // TC 011 - both fields empty
+
             addRow(sheet, 11, "XL_TC_011", "", "", "FAILURE", SauceDemoConstants.ERR_USERNAME_REQUIRED);
-            // TC 012 - locked_out_user with wrong password
+
             addRow(sheet, 12, "XL_TC_012", SauceDemoConstants.USER_LOCKED_OUT, "wrong_password", "FAILURE", SauceDemoConstants.ERR_WRONG_CREDENTIALS);
 
             for (int i = 0; i < COLUMN_COUNT; i++) {
@@ -282,5 +282,3 @@ public class LoginExternalDataDrivenTest {
         }
     }
 }
-
-

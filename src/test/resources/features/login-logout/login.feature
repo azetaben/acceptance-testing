@@ -186,7 +186,7 @@ Feature: Login Functionality - With VerificationHelper Integration
       |                                               | secret_sauce                                  | Epic sadface: Username is required                                        |
       |                                               |                                               | Epic sadface: Username is required                                        |
       | wet                                           |                                               | Epic sadface: Password is required                                        |
-      | ()$%&*=                                        |                                               | Epic sadface: Password is required                                        |
+      | ()$%&*=                                       |                                               | Epic sadface: Password is required                                        |
       | 1                                             | 1                                             | Epic sadface: Username and password do not match any user in this service |
       | a                                             | a                                             | Epic sadface: Username and password do not match any user in this service |
       | ^                                             | ^                                             | Epic sadface: Username and password do not match any user in this service |

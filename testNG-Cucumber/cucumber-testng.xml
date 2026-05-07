@@ -5,7 +5,7 @@
     <test thread-count="2" name="ecommerce saucedemo.com">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.saucedemo.runners.MainRunner"/>
+            <class name="com.saucedemo.runners.MainRunnerTest"/>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

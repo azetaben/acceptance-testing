@@ -1,7 +1,6 @@
 package com.saucedemo.steps;
-
 import com.saucedemo.domainobjects.Product;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import com.saucedemo.pages.CartPage;
 import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.PageManager;
@@ -9,12 +8,17 @@ import com.saucedemo.pages.TopNavigationLinksPage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 
 import java.util.List;
 import java.util.Map;
 
+
 public class CartAssertionSteps {
+    private static final Logger log = LogManager.getLogger(CartAssertionSteps.class);
+
     private final PageManager pm;
 
     public CartAssertionSteps() {
@@ -52,8 +56,8 @@ public class CartAssertionSteps {
     @Then("I should see {int} {product} in the cart")
     public void iShouldSeeInTheCart(int number, Product product) {
         Assert.assertTrue(
-                cartPage().hasItemWithQuantityByName(product.getName(), number),
-                "Expected " + number + " '" + product.getName() + "' in the cart, but it was not found."
+                cartPage().hasItemWithQuantityByName(product.name(), number),
+                "Expected " + number + " '" + product.name() + "' in the cart, but it was not found."
         );
     }
 
@@ -82,7 +86,8 @@ public class CartAssertionSteps {
                 case "remove" -> Assert.assertTrue(
                         cartPage().hasAnyRemoveButton(),
                         "Expected at least one Remove button to be visible on cart page.");
-                default -> throw new IllegalArgumentException("Unsupported cart control expectation: " + normalizedControl);
+                default ->
+                        throw new IllegalArgumentException("Unsupported cart control expectation: " + normalizedControl);
             }
         }
     }
@@ -90,7 +95,7 @@ public class CartAssertionSteps {
     @Then("I can see the following items in the cart")
     public void iCanSeeTheFollowingItemsInTheCart(DataTable dataTable) {
         if (!cartPage().isCartEmpty()) {
-            System.out.println("Cart is not empty");
+            log.info("Cart is not empty");
             return;
         }
         List<Map<String, String>> expectedEntries = dataTable.asMaps(String.class, String.class);
@@ -125,16 +130,15 @@ public class CartAssertionSteps {
 
     @And("I have a {product} in the cart")
     public void iHaveAProductInTheCart(Product product) {
-        pm.getPage(InventoryPage.class).addProductToCart(product.getName());
+        pm.getPage(InventoryPage.class).addProductToCart(product.name());
         pm.getPage(TopNavigationLinksPage.class).clickCartIcon();
     }
 
 
     @And("there is already {product} in the cart")
     public void there_is_already_product_in_the_cart(Product product) {
-        pm.getPage(InventoryPage.class).addProductToCart(product.getName());
+        pm.getPage(InventoryPage.class).addProductToCart(product.name());
         pm.getPage(TopNavigationLinksPage.class).clickCartIcon();
     }
 
 }
-

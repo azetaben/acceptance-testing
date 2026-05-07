@@ -1,8 +1,6 @@
 package com.saucedemo.steps;
-
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
 import com.saucedemo.constants.SauceDemoConstants;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
 import com.saucedemo.utils.PathUtil;
@@ -10,8 +8,9 @@ import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.openqa.selenium.WebDriver;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,14 +20,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class LighthousePerformanceSteps {
+    private static final Logger log = LogManager.getLogger(LighthousePerformanceSteps.class);
+
     private static final ThreadLocal<Double> PERFORMANCE_SCORE = new ThreadLocal<>();
     private static final ThreadLocal<String> LIGHTHOUSE_FAILURE = new ThreadLocal<>();
     private final PageManager pm = PageManager.getInstance();
@@ -141,9 +142,7 @@ public class LighthousePerformanceSteps {
 
     @Given("I navigate to url {string}")
     public void i_navigate_to_url(String url) {
-        WebDriver driver = WebDrv.getInstance().openBrowser(url);
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalVarsHelper.IMPLICIT_WAIT_TIME));
+        WebDrv.getInstance().openBrowser(url);
     }
 
     @When("I run Lighthouse audit for {string}")
@@ -173,8 +172,10 @@ public class LighthousePerformanceSteps {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     commandOutput.append(line).append(System.lineSeparator());
-                    System.out.println(line);
+                    log.info(String.valueOf(line));
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
             int exitCode = process.waitFor();
@@ -187,10 +188,10 @@ public class LighthousePerformanceSteps {
             }
 
             if (exitCode != 0) {
-                System.out.println("Lighthouse returned non-zero exit code " + exitCode +
+                log.warn("Lighthouse returned non-zero exit code " + exitCode +
                         " but produced a report. Proceeding with parsed results.");
             } else {
-                System.out.println("Lighthouse audit completed with exit code: " + exitCode);
+                log.info(String.valueOf("Lighthouse audit completed with exit code: " + exitCode));
             }
 
             PERFORMANCE_SCORE.set(parseLighthouseReport());

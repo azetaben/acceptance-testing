@@ -1,4 +1,4 @@
-package com.saucedemo.configReader;
+package com.saucedemo.configreader;
 
 import com.github.javafaker.Faker;
 

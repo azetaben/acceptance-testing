@@ -24,6 +24,30 @@ public final class JsonLoginDataSource implements LoginDataSource {
         this(PathUtil.getTestDataJsonFilePath("login_external_data.json"));
     }
 
+    private static ExternalLoginDataRow mapRow(Map<String, String> row) {
+        return new ExternalLoginDataRow(
+                normalize(value(row, "testCaseId")),
+                normalize(value(row, "username")),
+                normalize(value(row, "password")),
+                normalize(value(row, "expectedResult")),
+                normalize(value(row, "expectedMessage"))
+        );
+    }
+
+    private static String value(Map<String, String> row, String expectedKey) {
+        if (row == null || expectedKey == null) return "";
+        return row.entrySet().stream()
+                .filter(e -> e.getKey() != null)
+                .filter(e -> e.getKey().trim().equalsIgnoreCase(expectedKey))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse("");
+    }
+
+    private static String normalize(String v) {
+        return v == null ? "" : v.trim();
+    }
+
     @Override
     public ExternalLoginDataRow findById(String testCaseId) {
         if (testCaseId == null || testCaseId.isBlank()) {
@@ -68,29 +92,4 @@ public final class JsonLoginDataSource implements LoginDataSource {
             }
         }
     }
-
-    private static ExternalLoginDataRow mapRow(Map<String, String> row) {
-        return new ExternalLoginDataRow(
-                normalize(value(row, "testCaseId")),
-                normalize(value(row, "username")),
-                normalize(value(row, "password")),
-                normalize(value(row, "expectedResult")),
-                normalize(value(row, "expectedMessage"))
-        );
-    }
-
-    private static String value(Map<String, String> row, String expectedKey) {
-        if (row == null || expectedKey == null) return "";
-        return row.entrySet().stream()
-                .filter(e -> e.getKey() != null)
-                .filter(e -> e.getKey().trim().equalsIgnoreCase(expectedKey))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse("");
-    }
-
-    private static String normalize(String v) {
-        return v == null ? "" : v.trim();
-    }
 }
-

@@ -85,8 +85,7 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
     @FindBy(xpath = "//*[@id='login_credentials']/br[4]")
     private WebElement performanceGlitchUser;
 
-    // Element registry
-    // Replaces the switch statement with a Map of Supplier<WebElement> lambdas.
+
     private Map<String, Supplier<WebElement>> buildElementRegistry() {
         Map<String, Supplier<WebElement>> registry = new HashMap<>();
         registry.put("username", () -> usernameInputField);
@@ -108,7 +107,6 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
                 .orElseThrow(() -> new IllegalArgumentException("Unsupported login element: " + elementName));
     }
 
-    // -- Input methods ---------------------------------------------------------
 
     public String getBodyText() {
         return body.getText();
@@ -160,15 +158,18 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         });
     }
 
-    // -- Query methods ---------------------------------------------------------
 
     public String getAcceptedUsernames() {
         return verificationHelper.getText(acceptedUsernamesContainer);
     }
 
-    public String getAcceptedUsernamesPasswordForAllUsersWrap() { return verificationHelper.getText(acceptedUsernamesPasswordForAllUsersWrap);}
+    public String getAcceptedUsernamesPasswordForAllUsersWrap() {
+        return verificationHelper.getText(acceptedUsernamesPasswordForAllUsersWrap);
+    }
 
-    public Boolean isAcceptedUsernamesPasswordForAllUsersWrap() {return verificationHelper.isDisplayed(acceptedUsernamesPasswordForAllUsersWrap);}
+    public Boolean isAcceptedUsernamesPasswordForAllUsersWrap() {
+        return verificationHelper.isDisplayed(acceptedUsernamesPasswordForAllUsersWrap);
+    }
 
 
     public String getCommonPassword() {
@@ -255,7 +256,7 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         return verificationHelper.isDisplayed(passwordInputField);
     }
 
-    // Lambda: Optional.filter replaces the if/return false pattern
+
     public boolean isLoginButtonDisplayed(String buttonName) {
         return Optional.ofNullable(buttonName)
                 .filter(SauceDemoConstants.BUTTON_LABEL_LOGIN::equalsIgnoreCase)
@@ -283,7 +284,7 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         waitAndClick(loginButton);
     }
 
-    // Lambda: Optional chain replaces the null-check if/return pattern
+
     public String getLoginButtonText() {
         return Optional.ofNullable(verificationHelper.getText(loginButton))
                 .filter(text -> !text.isBlank())
@@ -299,7 +300,6 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
                 .executeScript("return arguments[0].value;", passwordInputField);
     }
 
-    // -- Query methods (boolean/data — assert in step definitions, not here) ----
 
     public boolean isCorrectButtonTitle(String expectedButtonTitle) {
         return getLoginButtonText().equals(expectedButtonTitle);
@@ -363,7 +363,6 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         });
     }
 
-    // -- Interface contract implementations (void; throw instead of Assert.*) ---
 
     @Override
     public void assertCorrectButtonTitle(String expectedButtonTitle) {
@@ -427,7 +426,6 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         }
     }
 
-    // -- Element accessors (for AssertionHelper-based step assertions) --------
 
     public WebElement getLoginButtonElement() {
         return loginButton;
@@ -449,8 +447,6 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         return loginErrorWarningMessage;
     }
 
-    // -- Flow methods ----------------------------------------------------------
-
     public InventoryPage login(String username, String password) {
         clearUsername();
         enterUsername(username);
@@ -461,9 +457,4 @@ public class LoginPage extends Page implements TypedFieldInputPage, MessageBelow
         return new InventoryPage();
     }
 
-    public long measureLoginPerformance(String url) {
-        log.info("Measuring login performance...");
-        return PerformanceUtil.measurePageLoadTime(driver, url);
-    }
 }
-

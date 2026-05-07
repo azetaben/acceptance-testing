@@ -3,7 +3,7 @@ package com.saucedemo.pages;
 import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -138,7 +138,6 @@ public class CheckoutStepOnePage extends Page {
 
     public CheckoutStepTwoPage clickContinueButton() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(GlobalVarsHelper.getDefaultExplicitTimeout()));
-
         ensureRequiredFieldValuesPresent();
         WebElement continueBtn = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, CONTINUE_BUTTON);
         if (continueBtn != null) continueBtn.click();
@@ -158,21 +157,18 @@ public class CheckoutStepOnePage extends Page {
                 if (currentUrl != null && currentUrl.contains(SauceDemoConstants.CHECKOUT_OVERVIEW_PAGE_PATH)) {
                     return "OVERVIEW";
                 }
-
                 if (isValidationErrorVisible(driver)) {
                     return "ERROR";
                 }
-
                 String heading = "";
                 try {
                     heading = driver.findElement(PAGE_HEADING).getText();
                 } catch (Exception ignored) {
-                    // Ignore transient heading lookup failures while transition is in-flight.
+
                 }
                 if (heading.contains(SauceDemoConstants.HEADING_CHECKOUT_OVERVIEW)) {
                     return "OVERVIEW";
                 }
-
                 return isValidationErrorVisible(driver) ? "ERROR" : null;
             });
             return "OVERVIEW".equals(outcome);
@@ -186,7 +182,7 @@ public class CheckoutStepOnePage extends Page {
                 WebElement errElement = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, ERROR_WARNING_RED_MESSAGE);
                 errorText = errElement != null ? errElement.getText() : "";
             } catch (Exception ignored) {
-                // Keep diagnostics best-effort.
+
             }
 
             throw new RuntimeException(

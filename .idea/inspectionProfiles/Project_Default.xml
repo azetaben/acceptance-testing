@@ -40,6 +40,8 @@
           <option value="acceptance-testing" />
           <option value="acceptance-testing" />
           <option value="acceptance-testing" />
+          <option value="acceptance-testing" />
+          <option value="acceptance-testing" />
         </list>
       </option>
       <option name="ignoredPackages">
@@ -57,10 +59,14 @@
           <option value="org.apache.poi:poi-ooxml:4.1.1" />
           <option value="com.google.guava:guava:31.1-jre" />
           <option value="org.bouncycastle:bcprov-jdk15on:1.64" />
+          <option value="org.jsoup:jsoup:1.8.3" />
+          <option value="org.xerial:sqlite-jdbc:3.8.11.1" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
           <option value="Not exploitable" />
           <option value="Not exploitable" />

@@ -1,4 +1,4 @@
-package com.saucedemo.steps; // Or your common utility package
+package com.saucedemo.steps;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

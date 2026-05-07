@@ -17,4 +17,3 @@ public class LighthousePerformanceAssertionSteps {
                 "Performance score is below the threshold: " + performanceScore);
     }
 }
-

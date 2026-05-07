@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.database;
+package com.saucedemo.helperutilities.database;
 
 public class Employee {
 

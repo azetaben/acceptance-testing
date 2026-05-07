@@ -1,39 +1,25 @@
 package com.saucedemo.tests;
 
-import com.saucedemo.enums.WaitStrategy;
-import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.assertion.VerificationHelper;
+import com.saucedemo.helperutilities.assertion.VerificationHelper;
 import com.saucedemo.pages.VerificationHelperTestPage;
-import com.saucedemo.webdriverutilities.WebDrv;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.mockito.Mockito;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Proxy;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Comprehensive Test Suite for VerificationHelper class
- * Tests all assertion and verification methods with various scenarios
- *
- * Test Coverage:
- * - Display State Verification
- * - Element Selection State
- * - Element Enabled/Disabled State
- * - Text Content Verification
- * - Attribute and CSS Value Verification
- * - List Element Verification
- * - Color Conversion (RGB/HEX)
- * - Dropdown Selection Verification
- * - Order Verification (Ascending/Descending)
- * - Clickability Verification
- */
+
 public class VerificationHelperTest {
     private static final Logger log = LogManager.getLogger(VerificationHelperTest.class);
 
@@ -53,9 +39,6 @@ public class VerificationHelperTest {
         log.info("========== VerificationHelper Test Suite END ==========");
     }
 
-    // ============================================================
-    // STATIC METHOD TESTS: Color Conversion
-    // ============================================================
 
     @Test(description = "Test rgbToHex conversion with valid RGB values")
     public void testRgbToHexWithValidValues() {
@@ -85,10 +68,10 @@ public class VerificationHelperTest {
     }
 
     @Test(description = "Test rgbToHex with invalid RGB values - should throw exception",
-          expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void testRgbToHexWithInvalidValues() {
         log.info("Testing rgbToHex with invalid RGB values");
-        VerificationHelper.rgbToHex(256, 0, 0); // Invalid: exceeds 255
+        VerificationHelper.rgbToHex(256, 0, 0);
     }
 
     @Test(description = "Test hexToRgb conversion with valid HEX values")
@@ -107,10 +90,10 @@ public class VerificationHelperTest {
     }
 
     @Test(description = "Test hexToRgb with invalid format - should throw exception",
-          expectedExceptions = IllegalArgumentException.class)
+            expectedExceptions = IllegalArgumentException.class)
     public void testHexToRgbWithInvalidFormat() {
         log.info("Testing hexToRgb with invalid format");
-        VerificationHelper.hexToRgb("INVALID"); // Invalid format
+        VerificationHelper.hexToRgb("INVALID");
     }
 
     @Test(description = "Test HexAndGetCssValue - get CSS values from element")
@@ -130,9 +113,6 @@ public class VerificationHelperTest {
         log.info("HexAndGetCssValue test passed");
     }
 
-    // ============================================================
-    // DISPLAY STATE VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test isDisplayed with visible element")
     public void testIsDisplayedWithVisibleElement() {
@@ -191,9 +171,6 @@ public class VerificationHelperTest {
         log.info("isNotDisplayed test with null element passed");
     }
 
-    // ============================================================
-    // ENABLED STATE VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test isEnabled with enabled element")
     public void testIsEnabledWithEnabledElement() {
@@ -245,9 +222,6 @@ public class VerificationHelperTest {
         log.info("isDisplayedAndEnabled with hidden element test passed");
     }
 
-    // ============================================================
-    // SELECTION STATE VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test isSelected with selected element")
     public void testIsSelectedWithSelectedElement() {
@@ -285,9 +259,6 @@ public class VerificationHelperTest {
         log.info("verifyNotSelected test passed");
     }
 
-    // ============================================================
-    // TEXT CONTENT VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test getText with element containing text")
     public void testGetTextWithContent() {
@@ -376,9 +347,6 @@ public class VerificationHelperTest {
         log.info("verifyElementContainsText test passed");
     }
 
-    // ============================================================
-    // ATTRIBUTE VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test getDomAttribute")
     public void testGetDomAttribute() {
@@ -402,15 +370,12 @@ public class VerificationHelperTest {
         log.info("getDomAttribute with null test passed");
     }
 
-    // ============================================================
-    // PAGE TITLE AND URL VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test getTitle")
     public void testGetTitle() {
         log.info("Testing getTitle");
         String expectedTitle = "Test Page Title";
-        // Note: This test uses actual WebDriver, so we just verify it returns a non-null value
+
         String result = verificationHelper.getTitle();
         Assert.assertNotNull(result, "Title should not be null");
 
@@ -435,9 +400,6 @@ public class VerificationHelperTest {
         log.info("getCurrentPageUrl test passed");
     }
 
-    // ============================================================
-    // ELEMENT PRESENCE VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test isElementPresent with existing element")
     public void testIsElementPresentWithExistingElement() {
@@ -488,9 +450,6 @@ public class VerificationHelperTest {
         log.info("verifyElementNotPresent test passed");
     }
 
-    // ============================================================
-    // LIST ELEMENT VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test areElementsDisplayed with all visible elements")
     public void testAreElementsDisplayedAllVisible() {
@@ -561,9 +520,6 @@ public class VerificationHelperTest {
         log.info("verifyListOfElementInDescendingOrder test passed");
     }
 
-    // ============================================================
-    // DROPDOWN VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test verifyElementSelectedFromDropdownList")
     public void testVerifyElementSelectedFromDropdownList() {
@@ -572,21 +528,15 @@ public class VerificationHelperTest {
         WebElement selectedOption = createMockWebElement();
         Mockito.when(selectedOption.getText()).thenReturn("Option 1");
 
-        // Note: This test is simplified. In real scenarios, Select class is used
-        // which requires actual HTML select elements
 
         log.info("verifyElementSelectedFromDropdownList test setup completed");
     }
 
-    // ============================================================
-    // CLICKABILITY VERIFICATION TESTS
-    // ============================================================
 
     @Test(description = "Test verifyElementIsClickable")
     public void testVerifyElementIsClickable() {
         log.info("Testing verifyElementIsClickable");
-        // Note: This test requires ExplicitWaitFactory setup
-        // In a real scenario, this would test actual page elements
+
 
         log.info("verifyElementIsClickable test setup completed");
     }
@@ -604,19 +554,13 @@ public class VerificationHelperTest {
         log.info("isElementVisibleEnabledAndPresent test passed");
     }
 
-    // ============================================================
-    // HELPER METHODS
-    // ============================================================
 
-    /**
-     * Creates a mock WebElement using proxy for testing
-     */
     private WebElement createMockWebElement() {
         return (WebElement) Proxy.newProxyInstance(
                 WebElement.class.getClassLoader(),
                 new Class[]{WebElement.class},
                 (proxy, method, args) -> {
-                    // Return default values for testing
+
                     if ("isDisplayed".equals(method.getName())) return false;
                     if ("isEnabled".equals(method.getName())) return true;
                     if ("isSelected".equals(method.getName())) return false;
@@ -626,24 +570,20 @@ public class VerificationHelperTest {
         );
     }
 
-    /**
-     * Data provider for parametrized RGB values
-     */
+
     @DataProvider(name = "validRgbValues")
     public Object[][] validRgbValues() {
-        return new Object[][] {
-            {255, 0, 0, "#FF0000"},
-            {0, 255, 0, "#00FF00"},
-            {0, 0, 255, "#0000FF"},
-            {0, 0, 0, "#000000"},
-            {255, 255, 255, "#FFFFFF"},
-            {128, 128, 128, "#808080"}
+        return new Object[][]{
+                {255, 0, 0, "#FF0000"},
+                {0, 255, 0, "#00FF00"},
+                {0, 0, 255, "#0000FF"},
+                {0, 0, 0, "#000000"},
+                {255, 255, 255, "#FFFFFF"},
+                {128, 128, 128, "#808080"}
         };
     }
 
-    /**
-     * Parametrized test for RGB to HEX conversion
-     */
+
     @Test(dataProvider = "validRgbValues", description = "Test rgbToHex with various RGB values")
     public void testRgbToHexParametrized(int red, int green, int blue, String expected) {
         log.info("Testing rgbToHex: RGB(" + red + ", " + green + ", " + blue + ") = " + expected);
@@ -651,24 +591,20 @@ public class VerificationHelperTest {
         Assert.assertEquals(result, expected, "RGB conversion should match expected HEX");
     }
 
-    /**
-     * Data provider for parametrized HEX values
-     */
+
     @DataProvider(name = "validHexValues")
     public Object[][] validHexValues() {
-        return new Object[][] {
-            {"#FF0000", new int[]{255, 0, 0}},
-            {"#00FF00", new int[]{0, 255, 0}},
-            {"#0000FF", new int[]{0, 0, 255}},
-            {"#000000", new int[]{0, 0, 0}},
-            {"#FFFFFF", new int[]{255, 255, 255}},
-            {"#808080", new int[]{128, 128, 128}}
+        return new Object[][]{
+                {"#FF0000", new int[]{255, 0, 0}},
+                {"#00FF00", new int[]{0, 255, 0}},
+                {"#0000FF", new int[]{0, 0, 255}},
+                {"#000000", new int[]{0, 0, 0}},
+                {"#FFFFFF", new int[]{255, 255, 255}},
+                {"#808080", new int[]{128, 128, 128}}
         };
     }
 
-    /**
-     * Parametrized test for HEX to RGB conversion
-     */
+
     @Test(dataProvider = "validHexValues", description = "Test hexToRgb with various HEX values")
     public void testHexToRgbParametrized(String hex, int[] expected) {
         log.info("Testing hexToRgb: " + hex + " = RGB(" + expected[0] + ", " + expected[1] + ", " + expected[2] + ")");
@@ -676,32 +612,26 @@ public class VerificationHelperTest {
         Assert.assertEquals(result, expected, "HEX conversion should match expected RGB");
     }
 
-    /**
-     * Data provider for display state tests
-     */
+
     @DataProvider(name = "displayStates")
     public Object[][] displayStates() {
-        return new Object[][] {
-            {true, "Displayed element"},
-            {false, "Hidden element"}
+        return new Object[][]{
+                {true, "Displayed element"},
+                {false, "Hidden element"}
         };
     }
 
-    /**
-     * Data provider for text verification tests
-     */
+
     @DataProvider(name = "textContent")
     public Object[][] textContent() {
-        return new Object[][] {
-            {"Sample Text", "Sample Text", true},
-            {"Sample Text", "Different Text", false},
-            {"", "", true}
+        return new Object[][]{
+                {"Sample Text", "Sample Text", true},
+                {"Sample Text", "Different Text", false},
+                {"", "", true}
         };
     }
 
-    /**
-     * Parametrized test for text verification
-     */
+
     @Test(dataProvider = "textContent", description = "Test text verification with various content")
     public void testTextVerificationParametrized(String actualText, String expectedText, boolean shouldMatch) {
         log.info("Testing text verification: '" + actualText + "' vs '" + expectedText + "'");
@@ -712,4 +642,3 @@ public class VerificationHelperTest {
         Assert.assertEquals(result, shouldMatch, "Text verification result should match expectation");
     }
 }
-

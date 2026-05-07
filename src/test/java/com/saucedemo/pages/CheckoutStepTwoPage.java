@@ -2,6 +2,8 @@ package com.saucedemo.pages;
 
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
+import com.saucedemo.pages.CartPage;
+import com.saucedemo.pages.PageManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -15,22 +17,22 @@ import java.util.stream.Stream;
 public class CheckoutStepTwoPage extends Page {
     private static final Logger log = LogManager.getLogger(CheckoutStepTwoPage.class);
 
-    // Locators for stream sub-element lookups and fallback strategies
-    private static final By ITEM_NAMES             = By.cssSelector(".inventory_item_name, [data-test='inventory-item-name']");
-    private static final By ITEM_QUANTITIES        = By.cssSelector(".cart_quantity, .summary_quantity, [data-test='item-quantity']");
-    private static final By ITEM_PRICES            = By.cssSelector(".inventory_item_price, [data-test='inventory-item-price']");
-    private static final By ITEM_DESCRIPTIONS      = By.cssSelector(".inventory_item_desc, [data-test='inventory-item-desc']");
-    private static final By SAUCE_CARD_LABEL       = By.cssSelector("div[class='summary_info'] div:nth-child(2)");
-    private static final By FREE_PONY_EXPRESS_LABEL = By.cssSelector("div[class='summary_info'] div:nth-child(4)");
-    private static final By CANCEL_BUTTON          = By.className("cart_cancel_link");
-    private static final By FINISH_BUTTON          = By.className("btn_action");
-    private static final By TOTAL_VALUE_SIBLING    = By.xpath("following-sibling::div");
 
-    private static final String DEFAULT_QUANTITY        = "0";
-    private static final String DEFAULT_PRICE           = "$0.00";
-    private static final String DEFAULT_DESCRIPTION     = "";
-    private static final String TOTAL_LABEL_TEXT        = "Total:";
-    private static final String LABEL_ITEM_QUANTITIES   = "Item quantities";
+    private static final By ITEM_NAMES = By.cssSelector(".inventory_item_name, [data-test='inventory-item-name']");
+    private static final By ITEM_QUANTITIES = By.cssSelector(".cart_quantity, .summary_quantity, [data-test='item-quantity']");
+    private static final By ITEM_PRICES = By.cssSelector(".inventory_item_price, [data-test='inventory-item-price']");
+    private static final By ITEM_DESCRIPTIONS = By.cssSelector(".inventory_item_desc, [data-test='inventory-item-desc']");
+    private static final By SAUCE_CARD_LABEL = By.cssSelector("div[class='summary_info'] div:nth-child(2)");
+    private static final By FREE_PONY_EXPRESS_LABEL = By.cssSelector("div[class='summary_info'] div:nth-child(4)");
+    private static final By CANCEL_BUTTON = By.className("cart_cancel_link");
+    private static final By FINISH_BUTTON = By.className("btn_action");
+    private static final By TOTAL_VALUE_SIBLING = By.xpath("following-sibling::div");
+
+    private static final String DEFAULT_QUANTITY = "0";
+    private static final String DEFAULT_PRICE = "$0.00";
+    private static final String DEFAULT_DESCRIPTION = "";
+    private static final String TOTAL_LABEL_TEXT = "Total:";
+    private static final String LABEL_ITEM_QUANTITIES = "Item quantities";
 
     @FindBy(className = "cart_item")
     private List<WebElement> cartItems;
@@ -71,7 +73,6 @@ public class CheckoutStepTwoPage extends Page {
     @FindBy(className = "btn_action")
     private WebElement finishButton;
 
-    // --- Visibility checks ---
 
     public boolean isCheckoutSummaryVisibleDisplayed() {
         return verificationHelper.isDisplayed(cartList);
@@ -116,8 +117,6 @@ public class CheckoutStepTwoPage extends Page {
     public boolean areItemPricesDisplayed() {
         return areElementsDisplayedWithFreshLocator(ITEM_PRICES, "Item prices");
     }
-
-    // --- Text getters ---
 
     public String getSauceCardText() {
         return getFirstVisibleText(
@@ -199,7 +198,6 @@ public class CheckoutStepTwoPage extends Page {
                 .orElse(DEFAULT_PRICE);
     }
 
-    // --- Actions ---
 
     public CheckoutCompletePage clickFinishButton() {
         WebElement finish = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, finishButton);
@@ -218,18 +216,17 @@ public class CheckoutStepTwoPage extends Page {
         }
         cancel.click();
         log.info("Clicked on Cancel button");
-        return new InventoryPage().clickCancelButton();
+        return PageManager.getInstance().getPage(CartPage.class);
     }
 
-    // --- Private helpers ---
 
     private String getFirstVisibleText(By... locators) {
         return Stream.of(locators)
                 .flatMap(locator -> getFreshElements(locator).stream())
                 .filter(WebElement::isDisplayed)
                 .map(WebElement::getText)
-                .filter(text -> !text.trim().isEmpty())
                 .map(String::trim)
+                .filter(trim -> !trim.isEmpty())
                 .findFirst()
                 .orElseGet(() -> {
                     log.warn("No visible non-empty text found for provided locators.");
@@ -248,8 +245,8 @@ public class CheckoutStepTwoPage extends Page {
         }
     }
 
-    private List<WebElement> getFreshElementsWithFallback(By primary, By... fallbacks) {
-        List<WebElement> elements = getFreshElements(primary);
+    private List<WebElement> getFreshElementsWithFallback(By... fallbacks) {
+        List<WebElement> elements = getFreshElements(CheckoutStepTwoPage.ITEM_QUANTITIES);
         if (!elements.isEmpty()) {
             return elements;
         }
@@ -301,7 +298,6 @@ public class CheckoutStepTwoPage extends Page {
     private boolean areQuantitiesDisplayedWithFallbacks() {
         try {
             List<WebElement> quantities = getFreshElementsWithFallback(
-                    ITEM_QUANTITIES,
                     By.cssSelector(".cart_item .summary_quantity"),
                     By.cssSelector("[data-test='item-quantity']"),
                     By.xpath("//div[@class='cart_item']//div[contains(text(), 'QTY')]")

@@ -4,7 +4,7 @@
     <test thread-count="2" name="Login Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.saucedemo.runners.MyLoginRunnerTest"/>
+            <class name="com.saucedemo.runners.LoginRunnerTest"/>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

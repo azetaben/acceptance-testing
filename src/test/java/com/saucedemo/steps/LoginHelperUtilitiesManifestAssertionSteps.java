@@ -93,4 +93,3 @@ public class LoginHelperUtilitiesManifestAssertionSteps {
     private record HelperUtilitiesManifest(@JsonProperty("requiredPaths") List<String> requiredPaths) {
     }
 }
-

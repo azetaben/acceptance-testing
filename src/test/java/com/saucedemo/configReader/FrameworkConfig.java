@@ -1,4 +1,4 @@
-package com.saucedemo.configReader;
+package com.saucedemo.configreader;
 
 import com.saucedemo.utils.PathUtil;
 
@@ -78,4 +78,3 @@ public final class FrameworkConfig {
         return null;
     }
 }
-

@@ -1,14 +1,18 @@
 package com.saucedemo.steps;
-
 import com.saucedemo.pages.FooterPage;
 import com.saucedemo.pages.PageManager;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 
 import java.util.List;
 
+
 public class FooterAssertionSteps {
+    private static final Logger log = LogManager.getLogger(FooterAssertionSteps.class);
+
     private final PageManager pm;
 
     public FooterAssertionSteps() {
@@ -34,8 +38,8 @@ public class FooterAssertionSteps {
     public void i_should_see_the_following_social_media_links(DataTable dataTable) throws Exception {
         List<String> expectedLinks = dataTable.asList(String.class);
         List<String> actualLinks = footerPage().getSocialMediaLinks();
-        System.out.println(expectedLinks);
-        System.out.println(actualLinks);
+        log.info(String.valueOf(expectedLinks));
+        log.info(String.valueOf(actualLinks));
     }
 
     @Then("I should see the copyright information {string}")
@@ -65,4 +69,3 @@ public class FooterAssertionSteps {
                         "' | Actual: '" + actualImageSrc + "'");
     }
 }
-

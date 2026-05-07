@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ public class InventoryPage extends Page {
     private static final String BUTTON_LABEL_ADD_TO_CART = "Add to cart";
     private static final String BUTTON_LABEL_REMOVE = "Remove";
     private final By productListContainerLocator = By.className("inventory_list");
+
     @FindBy(css = "div.inventory_item button")
     List<WebElement> addToCartOrRemoveButtons;
     @FindBy(className = "inventory_item")
@@ -48,7 +50,6 @@ public class InventoryPage extends Page {
     private List<WebElement> productPrices;
     @FindBy(css = "div.inventory_item div a")
     private List<WebElement> productImages;
-
     @FindBy(css = ".product_sort_container")
     private WebElement sortDropdown;
 
@@ -75,7 +76,7 @@ public class InventoryPage extends Page {
 
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public String getHeaderTxt() {
         return getHeaderText();
 
@@ -89,7 +90,7 @@ public class InventoryPage extends Page {
         return new ProductSorterPage();
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public void addMultiplyItemsToCart(List<String> data) {
         addMultipleItemsToCart(data);
 
@@ -181,6 +182,9 @@ public class InventoryPage extends Page {
 
     private String getProductButtonText(String productName) {
         WebElement productButton = findProductButton(productName);
+        if (productButton == null) {
+            throw new IllegalStateException("No button found for product: " + productName);
+        }
         return productButton.getText().trim();
     }
 

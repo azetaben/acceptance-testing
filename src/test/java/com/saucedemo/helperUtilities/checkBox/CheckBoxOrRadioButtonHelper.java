@@ -1,14 +1,14 @@
-package com.saucedemo.helperUtilities.checkBox;
+package com.saucedemo.helperutilities.checkbox;
 
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
-import com.saucedemo.interfaces.IwebComponent;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
+import com.saucedemo.interfaces.IWebComponent;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class CheckBoxOrRadioButtonHelper implements IwebComponent {
+public class CheckBoxOrRadioButtonHelper implements IWebComponent {
     private final Logger log = LoggerHelper.getLogger(CheckBoxOrRadioButtonHelper.class);
     private WebDriver driver;
 

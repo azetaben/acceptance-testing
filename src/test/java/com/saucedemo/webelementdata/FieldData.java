@@ -1,7 +1,7 @@
 package com.saucedemo.webelementdata;
 
 public class FieldData {
-    private String fieldName;
+    private final String fieldName;
     private String caseType;
     private int numberOfChars;
     private String valueType;

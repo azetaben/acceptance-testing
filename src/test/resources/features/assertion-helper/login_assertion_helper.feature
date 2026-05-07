@@ -59,11 +59,11 @@ Feature: Login functionality verified with AssertionHelper
     Then Login error message should be "<expected_error>"
 
     Examples:
-      | username      | password      | expected_error                                                            |
-      | invalid_user  | wrong_pass    | Epic sadface: Username and password do not match any user in this service |
-      | standard_user | wrong_pass    | Epic sadface: Username and password do not match any user in this service |
-      |               | secret_sauce  | Epic sadface: Username is required                                        |
-      | standard_user |               | Epic sadface: Password is required                                        |
+      | username      | password     | expected_error                                                            |
+      | invalid_user  | wrong_pass   | Epic sadface: Username and password do not match any user in this service |
+      | standard_user | wrong_pass   | Epic sadface: Username and password do not match any user in this service |
+      |               | secret_sauce | Epic sadface: Username is required                                        |
+      | standard_user |              | Epic sadface: Password is required                                        |
 
   @TC_LAH_010
   Scenario: Login page UI elements are present — verifyElementPresent

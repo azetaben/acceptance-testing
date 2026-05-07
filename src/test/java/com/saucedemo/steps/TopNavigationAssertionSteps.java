@@ -1,7 +1,6 @@
 package com.saucedemo.steps;
 
 import com.saucedemo.constants.SauceDemoConstants;
-import com.saucedemo.domainobjects.Product;
 import com.saucedemo.pages.PageManager;
 import com.saucedemo.pages.TopNavigationLinksPage;
 import io.cucumber.java.en.And;
@@ -43,4 +42,3 @@ public class TopNavigationAssertionSteps {
         Assert.assertFalse(topNaviLinksPage().isShoppingCartCounterBadgeDisplayed(), "Expected cart badge to be absent for an empty cart.");
     }
 }
-

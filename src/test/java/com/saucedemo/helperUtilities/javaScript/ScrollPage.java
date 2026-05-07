@@ -1,6 +1,8 @@
-package com.saucedemo.helperUtilities.javaScript;
+package com.saucedemo.helperutilities.javascript;
 
 import com.saucedemo.webdriverutilities.WebDrv;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -8,6 +10,8 @@ import org.openqa.selenium.WebElement;
 
 
 public class ScrollPage {
+
+    private static final Logger log = LogManager.getLogger(ScrollPage.class);
 
     public static void scrollToView(WebElement elementName) {
         ((JavascriptExecutor) WebDrv.getInstance().getWebDriver())
@@ -18,7 +22,7 @@ public class ScrollPage {
         try {
             scrollToView(driver.findElement(By.id("save_continue")));
         } catch (Exception e) {
-            System.out.println(e);
+            log.warn("Could not scroll to save_continue element", e);
         }
     }
 
@@ -26,15 +30,15 @@ public class ScrollPage {
         try {
             scrollToView(driver.findElement(By.id("continue")));
         } catch (Exception e) {
-            System.out.println(e);
+            log.warn("Could not scroll to continue element", e);
         }
     }
 
     public static void scrollToViewCancel(WebDriver driver) {
         try {
-            scrollToView(driver.findElement(By.id("continue")));
+            scrollToView(driver.findElement(By.id("cancel")));
         } catch (Exception e) {
-            System.out.println(e);
+            log.warn("Could not scroll to cancel element", e);
         }
     }
 
@@ -42,7 +46,7 @@ public class ScrollPage {
         try {
             scrollToView(driver.findElement(By.id(elementID)));
         } catch (Exception e) {
-            System.out.println(e);
+            log.warn("Could not scroll to element with id: " + elementID, e);
         }
     }
 

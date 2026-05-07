@@ -1,17 +1,21 @@
 package com.saucedemo.steps;
-
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.pages.PageManager;
 import com.saucedemo.pages.InventoryPage;
+import com.saucedemo.pages.PageManager;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.Then;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+
 public class SortingAssertionSteps {
+    private static final Logger log = LogManager.getLogger(SortingAssertionSteps.class);
+
     private final PageManager pm;
 
     public SortingAssertionSteps() {
@@ -47,7 +51,7 @@ public class SortingAssertionSteps {
             default:
                 throw new IllegalArgumentException("Invalid sort option: " + sortOption);
         }
-        System.out.println("Sorted by: " + sortOption);
+        log.info(String.valueOf("Sorted by: " + sortOption));
     }
 
     @Then("I should see sorted result for {string} not matching option")
@@ -68,7 +72,6 @@ public class SortingAssertionSteps {
             default:
                 throw new IllegalArgumentException("Invalid sort option: " + sortOption);
         }
-        System.out.println("Sorted by: " + sortOption);
+        log.info(String.valueOf("Sorted by: " + sortOption));
     }
 }
-

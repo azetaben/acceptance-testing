@@ -1,7 +1,7 @@
 package com.saucedemo.steps;
 
-import com.saucedemo.pages.PageManager;
 import com.saucedemo.pages.InventoryPage;
+import com.saucedemo.pages.PageManager;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

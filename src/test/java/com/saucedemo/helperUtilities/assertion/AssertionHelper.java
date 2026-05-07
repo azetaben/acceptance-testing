@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.assertion;
+package com.saucedemo.helperutilities.assertion;
 
 import com.saucedemo.webdriverutilities.WebDrv;
 import org.apache.log4j.LogManager;
@@ -83,6 +83,9 @@ public class AssertionHelper {
 
     public static void assertNewTabIsOpenedWithExpectedPage(String expectedPageName) {
         List<String> browserTabs = new ArrayList<>(driver().getWindowHandles());
+        if (browserTabs.size() < 2) {
+            throw new IllegalStateException("Expected at least 2 browser tabs but found: " + browserTabs.size());
+        }
         driver().switchTo().window(browserTabs.get(1));
         Assert.assertEquals(driver().findElement(By.id("heading")).getText(), expectedPageName, "The opened page is not what was expected");
         driver().close();
@@ -91,6 +94,9 @@ public class AssertionHelper {
 
     public static void assertNewTabOpenedWithExpectedTitle(String pageTitle) {
         List<String> browserTabs = new ArrayList<>(driver().getWindowHandles());
+        if (browserTabs.size() < 2) {
+            throw new IllegalStateException("Expected at least 2 browser tabs but found: " + browserTabs.size());
+        }
         driver().switchTo().window(browserTabs.get(1));
         Assert.assertEquals(driver().getTitle(), pageTitle, "The opened page title did not match");
         driver().close();

@@ -1,345 +1,287 @@
-============================================================
-# **Overview of Project acceptance-testing:**
-============================================================
-Technologies:
+# Acceptance Testing Framework (SauceDemo)
 
-| Name                            | Version    |
-|---------------------------------|------------|
-| Java                            | 17         |
-| Maven                           | 3.8.1      |
-| TestNG                          | 7.11.0     |
-| Selenium                        | 4.32.0     |
-| Cucumber                        | 7.22.0     |
-| Lombok                          | 1.18.38    |
-| PDFBox                          | 2.0.27     |
-| XChart                          | 3.8.0      |
-| SnakeYAML                       | 2.0        |
-| JSoup                           | 1.15.3     |
-| Gson                            | 2.10.1     |
-| MongoDB Java Driver             | 3.0.4      |
-| Commons IO                      | 2.16.1     |
-| Commons Lang3                   | 3.18.0     |
-| JavaFaker                       | 1.0.2      |
-| Log4j2                          | 2.25.4     |
-| JSON                            | 20231013   |
-| Log4j Core                      | 2.25.4     |
-| Logback Classic                 | 1.5.25     |
-| Log4j Slf4j Impl                | 2.25.4     |
-| Apache POI                      | 5.4.0      |
-| Dom4j                           | 2.1.4      |
-| ExtentReports Cucumber7 Adapter | 1.14.0     |
-| Cluecumber Report Plugin        | 2.9.4      |
-| Plexus Utils                    | 4.0.3      |
-| Awaitility Proxy                | 3.1.1      |
-| PostgreSQL Driver               | 42.7.2     |
-| Jackson Core                    | 2.18.6     |
-| Jackson Annotations             | 2.18.6     |
-| Jackson Databind                | 2.18.6     |
-| Mockito All                     | 1.9.5      |
-| Guava                           | 32.0.1-jre |
-| ExtentReports                   | 5.1.0      |
-| Maven Cucumber Reporting        | 5.11.0     |
-| Axe-Core Selenium               | 4.6.0      |
-| Selenium Devtools v102          | 4.4.0      |
-| Selenium Devtools v147          | 4.43.0     |
-| Cucumber Picocontainer          | 7.22.0     |
-| Docker Compose                  | 3          |
-| Selenium Hub                    | 4.32.0     |
-| Selenium Node Chrome            | 4.32.0     |
-| Selenium Node Firefox           | 4.32.0     |
-| Elasticsearch                   | 7.17.25    |
-| Kibana                          | 7.17.25    |
+GitHub repository: `https://github.com/azetaben/acceptance-testing`
 
-============================================================
-## **Detailed project folders description:**
-============================================================
+## Why this framework exists
 
-```
+This project is a **Java-based acceptance test automation framework** for validating user journeys on SauceDemo (
+`https://www.saucedemo.com`) using:
+
+- **Selenium 4** for browser automation
+- **Cucumber 7** for business-readable BDD scenarios
+- **TestNG** for orchestration and suite control
+- **Maven** for dependency/build/run lifecycle
+
+### Importance of this framework
+
+- Converts business-critical flows (login, cart, checkout, e2e) into executable specifications.
+- Reduces release risk by catching regressions early in CI/CD.
+- Improves collaboration across QA/Dev/Product through Gherkin features.
+- Produces multiple report types for fast triage and auditability.
+
+## Framework nature and design
+
+This is a **hybrid BDD + POM + utility-driven framework**:
+
+- **BDD layer**: feature files and Cucumber step definitions
+- **Page Object layer**: page classes encapsulating UI actions/selectors
+- **Execution layer**: Cucumber TestNG runner classes and TestNG XML suites
+- **Cross-cutting utilities**: WebDriver lifecycle, waits, config, logging, performance/report helpers
+
+## High-level structure
+
+```text
 acceptance-testing/
-├── .idea/                        - IntelliJ IDEA project settings
-│   └── inspectionProfiles/       - IntelliJ IDEA inspection profiles
-├── chromedriver/                 - ChromeDriver binaries for different platforms
-│   ├── linux/                    - Linux ChromeDriver
-│   ├── mac/                      - macOS ChromeDriver
-│   └── win/                      - Windows ChromeDriver
-├── testNG-Cucumber/              - TestNG and Cucumber configuration XML files
-│   ├── checkoutProcessTests.xml
-│   ├── cross-browsers-testng.xml
-│   ├── cucumber-testng.xml
-│   ├── errorValidation.xml
-│   ├── login-datadriven-testng.xml
-│   ├── loginTests.xml
-│   ├── pararrel-testng.xml
-│   ├── performanceTests.xml
-│   ├── regression-testng.xml
-│   ├── sanity-testng.xml
-│   ├── selenium4-feature-demo-testng.xml
-│   ├── smoke-testng.xml
-│   └── testng-firefox.xml
-└── src/
-    └── test/
-        ├── resources/            - Test resources
-        │   ├── config/           - Configuration files for different environments
-        │   ├── features/         - Cucumber feature files
-        │   │   ├── add-to-cart/                                    - Add items to cart scenarios
-        │   │   ├── checkout-process/                               - Checkout process scenarios
-        │   │   ├── end-to-end-and-miscellaneous/                   - E2E and miscellaneous scenarios
-        │   │   ├── login-logout/                                   - Login and logout scenarios
-        │   │   ├── login-security-checks/                          - Login security validation scenarios
-        │   │   └── product-display-page-with-different-sort-options/ - Product display & sorting scenarios
-        │   ├── testData/         - Test data files
-        │   │   ├── excelFiles/   - Excel files containing test data
-        │   │   └── jsonFiles/    - JSON files containing test data
-        │   ├── extent.properties
-        │   ├── html-config.xml
-        │   ├── log4j2.properties
-        │   └── spark-config.xml
-        └── java/
-            └── com/
-                └── saucedemo/
-                    ├── annotations/          - Custom annotations for test methods
-                    ├── configReader/         - Configuration file readers
-                    │   └── DataProviders/    - TestNG data providers
-                    ├── constants/            - Project-wide constants
-                    ├── enums/                - Enumerations
-                    ├── exceptions/           - Custom exceptions
-                    ├── factories/            - Object factories
-                    ├── helperUtilities/      - Helper utility classes
-                    │   ├── Actions/          - Action driver and interfaces
-                    │   ├── alert/            - Alert handling
-                    │   ├── assertion/        - Assertion helpers
-                    │   ├── assertors/        - Condition assertors
-                    │   ├── button/           - Button interaction helpers
-                    │   ├── checkBox/         - Checkbox interaction helpers
-                    │   ├── database/         - Database interaction helpers
-                    │   ├── date/             - Date/time helpers
-                    │   ├── dropdown/         - Dropdown interaction helpers
-                    │   ├── elements/         - Element interaction helpers
-                    │   ├── emailGen/         - Email generation helpers
-                    │   ├── excel/            - Excel file helpers
-                    │   ├── extractor/        - Data extraction helpers
-                    │   ├── faker/            - Fake data generation
-                    │   ├── file/             - File operation helpers
-                    │   ├── frame/            - Frame handling helpers
-                    │   ├── generic/          - Generic helpers
-                    │   ├── get/              - Value retrieval helpers
-                    │   ├── globalVar/        - Global variable management
-                    │   ├── grid/             - Grid interaction helpers
-                    │   ├── HyperLink/        - Hyperlink interaction helpers
-                    │   ├── inputFields/      - Input field helpers
-                    │   ├── javaScript/       - JavaScript execution helpers
-                    │   ├── json/             - JSON file helpers
-                    │   ├── links/            - Link helpers
-                    │   ├── logger/           - Logging helpers
-                    │   ├── navigation/       - Navigation helpers
-                    │   ├── number_StringGen/ - Number/string generation helpers
-                    │   ├── pageException/    - Page exception handlers
-                    │   ├── pageLoad/         - Page load check helpers
-                    │   ├── pdf/              - PDF file helpers
-                    │   ├── processFiles/     - File processing helpers
-                    │   ├── radioButton/      - Radio button interaction helpers
-                    │   ├── resource/         - Resource helpers
-                    │   ├── select/           - Select element helpers
-                    │   ├── string/           - String helpers
-                    │   ├── textBox/          - Text box interaction helpers
-                    │   ├── wait/             - Wait helpers
-                    │   ├── webElement/       - WebElement helpers
-                    │   └── window/           - Window handling helpers
-                    ├── interfaces/           - Project interfaces
-                    ├── model/                - Model classes
-                    │   └── employer/         - Employer-related models
-                    ├── pages/                - Page Object Models
-                    │   └── general/          - General page objects
-                    ├── reportingTestData/    - Test data for reporting
-                    ├── runners/              - Cucumber test runners
-                    ├── steps/                - Cucumber step definitions
-                    ├── tests/                - TestNG test classes
-                    ├── userTestData/         - User test data
-                    ├── utils/                - Utility classes
-                    ├── webdriverutilities/   - WebDriver utilities
-                    └── webelementdata/       - WebElement data classes
+├── src/test/java/com/saucedemo/
+│   ├── pages/                 # Page Object Model classes
+│   ├── steps/                 # Cucumber step definitions
+│   ├── runners/               # Cucumber + TestNG runners
+│   ├── webdriverutilities/    # Driver lifecycle/config
+│   ├── utils/                 # Helpers (files, perf, etc.)
+│   └── constants/             # Constants (RunnerConstants, etc.)
+├── src/test/resources/
+│   ├── features/              # Gherkin feature files
+│   ├── config/                # Runtime/environment configs
+│   ├── extent.properties      # Extent report settings
+│   └── log4j2.properties      # Logging settings
+├── testNG-Cucumber/           # TestNG suite XML files
+├── cucumber_report/           # Cucumber HTML report output
+├── extent-reports/            # Timestamped Extent report outputs
+├── logs/                      # Runtime logs
+├── report/                    # Performance/lighthouse JSON outputs
+├── docker-compose.yaml        # Selenium Grid + Elastic/Kibana stack
+└── pom.xml                    # Maven dependencies/profiles/plugins
 ```
 
-============================================================
-**Full Business logic:**
-============================================================
+## Core components brief explanation
 
-1. **Login-Logout:** Tests the login and logout functionality of the application.
-2. **Login Security Checks:** Tests security validations on the login page (invalid credentials, locked users, etc.).
-3. **Add-To-Cart:** Tests the functionality of adding items to the shopping cart.
-4. **CheckoutProcess:** Tests the full checkout process of the application.
-5. **Product-Display-Page-With-Different-Sort-Options:** Tests the product display page and its various sorting options.
-6. **End-To-End-And-Miscellaneous:** Tests end-to-end flows and miscellaneous scenarios.
+- **Feature files** (`src/test/resources/features`): business-readable scenarios.
+- **Step definitions** (`src/test/java/com/saucedemo/steps`): binds Gherkin to Java logic.
+- **Page Objects** (`src/test/java/com/saucedemo/pages`): reusable, maintainable UI abstraction.
+- **Hooks** (`com.saucedemo.steps.Hooks`): scenario setup/teardown, screenshots, lifecycle.
+- **PageManager/WebDrv**: object caching and browser session management.
+- **Runners** (`src/test/java/com/saucedemo/runners`): tag/scope-specific execution entrypoints.
+- **TestNG suites** (`testNG-Cucumber/*.xml`): suite-level orchestration for CI/profile runs.
 
-============================================================
-**Dependency management:**
-============================================================
-Maven is used for dependency management.
+## Setup
 
-Notes:
-The project uses a combination of TestNG and Cucumber for testing. It also includes a number of helper utilities for
-various tasks, such as handling alerts, assertions, and working with elements.
+### Prerequisites
 
-All endpoints/All events the project exposes and listens:
-The project does not expose any endpoints or events. It is a test automation project that interacts with an external
-application.
+- Java 17+
+- Maven 3.8+
+- Git
+- Chrome/Firefox installed
+- (Optional) Docker Desktop for Selenium Grid + Elastic/Kibana stack
 
-============================================================
-**All downstream services**
-============================================================
+### Clone
 
-- **Sauce Demo Application:** The application under test — https://www.saucedemo.com
-- **PostgreSQL Database:** Used for storing and verifying test data (AWS RDS, eu-west-2).
-- **Elasticsearch 7.17.25:** Used for indexing and searching test data (port 9200).
-- **Kibana 7.17.25:** Used for visualizing and analyzing test data (port 5601).
-- **Chrome Browser:** Used for running tests on Chrome (via Selenium Grid node).
-- **Firefox Browser:** Used for running tests on Firefox (via Selenium Grid node).
-- **Selenium Grid Hub:** Manages browser nodes (port 4444).
-- **Git Repository:** https://github.com/azetaben/acceptance-testing.git
-
-## All upstream services
-
-- Frontend Application: The application that uses the test automation project.
-
-### Key Testing Dependencies
-
-| Dependency                        | Version    |
-|-----------------------------------|------------|
-| TestNG                            | 7.11.0     |
-| Cucumber (Java/TestNG/Core)       | 7.22.0     |
-| Selenium                          | 4.32.0     |
-| Lombok                            | 1.18.38    |
-| PDFBox                            | 2.0.27     |
-| XChart                            | 3.8.0      |
-| SnakeYAML                         | 2.0        |
-| JSoup                             | 1.15.3     |
-| Gson                              | 2.10.1     |
-| MongoDB Java Driver               | 3.0.4      |
-| Commons IO                        | 2.16.1     |
-| Commons Lang3                     | 3.18.0     |
-| JavaFaker                         | 1.0.2      |
-| Log4j2                            | 2.25.4     |
-| JSON                              | 20231013   |
-| Logback Classic                   | 1.5.25     |
-| **Apache POI**                    | **5.4.0**  |
-| Dom4j                             | 2.1.4      |
-| ExtentReports Cucumber7 Adapter   | 1.14.0     |
-| Cluecumber Report Plugin          | 2.9.4      |
-| Plexus Utils                      | 4.0.3      |
-| Awaitility Proxy                  | 3.1.1      |
-| PostgreSQL Driver                 | 42.7.2     |
-| Jackson Core/Annotations/Databind | 2.18.6     |
-| Mockito All                       | 1.9.5      |
-| Guava                             | 32.0.1-jre |
-| **ExtentReports**                 | **5.1.0**  |
-| Maven Cucumber Reporting          | 5.11.0     |
-| Axe-Core Selenium                 | 4.6.0      |
-| Selenium Devtools v102            | 4.4.0      |
-| Selenium Devtools v147            | 4.43.0     |
-| Cucumber Picocontainer            | 7.22.0     |
-
-**Summary of Found Test Flows:**
-
-- Login and Logout
-- Login Security Checks
-- Add items to the cart
-- Checkout process
-- Product display and sorting
-- End-to-end testing
-- Miscellaneous tests
-
-**Fixtures / Storage:**
-
-- Excel files (`src/test/resources/testData/excelFiles/`)
-- JSON files (`src/test/resources/testData/jsonFiles/`)
-
-**Useful to know:**
-The project uses a data-driven approach to testing, where test data is stored in Excel and JSON files.
-The project uses a number of helper utilities to make testing easier, such as classes for handling alerts, assertions,
-and working with elements.
-The project uses ExtentReports and Cluecumber for reporting test results.
-
-## Setting Up the Development Environment
-
-1. **Install Java 17:** https://www.oracle.com/java/technologies/javase-downloads.html
-2. **Install Maven:** https://maven.apache.org/
-3. **Install IntelliJ IDEA:** https://www.jetbrains.com/idea/
-4. **Install Docker:** https://www.docker.com/products/docker-desktop
-5. **Install Git:** https://git-scm.com/downloads
-6. **Clone the project:**
-   ```bash
-   git clone https://github.com/azetaben/acceptance-testing.git
-   ```
-7. **Import the project** into IntelliJ IDEA and configure Maven.
-8. **Start Docker services** (Selenium Grid, Elasticsearch, Kibana):
-   ```bash
-   docker-compose up -d
-   ```
-
-## Running the Project
-
-### Build the project
-
-```bash
-mvn clean install
+```powershell
+git clone https://github.com/azetaben/acceptance-testing.git
+Set-Location acceptance-testing
 ```
 
-### Run all tests
+### Optional infrastructure (Grid + Elastic + Kibana)
 
-```bash
-mvn test
-```
-
-### Run tests in parallel
-
-```bash
-mvn test -Dtest.threadcount=2
-```
-
-### Run with a specific Maven profile
-
-| Profile          | Command                           |
-|------------------|-----------------------------------|
-| Regression       | `mvn test -PRegression`           |
-| Sanity           | `mvn test -PSanityTest`           |
-| Smoke            | `mvn test -PSmoke`                |
-| Error Validation | `mvn test -PErrorValidationTests` |
-| Performance      | `mvn test -PPerformanceTests`     |
-| Checkout Process | `mvn test -PcheckoutProcessTests` |
-| Login Tests      | `mvn test -PLoginTests`           |
-| Cucumber Tests   | `mvn test -PCucumberTests`        |
-
-### Run with a specific Cucumber tag
-
-```bash
-mvn test -Dcucumber.options="--tags @Smoke"
-```
-
-### Run with Docker Compose
-
-```bash
+```powershell
 docker-compose up -d
 ```
 
-### Stop Docker Compose containers
+Stop services:
 
-```bash
+```powershell
 docker-compose down
 ```
 
-## Viewing Logs and Reports
+### Build/compile
 
-| Report                  | Path                                                   |
-|-------------------------|--------------------------------------------------------|
-| Automation log          | `logs/automation.out`                                  |
-| Cucumber HTML report    | `cucumber_report/cucumber.html`                        |
-| Extent HTML report      | `extent-report/reports_/<Date>/Extent.html`            |
-| Extent Spark report     | `extent-report/reports_/<Date>/Spark/ExtentSpark.html` |
-| Cluecumber report       | `target/site/cluecumber-report/`                       |
-| Surefire report         | `target/surefire-reports/index.html`                   |
-| TestNG emailable report | `target/test-output/emailable-report.html`             |
-| TestNG HTML report      | `target/test-output/html/index.html`                   |
-| TestNG JUnit report     | `target/test-output/junitreports/`                     |
-| TestNG log              | `target/test-output/logs/log.txt`                      |
-| Screenshots             | `target/test-output/screenshots/`                      |
+```powershell
+mvn clean test-compile
+```
+
+## How to execute tests (Maven)
+
+### 1) Run all tests
+
+```powershell
+mvn test
+```
+
+### 2) Run by runner class (`com/saucedemo/runners`)
+
+Examples:
+
+```powershell
+mvn "-Dtest=RegressionRunner" test
+mvn "-Dtest=SmokeRunner" test
+mvn "-Dtest=E2ERunner" test
+mvn "-Dtest=MyAdd2CartRunnerTest" test
+mvn "-Dtest=CheckoutRunner" test
+```
+
+### 3) Run by Cucumber tag
+
+```powershell
+mvn "-Dtest=E2ERunner" "-Dcucumber.filter.tags=@complete_order" test
+mvn "-Dtest=RegressionRunner" "-Dcucumber.filter.tags=@regression and not @wip" test
+```
+
+### 4) Run by Maven profile (from `pom.xml`)
+
+```powershell
+mvn test -PRegression
+mvn test -PSanityTest
+mvn test -PSmoke
+mvn test -PPerformanceTests
+mvn test -PcheckoutProcessTests
+mvn test -PLoginTests
+mvn test -PCucumberTests
+```
+
+> Note: profile `ErrorValidationTests` currently references `testNG-Cucumber/errorValidationTests.xml` in `pom.xml`. In
+> this repository, the suite file present is `testNG-Cucumber/errorValidation.xml`.
+
+### 5) Run a specific TestNG suite XML directly
+
+```powershell
+mvn "-Dsurefire.suiteXmlFiles=testNG-Cucumber/smoke-testng.xml" test
+mvn "-Dsurefire.suiteXmlFiles=testNG-Cucumber/regression-testng.xml" test
+mvn "-Dsurefire.suiteXmlFiles=testNG-Cucumber/checkoutProcessTests.xml" test
+```
+
+## CI-ready execution matrix (Jenkins + GitHub Actions)
+
+Use this matrix to standardize CI jobs regardless of platform.
+
+| Use case                | Jenkins parameters                   | GitHub Actions inputs/env              | Copy-paste Maven command                                                               |
+|-------------------------|--------------------------------------|----------------------------------------|----------------------------------------------------------------------------------------|
+| Default full run        | `MAVEN_PROFILE=''`, `BROWSER=chrome` | `maven_profile: ''`, `browser: chrome` | `mvn -B -ntp clean test -DbrowserType=chrome`                                          |
+| Regression suite        | `MAVEN_PROFILE=Regression`           | `maven_profile: Regression`            | `mvn -B -ntp clean test -DbrowserType=chrome -PRegression`                             |
+| Smoke suite             | `MAVEN_PROFILE=Smoke`                | `maven_profile: Smoke`                 | `mvn -B -ntp clean test -DbrowserType=chrome -PSmoke`                                  |
+| Sanity suite            | `MAVEN_PROFILE=SanityTest`           | `maven_profile: SanityTest`            | `mvn -B -ntp clean test -DbrowserType=chrome -PSanityTest`                             |
+| Checkout process        | `MAVEN_PROFILE=checkoutProcessTests` | `maven_profile: checkoutProcessTests`  | `mvn -B -ntp clean test -DbrowserType=chrome -PcheckoutProcessTests`                   |
+| Login tests             | `MAVEN_PROFILE=LoginTests`           | `maven_profile: LoginTests`            | `mvn -B -ntp clean test -DbrowserType=chrome -PLoginTests`                             |
+| Cucumber suite          | `MAVEN_PROFILE=CucumberTests`        | `maven_profile: CucumberTests`         | `mvn -B -ntp clean test -DbrowserType=chrome -PCucumberTests`                          |
+| Tag-filtered run        | `CUCUMBER_TAGS=@complete_order`      | `cucumber_tags: '@complete_order'`     | `mvn -B -ntp clean test -DbrowserType=chrome "-Dcucumber.filter.tags=@complete_order"` |
+| Firefox run             | `BROWSER=firefox`                    | `browser: firefox`                     | `mvn -B -ntp clean test -DbrowserType=firefox`                                         |
+| Compile-only (no tests) | `SKIP_TESTS=true`                    | `skip_tests: true`                     | `mvn -B -ntp -DskipTests test-compile`                                                 |
+| Custom runner           | `EXTRA_MAVEN_ARGS=-Dtest=E2ERunner`  | `extra_maven_args: '-Dtest=E2ERunner'` | `mvn -B -ntp clean test -DbrowserType=chrome -Dtest=E2ERunner`                         |
+
+> Note: `ErrorValidationTests` profile in `pom.xml` points to `testNG-Cucumber/errorValidationTests.xml`, while the
+> repository currently contains `testNG-Cucumber/errorValidation.xml`.
+
+### Jenkins job command template
+
+```powershell
+mvn -B -ntp clean test -DbrowserType=<chrome|firefox|edge> -P<optional_profile> "-Dcucumber.filter.tags=<optional_tags>" <optional_extra_maven_args>
+```
+
+### GitHub Actions workflow snippet (copy-paste)
+
+```yaml
+name: acceptance-tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: Browser type
+        type: choice
+        options: [chrome, firefox, edge]
+        default: chrome
+      maven_profile:
+        description: Optional Maven profile
+        type: choice
+        options: ['', Regression, SanityTest, Smoke, PerformanceTests, checkoutProcessTests, LoginTests, CucumberTests]
+        default: ''
+      cucumber_tags:
+        description: Optional Cucumber tag filter
+        required: false
+        default: ''
+      extra_maven_args:
+        description: Optional extra Maven args (example: -Dtest=E2ERunner)
+        required: false
+        default: ''
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Run acceptance tests
+        shell: bash
+        run: |
+          CMD="mvn -B -ntp clean test -DbrowserType=${{ inputs.browser }}"
+          if [ -n "${{ inputs.maven_profile }}" ]; then CMD="$CMD -P${{ inputs.maven_profile }}"; fi
+          if [ -n "${{ inputs.cucumber_tags }}" ]; then CMD="$CMD \"-Dcucumber.filter.tags=${{ inputs.cucumber_tags }}\""; fi
+          if [ -n "${{ inputs.extra_maven_args }}" ]; then CMD="$CMD ${{ inputs.extra_maven_args }}"; fi
+          echo "$CMD"
+          eval "$CMD"
+```
+
+## Runners and TestNG-Cucumber suites
+
+### `com/saucedemo/runners`
+
+This folder contains purpose-specific entrypoints, such as:
+
+- `RegressionRunner`, `SanityRunner`, `SmokeRunner`
+- `E2ERunner`, `CheckoutRunner`, `PerformanceRunner`, `SecurityRunner`
+- `MyAdd2CartRunnerTest`, `MyLoginRunnerTest`, `ParallelRunRunner`
+
+Use these when you want tag-based, domain-based, or CI-job-specific execution control.
+
+### `testNG-Cucumber`
+
+This folder contains suite XML files for suite-level orchestration, including:
+
+- `smoke-testng.xml`, `sanity-testng.xml`, `regression-testng.xml`
+- `checkoutProcessTests.xml`, `loginTests.xml`, `performanceTests.xml`
+- `parallel-testng.xml`, `cross-browsers-testng.xml`, `securityTests.xml`
+- `cucumber-testng.xml`, `testng-firefox.xml`, `verification-helper-testng.xml`
+
+Use these when your pipeline/team executes by TestNG suite contract.
+
+## Reports and logs
+
+After execution, use these outputs:
+
+- **Extent reports**: `extent-reports/`
+    - Time-stamped folders with Spark/HTML output (configured by `extent.properties`)
+- **Execution logs**: `logs/automation.out`
+- **Performance/lighthouse artifacts**: `report/`
+- **Cucumber HTML report**: `cucumber_report/cucumber.html`
+- **Additional Cucumber output**: `target/cucumber.html`, `target/cucumber.json`
+- **Surefire/TestNG artifacts**: `target/surefire-reports/`
+
+## Configuration notes
+
+- Base app URL and default test settings: `src/test/resources/config/config.properties`
+- Default browser: `browserType=chrome`
+- Logging config: `src/test/resources/log4j2.properties`
+- Extent config: `src/test/resources/extent.properties`
+
+Credentials can be overridden via environment variables:
+
+- `TEST_USERNAME`
+- `TEST_PASSWORD`
+
+## Recommended workflow
+
+1. Write/adjust Gherkin scenarios in `src/test/resources/features`.
+2. Implement/reuse step definitions in `src/test/java/com/saucedemo/steps`.
+3. Keep UI logic in page objects under `src/test/java/com/saucedemo/pages`.
+4. Execute via runner/profile/suite based on your use case.
+5. Review `extent-reports`, `cucumber_report`, `logs`, and `report` outputs.
+
+## Troubleshooting quick checks
+
+- **Undefined steps**: confirm step regex text exactly matches feature steps.
+- **Flaky UI timing**: prefer explicit waits in page objects.
+- **Report not generated**: confirm execution completed and check `extent.properties` paths.
+- **Grid issues**: verify `docker-compose` services are healthy and port `4444` is reachable.
+- **Profile/suite mismatch**: validate suite filenames referenced in `pom.xml` exist under `testNG-Cucumber`.
 

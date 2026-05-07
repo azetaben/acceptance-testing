@@ -24,6 +24,20 @@ public final class ExcelLoginDataSource implements LoginDataSource {
         this(PathUtil.getTestDataExcelFilePath("login_external_data.xlsx"), "login");
     }
 
+    private static String get(Map<String, String> row, String key) {
+        if (row == null || key == null) return "";
+        return row.entrySet().stream()
+                .filter(e -> e.getKey() != null)
+                .filter(e -> e.getKey().trim().equalsIgnoreCase(key))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse("");
+    }
+
+    private static String normalize(String v) {
+        return v == null ? "" : v.trim();
+    }
+
     @Override
     public ExternalLoginDataRow findById(String testCaseId) {
         if (testCaseId == null || testCaseId.isBlank()) {
@@ -81,19 +95,4 @@ public final class ExcelLoginDataSource implements LoginDataSource {
             }
         }
     }
-
-    private static String get(Map<String, String> row, String key) {
-        if (row == null || key == null) return "";
-        return row.entrySet().stream()
-                .filter(e -> e.getKey() != null)
-                .filter(e -> e.getKey().trim().equalsIgnoreCase(key))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse("");
-    }
-
-    private static String normalize(String v) {
-        return v == null ? "" : v.trim();
-    }
 }
-

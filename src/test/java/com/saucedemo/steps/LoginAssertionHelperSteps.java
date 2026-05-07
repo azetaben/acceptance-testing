@@ -1,6 +1,6 @@
 package com.saucedemo.steps;
 
-import com.saucedemo.helperUtilities.assertion.AssertionHelper;
+import com.saucedemo.helperutilities.assertion.AssertionHelper;
 import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
@@ -9,19 +9,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebElement;
 
-/**
- * Step definitions that demonstrate AssertionHelper as the sole assertion
- * mechanism — no direct TestNG Assert calls in this class.
- * AssertionHelper methods covered:
- *   verifyTrue(boolean)            — assert a condition holds
- *   verifyFalse(boolean)           — assert a condition does not hold
- *   verifyText(String, String)     — assert two strings are equal
- *   verifyNotNull(Object)          — assert a value was resolved
- *   updateTestStatus(boolean)      — pass/fail based on a runtime boolean
- *   verifyElementPresent(element)  — assert an element is displayed
- *   verifyElementNotPresent(elem)  — assert an element is absent from the DOM
- *   verifyTextEquals(elem, String) — assert element text equals expected
- */
+
 public class LoginAssertionHelperSteps {
 
     private final PageManager pm = PageManager.getInstance();
@@ -30,7 +18,6 @@ public class LoginAssertionHelperSteps {
         return pm.getPage(LoginPage.class);
     }
 
-    // ── Precondition assertions ───────────────────────────────────────────────
 
     @Then("the login page elements are visible")
     public void theLoginPageElementsAreVisible() {
@@ -42,7 +29,6 @@ public class LoginAssertionHelperSteps {
         AssertionHelper.verifyTrue(page.isLogoIsDisplayed());
     }
 
-    // ── Actions ───────────────────────────────────────────────────────────────
 
     @When("I log in with username {string} and password {string}")
     public void iLogInWithUsernameAndPassword(String username, String password) {
@@ -56,7 +42,6 @@ public class LoginAssertionHelperSteps {
         loginPage().enterPassword(password);
     }
 
-    // ── Post-login assertions ─────────────────────────────────────────────────
 
     @Then("Page heading should be {string}")
     public void pageHeadingShouldBe(String expectedHeading) {
@@ -73,7 +58,6 @@ public class LoginAssertionHelperSteps {
         AssertionHelper.updateTestStatus(currentUrl.contains(urlFragment));
     }
 
-    // ── Error message assertions ──────────────────────────────────────────────
 
     @Then("Login error message should be {string}")
     public void theLoginErrorMessageShouldBe(String expectedMessage) {
@@ -87,7 +71,6 @@ public class LoginAssertionHelperSteps {
         AssertionHelper.verifyFalse(loginPage().getCurrentUrl().contains("inventory.html"));
     }
 
-    // ── UI element assertions ─────────────────────────────────────────────────
 
     @Then("Login button text should be {string}")
     public void theLoginButtonTextShouldBe(String expectedLabel) {
@@ -103,7 +86,6 @@ public class LoginAssertionHelperSteps {
         AssertionHelper.verifyText(actualType, expectedType);
     }
 
-    // ── verifyElementPresent (TC_LAH_010) ─────────────────────────────────────
 
     @Then("the login button element should be present")
     public void theLoginButtonElementShouldBePresent() {
@@ -123,22 +105,20 @@ public class LoginAssertionHelperSteps {
         AssertionHelper.verifyTrue(AssertionHelper.verifyElementPresent(passwordField));
     }
 
-    // ── verifyElementNotPresent (TC_LAH_011) ──────────────────────────────────
 
     @Then("the login form element should not be present")
     public void theLoginFormElementShouldNotBePresent() {
-        // After navigation the PageFactory proxy throws NoSuchElementException on
-        // isDisplayed(), which verifyElementNotPresent catches and returns true.
+
+
         WebElement loginForm = loginPage().getLoginFormElement();
         AssertionHelper.updateTestStatus(AssertionHelper.verifyElementNotPresent(loginForm));
     }
 
-    // ── verifyTextEquals (TC_LAH_012 / TC_LAH_013) ───────────────────────────
 
     @Then("the login button element text should equal {string}")
     public void theLoginButtonElementTextShouldEqual(String expectedText) {
-        // Login button is <input type="submit"> — getText() returns ""; use
-        // getLoginButtonText() which falls back to the value attribute.
+
+
         String actualText = loginPage().getLoginButtonText();
         AssertionHelper.verifyNotNull(actualText);
         AssertionHelper.verifyText(actualText, expectedText);

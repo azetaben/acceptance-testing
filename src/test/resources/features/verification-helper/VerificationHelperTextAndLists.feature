@@ -2,7 +2,7 @@
 Feature: VerificationHelper Text and List Verification - Framework Integration
 
   Background:
-    """
+  """
     Test Suite for text content and list verification on framework pages
     Tests text extraction, list operations, and element attributes
     Uses real pages: LoginPage, InventoryPage, CartPage, CheckoutPages

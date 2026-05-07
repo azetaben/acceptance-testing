@@ -1,15 +1,15 @@
 package com.saucedemo.pages;
 
-import com.saucedemo.helperUtilities.elements.ElementHelper;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.elements.ElementHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.time.Duration;
 import java.util.List;
-import org.openqa.selenium.NoSuchElementException;
 
 public class TopNavigationLinksPage extends Page {
     private static final Logger log = LogManager.getLogger(TopNavigationLinksPage.class);
@@ -50,7 +50,7 @@ public class TopNavigationLinksPage extends Page {
     public String getShoppingCartCounterText() {
         elementHelper.waitForDuration(GlobalVarsHelper.ONE);
         try {
-            // Use the @FindBy element
+
             return verificationHelper.getText(shoppingCartCounterBadge);
         } catch (NoSuchElementException e) {
             log.warn("Shopping cart counter badge element not found when trying to get text. Assuming cart is empty.");
@@ -92,5 +92,3 @@ public class TopNavigationLinksPage extends Page {
     }
 
 }
-
-

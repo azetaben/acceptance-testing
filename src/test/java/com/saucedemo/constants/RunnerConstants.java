@@ -13,4 +13,3 @@ public final class RunnerConstants {
     private RunnerConstants() {
     }
 }
-

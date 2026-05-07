@@ -11,7 +11,7 @@ services:
       - "4442:4442"
       - "4443:4443"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      test: [ "CMD", "curl", "-f", "http://localhost:4444/wd/hub/status" ]
       interval: 15s
       timeout: 10s
       retries: 5
@@ -81,7 +81,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cluster/health" ]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -103,7 +103,7 @@ services:
     ports:
       - "5601:5601"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      test: [ "CMD", "curl", "-f", "http://localhost:5601/api/status" ]
       interval: 20s
       timeout: 10s
       retries: 5

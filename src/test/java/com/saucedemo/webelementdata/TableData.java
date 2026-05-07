@@ -1,28 +1,29 @@
 package com.saucedemo.webelementdata;
 
 import com.saucedemo.exceptions.TableRowDoesNotExistException;
-import com.saucedemo.helperUtilities.elements.WebElementFinderUtils;
+import com.saucedemo.helperutilities.elements.WebElementFinderUtils;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 public class TableData {
 
     private WebElement tableHeadersRow;
-    private WebElement tableBody;
+    private final WebElement tableBody;
 
     private List<String> expectedOrderOfHeaderIds;
     private List<String> expectedHeaderTitles;
-    private List<String> actualHeaderTitles = new ArrayList<String>();
+    private final List<String> actualHeaderTitles = new ArrayList<String>();
 
     private List<String> expectedTableBodyContent;
 
     private List<String> expectedOrderOfTableBodyContentIds;
-    private List<String> actualTableBodyContent = new ArrayList<String>();
+    private final List<String> actualTableBodyContent = new ArrayList<String>();
     private List<WebElement> tableRows = new ArrayList<>();
-    private List<List<String>> tableContentWithinAllRows = new ArrayList<>();
+    private final List<List<String>> tableContentWithinAllRows = new ArrayList<>();
 
     public TableData(WebElement tableHeadersRow, WebElement tableBody, List<String> expectedOrderOfHeaderIds,
                      List<String> expectedHeaderTitles, List<String> expectedTableBodyContent,
@@ -57,7 +58,8 @@ public class TableData {
     }
 
     private boolean childElementIsACellWithText(WebElement element) {
-        return element.getText() != null && childElementIsACell(element);
+        element.getText();
+        return childElementIsACell(element);
     }
 
     private boolean childElementIsACell(WebElement element) {
@@ -65,7 +67,7 @@ public class TableData {
     }
 
     public String getTableBodyId() {
-        return tableBody.getAttribute("id");
+        return tableBody.getDomAttribute("id");
     }
 
     public List<String> getActualHeaderTitles() {
@@ -74,7 +76,7 @@ public class TableData {
                     .findAllChildElementsOfParentElementInActualOrder(getTableHeadersRowId());
             childElements.stream()
                     .map(WebElement::getText)
-                    .filter(text -> text != null)
+                    .filter(Objects::nonNull)
                     .forEach(actualHeaderTitles::add);
         }
 
@@ -82,7 +84,7 @@ public class TableData {
     }
 
     public String getTableHeadersRowId() {
-        return tableHeadersRow.getAttribute("id");
+        return tableHeadersRow.getDomAttribute("id");
     }
 
     public List<String> getExpectedTableBodyContent() {

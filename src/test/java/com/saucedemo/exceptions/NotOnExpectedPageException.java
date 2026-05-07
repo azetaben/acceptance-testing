@@ -1,6 +1,6 @@
 package com.saucedemo.exceptions;
 
-import com.saucedemo.helperUtilities.pageException.PageException;
+import com.saucedemo.helperutilities.pageexception.PageException;
 import org.openqa.selenium.WebDriver;
 
 import java.io.Serial;

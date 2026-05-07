@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.resource;
+package com.saucedemo.helperutilities.resource;
 
 import com.saucedemo.utils.PathUtil;
 import org.apache.log4j.LogManager;
@@ -16,10 +16,10 @@ public class ResourceHelper {
     }
 
     public static String getBaseResourcePath() {
-        return com.saucedemo.helperUtilities.resource.ResourceHelper.class.getClass().getResource("/").getPath();
+        return com.saucedemo.helperutilities.resource.ResourceHelper.class.getClass().getResource("/").getPath();
     }
 
     public static InputStream getResourcePathInputStream(String resource) throws FileNotFoundException {
-        return new FileInputStream(com.saucedemo.helperUtilities.resource.ResourceHelper.getResourcePath(resource));
+        return new FileInputStream(com.saucedemo.helperutilities.resource.ResourceHelper.getResourcePath(resource));
     }
 }

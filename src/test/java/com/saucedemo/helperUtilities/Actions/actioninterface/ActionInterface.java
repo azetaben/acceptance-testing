@@ -1,11 +1,11 @@
-package com.saucedemo.helperUtilities.Actions.actioninterface;
+package com.saucedemo.helperutilities.actions.actioninterface;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public interface ActionInterface {
 
-    //Added all user actions abstract methods to achieve Abstraction
+
     public void scrollByVisibilityOfElement(WebDriver driver, WebElement ele);
 
     public void click(WebDriver ldriver, WebElement ele);

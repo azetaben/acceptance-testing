@@ -1,7 +1,7 @@
-package com.saucedemo.helperUtilities.grid;
+package com.saucedemo.helperutilities.grid;
 
-import com.saucedemo.helperUtilities.generic.GenericHelper;
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
+import com.saucedemo.helperutilities.generic.GenericHelper;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.Locale;
 
+
 public class CheckoutCompletePage extends Page {
     private static final Logger log = LogManager.getLogger(CheckoutCompletePage.class);
     private static final By SOCIAL_CONTROLS = By.cssSelector(".social li");
@@ -95,7 +96,6 @@ public class CheckoutCompletePage extends Page {
         String expected = controlName.trim().toLowerCase(Locale.ROOT);
         return controls.stream()
                 .map(WebElement::getText)
-                .filter(text -> text != null)
                 .map(text -> text.trim().toLowerCase(Locale.ROOT))
                 .anyMatch(actual -> actual.equals(expected));
     }

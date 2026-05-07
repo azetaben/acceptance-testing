@@ -1,13 +1,12 @@
 package com.saucedemo.pages;
 
-import com.google.common.util.concurrent.Uninterruptibles;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.enums.WaitStrategy;
+import com.saucedemo.factories.ExplicitWaitFactory;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class TogglePage extends Page {
     public TopNavigationLinksPage closeMenu() {
         if (isCloseMenuIconDisplayedAndEnabled()) {
             crossButton.click();
-            Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(GlobalVarsHelper.TWO));
+            ExplicitWaitFactory.performExplicitWait(WaitStrategy.ELEMENT_TO_BE_INVISIBLE, crossButton);
             log.info("Clicked on close button");
         } else {
             log.error("Close button is not displayed or enabled");

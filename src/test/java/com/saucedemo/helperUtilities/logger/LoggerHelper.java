@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.logger;
+package com.saucedemo.helperutilities.logger;
 
 import org.apache.log4j.Logger;
 
@@ -25,8 +25,7 @@ public class LoggerHelper {
                 return;
             }
 
-            // Log4j2 autoloads log4j2.properties from classpath. If a custom location is
-            // already provided via JVM arg, keep it. Otherwise, set a classpath-discovered one.
+
             if (System.getProperty("log4j.configurationFile") == null) {
                 URL log4j2Config = Thread.currentThread().getContextClassLoader().getResource("log4j2.properties");
                 if (log4j2Config != null) {

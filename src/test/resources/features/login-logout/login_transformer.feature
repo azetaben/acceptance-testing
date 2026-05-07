@@ -45,14 +45,14 @@ Feature: Login using LoginDataTransformer
   @TC_LT_004 @negative
   Scenario: Failed login with empty username mapped by LoginDataTransformer
     When I login with transformer mapped credentials:
-      | username | password     | expectedError                     |
+      | username | password     | expectedError                      |
       |          | secret_sauce | Epic sadface: Username is required |
     Then I verify the transformer login outcome
 
   @TC_LT_004b @negative
   Scenario: Failed login with empty password mapped by LoginDataTransformer
     When I login with transformer mapped credentials:
-      | username      | password | expectedError                     |
+      | username      | password | expectedError                      |
       | standard_user |          | Epic sadface: Password is required |
     Then I verify the transformer login outcome
 
@@ -74,9 +74,9 @@ Feature: Login using LoginDataTransformer
       | performance_glitch_user | secret_sauce |               |
 
     Examples: Invalid credentials
-      | username         | password       | expectedError                                                             |
-      | locked_out_user  | secret_sauce   | Epic sadface: Sorry, this user has been locked out.                       |
-      | invalid_user     | wrong_password | Epic sadface: Username and password do not match any user in this service |
-      | Standard_User    | secret_sauce   | Epic sadface: Username and password do not match any user in this service |
-      | standard_user    | Secret_Sauce   | Epic sadface: Username and password do not match any user in this service |
-      |                  |                | Epic sadface: Username is required                                        |
+      | username        | password       | expectedError                                                             |
+      | locked_out_user | secret_sauce   | Epic sadface: Sorry, this user has been locked out.                       |
+      | invalid_user    | wrong_password | Epic sadface: Username and password do not match any user in this service |
+      | Standard_User   | secret_sauce   | Epic sadface: Username and password do not match any user in this service |
+      | standard_user   | Secret_Sauce   | Epic sadface: Username and password do not match any user in this service |
+      |                 |                | Epic sadface: Username is required                                        |

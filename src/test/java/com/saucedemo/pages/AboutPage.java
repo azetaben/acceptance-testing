@@ -1,7 +1,7 @@
 package com.saucedemo.pages;
 
-import com.saucedemo.helperUtilities.elements.ElementHelper;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.elements.ElementHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

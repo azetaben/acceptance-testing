@@ -1,6 +1,6 @@
 package com.saucedemo.pages;
 
-import com.saucedemo.helperUtilities.javaScript.ScrollPageHelper;
+import com.saucedemo.helperutilities.javascript.ScrollPageHelper;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -13,7 +13,6 @@ public class FooterPage extends Page {
     private static final Logger log = LogManager.getLogger(FooterPage.class);
     private static final By SOCIAL_LINKS = By.cssSelector(".social li");
     private static final By ROBOT_IMAGE = By.cssSelector(".footer_robot");
-
 
     @FindBy(css = ".social li")
     private List<WebElement> socialMediaLinks;
@@ -49,4 +48,3 @@ public class FooterPage extends Page {
 
 
 }
-

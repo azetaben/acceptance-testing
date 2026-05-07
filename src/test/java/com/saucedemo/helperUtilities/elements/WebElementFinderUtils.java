@@ -1,18 +1,17 @@
-package com.saucedemo.helperUtilities.elements;
+package com.saucedemo.helperutilities.elements;
 
 import com.saucedemo.exceptions.TableRowDoesNotExistException;
+import com.saucedemo.webdriverutilities.WebDrv;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class WebElementFinderUtils {
-    private static WebDriver driver;
 
     public static List<WebElement> findAllChildElementsOfParentElementInActualOrder(String idOfParentElement) {
-        WebElement parentWebElement = driver.findElement(By.id(idOfParentElement));
+        WebElement parentWebElement = WebDrv.getInstance().getWebDriver().findElement(By.id(idOfParentElement));
         return parentWebElement.findElements(By.xpath(".//*"));
     }
 
@@ -30,8 +29,6 @@ public class WebElementFinderUtils {
     }
 
     public static List<WebElement> findAllChildElementsOfParentElementInActualOrder(WebElement parentWebElement) {
-        List<WebElement> childWebElementsInActualOrder = parentWebElement.findElements(By.xpath(".//*"));
-        String tagName = childWebElementsInActualOrder.get(childWebElementsInActualOrder.size() - 1).getText();
-        return childWebElementsInActualOrder;
+        return parentWebElement.findElements(By.xpath(".//*"));
     }
 }

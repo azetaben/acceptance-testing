@@ -1,6 +1,6 @@
 package com.saucedemo.utils;
 
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,17 +111,5 @@ public final class PathUtil {
         return getAbsolutePath(configuredPath.split("[/\\\\]"));
     }
 
-
-    public static void main(String[] args) {
-        // Example usage (for testing the PathHelper itself)
-        System.out.println("Project Root: " + getProjectRootDir());
-        System.out.println("Config Properties Path: " + getConfigPropertiesPath());
-        System.out.println("Test Data Directory: " + getTestDataDir());
-        System.out.println("Test Data File (example.xlsx): " + getTestDataExcelFilePath("testData.xlsx"));
-        System.out.println("Test Data File (userTestData.java): " + getTestDataFilePath("userTestData.java"));
-        System.out.println("Screenshots Directory: " + getScreenshotsDir());
-        System.out.println("Reports Directory: " + getReportsDir());
-        System.out.println("Json Data File: " + getTestDataJsonFilePath("testData.json"));
-    }
 
 }

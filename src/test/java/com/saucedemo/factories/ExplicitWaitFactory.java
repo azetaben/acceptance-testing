@@ -62,6 +62,8 @@ public final class ExplicitWaitFactory {
                 log.info("TITLE_CONTAINS wait satisfied; no element returned.");
             } else if (waitstrategy == WaitStrategy.INVISIBILITY) {
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+            } else if (waitstrategy == WaitStrategy.ELEMENT_TO_BE_ENABLED) {
+                element = wait.until(ExpectedConditions.elementToBeClickable(by));
             } else {
                 log.warn("Unsupported wait strategy for By locator: " + waitstrategy);
             }

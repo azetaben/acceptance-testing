@@ -1,8 +1,13 @@
-package com.saucedemo.helperUtilities.database;
+package com.saucedemo.helperutilities.database;
+
+import com.saucedemo.steps.AccessibilitySteps;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 
 public class DataBaseHelper {
+    private static final Logger log = LogManager.getLogger(DataBaseHelper.class);
 
     private static final String url = "jdbc:mysql://localhost/person";
     private static final String driverName = "com.mysql.jdbc.Driver";
@@ -25,13 +30,13 @@ public class DataBaseHelper {
     public static ResultSet getResultSet(String dbQuery) {
         instance = DataBaseHelper.getInstance();
         connection = instance.getConnection();
-        System.out.println("Executing query: " + dbQuery);
+        log.info(String.valueOf("Executing query: " + dbQuery));
         try {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(dbQuery);
             return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
         }
         return null;
     }
@@ -42,13 +47,13 @@ public class DataBaseHelper {
             try {
                 connection = DriverManager.getConnection(url, userName, password);
                 if (connection != null) {
-                    System.out.println("Connected to testData.data base..");
+                    log.info(String.valueOf("Connected to testData.data base.."));
                 }
             } catch (SQLException e) {
-                // log.error("Failed to create Data base connection.." + e);
+
             }
         } catch (ClassNotFoundException e) {
-            System.out.println("Driver not found.." + e);
+            log.info(String.valueOf("Driver not found.." + e));
         }
         return connection;
     }

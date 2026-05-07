@@ -1,13 +1,13 @@
-package com.saucedemo.helperUtilities.navigation;
+package com.saucedemo.helperutilities.navigation;
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
-import com.saucedemo.interfaces.IwebComponent;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
+import com.saucedemo.interfaces.IWebComponent;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import java.net.URL;
 
-public class NavigationHelper implements IwebComponent {
+public class NavigationHelper implements IWebComponent {
     private static WebDriver driver;
 
     private final Logger log = LoggerHelper.getLogger(NavigationHelper.class);

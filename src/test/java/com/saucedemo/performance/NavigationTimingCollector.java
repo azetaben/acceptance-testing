@@ -1,5 +1,6 @@
 package com.saucedemo.performance;
 
+import com.saucedemo.constants.FrameworkConstants;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
@@ -82,10 +83,10 @@ public final class NavigationTimingCollector {
 
     private static void waitForDocumentComplete(WebDriver driver) {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(15))
+            new WebDriverWait(driver, Duration.ofSeconds(FrameworkConstants.getExplicitWait()))
                     .until(d -> "complete".equals(((JavascriptExecutor) d).executeScript("return document.readyState")));
         } catch (Exception e) {
-            // Don't fail functional tests just because perf collection timed out.
+
             log.debug("Timed out waiting for document.readyState=complete before collecting timings: " + e.getMessage());
         }
     }
@@ -119,4 +120,3 @@ public final class NavigationTimingCollector {
         }
     }
 }
-

@@ -1,6 +1,5 @@
 package com.saucedemo.utils;
 
-import com.saucedemo.webdriverutilities.WebDrv;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -16,10 +15,9 @@ import java.util.Date;
 
 public class ScreenshotUtil {
     private static final Logger log = LoggerFactory.getLogger(ScreenshotUtil.class);
-    private final WebDriver driver = WebDrv.getInstance().getWebDriver();
 
     private static File captureScreenshotAsFile(WebDriver driver) {
-        if (WebDrv.getInstance().getWebDriver() == null) {
+        if (driver == null) {
             log.error("WebDriver instance is null. Cannot take screenshot.");
             return null;
         }
@@ -37,18 +35,7 @@ public class ScreenshotUtil {
 
 
     public static void takeScreenshotAsFile(WebDriver driver, String filePath) {
-        TakesScreenshot screenshotTaker = (TakesScreenshot) WebDrv.getInstance().getWebDriver();
-
-        File screenshotFile = screenshotTaker.getScreenshotAs(OutputType.FILE);
-        try {
-            // Copy the screenshot file to the specified location
-            FileHandler.copy(screenshotFile, new File(filePath));
-            System.out.println("Screenshot saved at: " + filePath);
-            log.info("Screenshot saved at: " + filePath);
-        } catch (IOException e) {
-            System.err.println("Error saving screenshot: " + e.getMessage());
-            log.error("Error saving screenshot: " + e.getMessage(), e);
-        }
+        takeScreenshot(driver, filePath);
     }
 
     private static String saveScreenshotFile(File screenshotFile, File destinationFile) {
@@ -119,7 +106,7 @@ public class ScreenshotUtil {
         }
         if (baseFileName == null || baseFileName.trim().isEmpty()) {
             log.warn("Base file name is null or empty. Falling back to timestamped name.");
-            return takeScreenshotWithTimestamp(driver, directory); // Fallback behavior
+            return takeScreenshotWithTimestamp(driver, directory);
         }
 
         File screenshotFile = captureScreenshotAsFile(driver);

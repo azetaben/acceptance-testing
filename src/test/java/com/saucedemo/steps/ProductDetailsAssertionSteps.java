@@ -39,7 +39,8 @@ public class ProductDetailsAssertionSteps {
                 case "continue shopping" -> Assert.assertTrue(
                         productDetailsPage().isBackToProductsButtonDisplayed(),
                         "Expected Continue Shopping control (Back to products) to be visible on inventory item page.");
-                default -> throw new IllegalArgumentException("Unsupported inventory item control expectation: " + normalizedControl);
+                default ->
+                        throw new IllegalArgumentException("Unsupported inventory item control expectation: " + normalizedControl);
             }
         }
     }
@@ -89,4 +90,3 @@ public class ProductDetailsAssertionSteps {
 
 
 }
-

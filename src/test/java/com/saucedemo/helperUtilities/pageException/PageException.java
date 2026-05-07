@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.pageException;
+package com.saucedemo.helperutilities.pageexception;
 
 import java.io.Serial;
 

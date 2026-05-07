@@ -1,6 +1,5 @@
-package com.saucedemo.helperUtilities.javaScript;
+package com.saucedemo.helperutilities.javascript;
 
-import com.google.common.util.concurrent.Uninterruptibles;
 import com.saucedemo.webdriverutilities.WebDrv;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -8,8 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.time.Duration;
 
 public class ScrollPageHelper {
     private final Logger log = LogManager.getLogger(ScrollPageHelper.class);
@@ -22,7 +19,6 @@ public class ScrollPageHelper {
 
     public void scrollToView(WebElement elementName) {
         ((JavascriptExecutor) WebDrv.getInstance().getWebDriver()).executeScript("arguments[0].scrollIntoView(true);", elementName);
-        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(3));
     }
 
     public void scrollToViewContinue(WebDriver driver) {

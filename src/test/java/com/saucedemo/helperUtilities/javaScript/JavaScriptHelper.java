@@ -1,7 +1,7 @@
-package com.saucedemo.helperUtilities.javaScript;
+package com.saucedemo.helperutilities.javascript;
 
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
 import com.saucedemo.webdriverutilities.WebDrv;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.JavascriptExecutor;
@@ -33,7 +33,8 @@ public class JavaScriptHelper {
     }
 
     public void scrollToElementAndClick(WebElement element) {
-        scrollToElementAndClick(element);
+        scrollToElement(element);
+        element.click();
         log.info("clicked on the scrolled element");
     }
 
@@ -60,10 +61,6 @@ public class JavaScriptHelper {
 
     public void ZoomInByPercentage() {
         executeScript("document.body.style.zoom='40%'");
-    }
-
-    public void ZoomBy100percentage() {
-        executeScript("document.body.style.zoom='100%'");
     }
 
     public void zoomInBy60Percentage() {

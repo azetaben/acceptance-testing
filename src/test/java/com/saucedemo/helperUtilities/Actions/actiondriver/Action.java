@@ -1,6 +1,7 @@
-package com.saucedemo.helperUtilities.Actions.actiondriver;
+package com.saucedemo.helperutilities.actions.actiondriver;
 
-import com.saucedemo.helperUtilities.Actions.actioninterface.ActionInterface;
+import com.saucedemo.constants.FrameworkConstants;
+import com.saucedemo.helperutilities.actions.actioninterface.ActionInterface;
 import com.saucedemo.utils.PathUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
@@ -43,16 +44,16 @@ public class Action implements ActionInterface {
             flag = true;
         } catch (Exception e) {
             log.info("Location not found");
-            // System.out.println("Location not found: "+locatorName);
+
             flag = false;
         } finally {
             if (flag) {
                 log.info("Successfully Found the element");
-                System.out.println("Successfully Found element at");
+                log.info("Successfully Found element at");
 
             } else {
                 log.info("Unable to locate element");
-                System.out.println("Unable to locate element at");
+                log.info("Unable to locate element at");
             }
         }
         return flag;
@@ -65,14 +66,14 @@ public class Action implements ActionInterface {
         if (flag) {
             flag = ele.isDisplayed();
             if (flag) {
-                System.out.println("The element is Displayed");
+                log.info("The element is Displayed");
                 log.info("The element is Displayed");
             } else {
-                System.out.println("The element is not Displayed");
+                log.info("The element is not Displayed");
                 log.info("The element is not Displayed");
             }
         } else {
-            System.out.println("Not displayed ");
+            log.info("Not displayed ");
             log.info("Not displayed ");
         }
         return flag;
@@ -85,14 +86,14 @@ public class Action implements ActionInterface {
         if (flag) {
             flag = ele.isSelected();
             if (flag) {
-                System.out.println("The element is Selected");
+                log.info("The element is Selected");
                 log.info("The element is Selected");
             } else {
-                System.out.println("The element is not Selected");
+                log.info("The element is not Selected");
                 log.info("The element is not Selected");
             }
         } else {
-            System.out.println("Not selected ");
+            log.info("Not selected ");
             log.info("Not selected ");
         }
         return flag;
@@ -105,14 +106,14 @@ public class Action implements ActionInterface {
         if (flag) {
             flag = ele.isEnabled();
             if (flag) {
-                System.out.println("The element is Enabled");
+                log.info("The element is Enabled");
                 log.info("The element is Enabled");
             } else {
-                System.out.println("The element is not Enabled");
+                log.info("The element is not Enabled");
                 log.info("The element is not Enabled");
             }
         } else {
-            System.out.println("Not Enabled ");
+            log.info("Not Enabled ");
         }
         return flag;
     }
@@ -127,15 +128,15 @@ public class Action implements ActionInterface {
             log.info("Entered text :" + text);
             flag = true;
         } catch (Exception e) {
-            System.out.println("Location Not found");
+            log.info("Location Not found");
             log.info("Location Not found");
             flag = false;
         } finally {
             if (flag) {
-                System.out.println("Successfully entered value");
+                log.info("Successfully entered value");
                 log.info("Successfully entered value");
             } else {
-                System.out.println("Unable to enter value");
+                log.info("Unable to enter value");
                 log.info("Unable to enter value");
             }
 
@@ -155,12 +156,12 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Select value from the DropDown");
+                log.info("Select value from the DropDown");
                 log.info("Select value from the DropDown");
             } else {
-                System.out.println("Not Selected value from the DropDown");
                 log.info("Not Selected value from the DropDown");
-                // throw new ElementNotFoundException("", "", "")
+                log.info("Not Selected value from the DropDown");
+
             }
         }
     }
@@ -177,10 +178,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Option selected by Index");
+                log.info("Option selected by Index");
                 log.info("Option selected by Index");
             } else {
-                System.out.println("Option not selected by Index");
+                log.info("Option not selected by Index");
                 log.info("Option not selected by Index");
             }
         }
@@ -200,10 +201,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Option selected by Value");
+                log.info("Option selected by Value");
                 log.info("Option selected by Value");
             } else {
-                System.out.println("Option not selected by Value");
+                log.info("Option not selected by Value");
                 log.info("Option not selected by Value");
             }
         }
@@ -222,10 +223,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Option selected by VisibleText");
+                log.info("Option selected by VisibleText");
                 log.info("Option selected by VisibleText");
             } else {
-                System.out.println("Option not selected by VisibleText");
+                log.info("Option not selected by VisibleText");
                 log.info("Option not selected by VisibleText");
             }
         }
@@ -240,20 +241,20 @@ public class Action implements ActionInterface {
     public boolean JSClick(WebDriver driver, WebElement ele) {
         boolean flag = false;
         try {
-            // WebElement element = driver.findElement(locator);
+
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             executor.executeScript("arguments[0].click();", ele);
-            // driver.executeAsyncScript("arguments[0].click();", element);
+
             flag = true;
         } catch (Exception e) {
             throw e;
 
         } finally {
             if (flag) {
-                System.out.println("Click Action is performed");
+                log.info("Click Action is performed");
                 log.info("Click Action is performed");
             } else if (!flag) {
-                System.out.println("Click Action is not performed");
+                log.info("Click Action is not performed");
                 log.info("Click Action is not performed");
             }
         }
@@ -264,7 +265,7 @@ public class Action implements ActionInterface {
     public boolean switchToFrameByIndex(WebDriver driver, int index) {
         boolean flag = false;
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe")));
+            new WebDriverWait(driver, Duration.ofSeconds(FrameworkConstants.getExplicitWait())).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe")));
             driver.switchTo().frame(index);
             flag = true;
             return true;
@@ -273,20 +274,16 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Frame with index \"" + index + "\" is selected");
+                log.info("Frame with index \"" + index + "\" is selected");
                 log.info("Frame with index \"" + index + "\" is selected");
             } else {
-                System.out.println("Frame with index \"" + index + "\" is not selected");
+                log.info("Frame with index \"" + index + "\" is not selected");
                 log.info("Frame with index \"" + index + "\" is not selected");
             }
         }
     }
 
-    /**
-     * This method switch the to frame using frame ID.
-     *
-     * @param idValue : Frame ID wish to switch
-     */
+
     @Override
     public boolean switchToFrameById(WebDriver driver, String idValue) {
         boolean flag = false;
@@ -296,24 +293,20 @@ public class Action implements ActionInterface {
             return true;
         } catch (Exception e) {
 
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
             return false;
         } finally {
             if (flag) {
-                System.out.println("Frame with Id \"" + idValue + "\" is selected");
+                log.info("Frame with Id \"" + idValue + "\" is selected");
                 log.info("Frame with Id \"" + idValue + "\" is selected");
             } else {
-                System.out.println("Frame with Id \"" + idValue + "\" is not selected");
+                log.info("Frame with Id \"" + idValue + "\" is not selected");
                 log.info("Frame with Id \"" + idValue + "\" is not selected");
             }
         }
     }
 
-    /**
-     * This method switch the to frame using frame Name.
-     *
-     * @param nameValue : Frame Name wish to switch
-     */
+
     @Override
     public boolean switchToFrameByName(WebDriver driver, String nameValue) {
         boolean flag = false;
@@ -326,10 +319,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Frame with Name \"" + nameValue + "\" is selected");
+                log.info("Frame with Name \"" + nameValue + "\" is selected");
                 log.info("Frame with Name \"" + nameValue + "\" is selected");
             } else if (!flag) {
-                System.out.println("Frame with Name \"" + nameValue + "\" is not selected");
+                log.info("Frame with Name \"" + nameValue + "\" is not selected");
                 log.info("Frame with Name \"" + nameValue + "\" is not selected");
             }
         }
@@ -343,17 +336,17 @@ public class Action implements ActionInterface {
             flag = true;
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
             return false;
         } finally {
             if (flag) {
-                System.out.println("Default Frame is selected");
                 log.info("Default Frame is selected");
-                // SuccessReport("SelectFrame ","Frame with Name is selected");
+                log.info("Default Frame is selected");
+
             } else if (!flag) {
-                System.out.println("Default Frame is not selected");
                 log.info("Default Frame is not selected");
-                // failureReport("SelectFrame ","The Frame is not selected");
+                log.info("Default Frame is not selected");
+
             }
         }
     }
@@ -365,14 +358,14 @@ public class Action implements ActionInterface {
             new Actions(driver).moveToElement(element).build().perform();
             flag = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
         } finally {
             if (flag) {
-                System.out.println(" MouserOver Action is performed on ");
+                log.info(" MouserOver Action is performed on ");
                 log.info(" MouserOver Action is performed on ");
 
             } else {
-                System.out.println("MouseOver action is not performed on");
+                log.info("MouseOver action is not performed on");
                 log.info("MouseOver action is not performed on");
             }
         }
@@ -382,16 +375,16 @@ public class Action implements ActionInterface {
     public boolean moveToElement(WebDriver driver, WebElement ele) {
         boolean flag = false;
         try {
-            // WebElement element = driver.findElement(locator);
+
             JavascriptExecutor executor = (JavascriptExecutor) driver;
             executor.executeScript("arguments[0].scrollIntoView(true);", ele);
             Actions actions = new Actions(driver);
-            // actions.moveToElement(driver.findElement(locator)).build().perform();
+
             actions.moveToElement(ele).build().perform();
             log.info("mouseover action is performed");
             flag = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("Exception: " + e.getMessage(), e);
         }
         return flag;
     }
@@ -407,13 +400,7 @@ public class Action implements ActionInterface {
         } catch (Exception e) {
             return false;
         } finally {
-            /*
-             * if (flag) {
-             * SuccessReport("MouseOver ","MouserOver Action is performed on \""+locatorName
-             * +"\""); } else {
-             * failureReport("MouseOver","MouseOver action is not performed on \""
-             * +locatorName+"\""); }
-             */
+
         }
     }
 
@@ -422,8 +409,6 @@ public class Action implements ActionInterface {
         boolean flag = false;
         try {
             new Actions(driver).dragAndDropBy(source, x, y).build().perform();
-            new org.openqa.selenium.support.ui.WebDriverWait(driver, java.time.Duration.ofSeconds(5))
-                    .until(d -> true);
             flag = true;
             return true;
 
@@ -433,11 +418,11 @@ public class Action implements ActionInterface {
 
         } finally {
             if (flag) {
-                System.out.println("Draggable Action is performed on \"" + source + "\"");
+                log.info("Draggable Action is performed on \"" + source + "\"");
                 log.info("Draggable Action is performed on \"" + source + "\"");
 
             } else if (!flag) {
-                System.out.println("Draggable action is not performed on \"" + source + "\"");
+                log.info("Draggable action is not performed on \"" + source + "\"");
                 log.info("Draggable action is not performed on \"" + source + "\"");
             }
         }
@@ -455,11 +440,11 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("DragAndDrop Action is performed");
+                log.info("DragAndDrop Action is performed");
                 log.info("DragAndDrop Action is performed");
 
             } else if (!flag) {
-                System.out.println("DragAndDrop Action is not performed");
+                log.info("DragAndDrop Action is not performed");
                 log.info("DragAndDrop Action is not performed");
             }
         }
@@ -469,11 +454,9 @@ public class Action implements ActionInterface {
     public boolean slider(WebDriver driver, WebElement ele, int x, int y) {
         boolean flag = false;
         try {
-            // new Actions(driver).dragAndDropBy(dragitem, 400, 1).build()
-            // .perform();
+
+
             new Actions(driver).dragAndDropBy(ele, x, y).build().perform();
-            new org.openqa.selenium.support.ui.WebDriverWait(driver, java.time.Duration.ofSeconds(5))
-                    .until(d -> true);
             flag = true;
             return true;
         } catch (Exception e) {
@@ -481,10 +464,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Slider Action is performed");
+                log.info("Slider Action is performed");
                 log.info("Slider Action is performed");
             } else {
-                System.out.println("Slider Action is not performed");
+                log.info("Slider Action is not performed");
                 log.info("Slider Action is not performed");
             }
         }
@@ -498,16 +481,16 @@ public class Action implements ActionInterface {
             clicker.contextClick(ele).perform();
             flag = true;
             return true;
-            // driver.findElement(by1).sendKeys(Keys.DOWN);
+
         } catch (Exception e) {
 
             return false;
         } finally {
             if (flag) {
-                System.out.println("RightClick Action is performed");
+                log.info("RightClick Action is performed");
                 log.info("RightClick Action is performed");
             } else {
-                System.out.println("RightClick Action is not performed");
+                log.info("RightClick Action is not performed");
                 log.info("RightClick Action is not performed");
             }
         }
@@ -530,14 +513,14 @@ public class Action implements ActionInterface {
             }
             return flag;
         } catch (Exception e) {
-            //flag = true;
+
             return false;
         } finally {
             if (flag) {
-                System.out.println("Navigated to the window with title");
+                log.info("Navigated to the window with title");
                 log.info("Navigated to the window with title");
             } else {
-                System.out.println("The Window with title is not Selected");
+                log.info("The Window with title is not Selected");
                 log.info("The Window with title is not Selected");
             }
         }
@@ -558,10 +541,10 @@ public class Action implements ActionInterface {
             return flag;
         } finally {
             if (flag) {
-                System.out.println("Window is Navigated with title");
+                log.info("Window is Navigated with title");
                 log.info("Window is Navigated with title");
             } else {
-                System.out.println("The Window with title: is not Selected");
+                log.info("The Window with title: is not Selected");
                 log.info("The Window with title: is not Selected");
             }
         }
@@ -582,10 +565,10 @@ public class Action implements ActionInterface {
             return flag;
         } finally {
             if (flag) {
-                System.out.println("Focus navigated to the window with title");
+                log.info("Focus navigated to the window with title");
                 log.info("Focus navigated to the window with title");
             } else {
-                System.out.println("The Window with title: is not Selected");
+                log.info("The Window with title: is not Selected");
                 log.info("The Window with title: is not Selected");
             }
         }
@@ -595,10 +578,10 @@ public class Action implements ActionInterface {
     public int getColumnCount(WebElement row) {
         List<WebElement> columns = row.findElements(By.tagName("td"));
         int a = columns.size();
-        System.out.println(columns.size());
+        log.info(columns.size());
         for (WebElement column : columns) {
-            System.out.print(column.getText());
-            System.out.print("|");
+            log.info(String.valueOf(column.getText()));
+            log.info(String.valueOf("|"));
         }
         return a;
     }
@@ -615,22 +598,21 @@ public class Action implements ActionInterface {
         Alert alert = null;
 
         try {
-            // Check the presence of alert
+
             alert = driver.switchTo().alert();
-            // if present consume the alert
+
             alert.accept();
             presentFlag = true;
         } catch (NoAlertPresentException ex) {
-            // Alert present; set the flag
 
-            // Alert not present
-            ex.printStackTrace();
+
+            log.warn("Exception: " + ex.getMessage(), ex);
         } finally {
             if (!presentFlag) {
-                System.out.println("The Alert is handled successfully");
+                log.info("The Alert is handled successfully");
                 log.info("The Alert is handled successfully");
             } else {
-                System.out.println("There was no alert to handle");
+                log.info("There was no alert to handle");
                 log.info("There was no alert to handle");
             }
         }
@@ -649,10 +631,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Successfully launched \"" + url + "\"");
+                log.info("Successfully launched \"" + url + "\"");
                 log.info("Successfully launched \"" + url + "\"");
             } else {
-                System.out.println("Failed to launch \"" + url + "\"");
+                log.info("Failed to launch \"" + url + "\"");
                 log.info("Failed to launch \"" + url + "\"");
             }
         }
@@ -663,10 +645,9 @@ public class Action implements ActionInterface {
         try {
             driver.switchTo().alert();
             return true;
-        }   // try
-        catch (NoAlertPresentException Ex) {
+        } catch (NoAlertPresentException Ex) {
             return false;
-        }   // catch
+        }
     }
 
     @Override
@@ -675,7 +656,7 @@ public class Action implements ActionInterface {
 
         String text = driver.getTitle();
         if (flag) {
-            System.out.println("Title of the page is: \"" + text + "\"");
+            log.info("Title of the page is: \"" + text + "\"");
             log.info("Title of the page is: \"" + text + "\"");
         }
         return text;
@@ -687,7 +668,7 @@ public class Action implements ActionInterface {
 
         String text = driver.getCurrentUrl();
         if (flag) {
-            System.out.println("Current URL is: \"" + text + "\"");
+            log.info("Current URL is: \"" + text + "\"");
             log.info("Current URL is: \"" + text + "\"");
         }
         return text;
@@ -704,10 +685,10 @@ public class Action implements ActionInterface {
             return false;
         } finally {
             if (flag) {
-                System.out.println("Able to click on \"" + locatorName + "\"");
+                log.info("Able to click on \"" + locatorName + "\"");
                 log.info("Able to click on \"" + locatorName + "\"");
             } else {
-                System.out.println("Click Unable to click on \"" + locatorName + "\"");
+                log.info("Click Unable to click on \"" + locatorName + "\"");
                 log.info("Click Unable to click on \"" + locatorName + "\"");
             }
         }
@@ -719,31 +700,31 @@ public class Action implements ActionInterface {
         Wait<WebDriver> wait = null;
         try {
             wait = new FluentWait<WebDriver>((WebDriver) driver)
-                    .withTimeout(Duration.ofSeconds(20))
-                    .pollingEvery(Duration.ofSeconds(2))
+                    .withTimeout(Duration.ofSeconds(timeOut > 0 ? timeOut : FrameworkConstants.getExplicitWait()))
+                    .pollingEvery(Duration.ofMillis(FrameworkConstants.getFluentPollIntervalMs()))
                     .ignoring(Exception.class);
             wait.until(ExpectedConditions.visibilityOf(element));
             element.click();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("FluentWait failed for element: " + e.getMessage());
         }
     }
 
     @Override
     public void implicitWait(WebDriver driver, int timeOut) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeOut > 0 ? timeOut : FrameworkConstants.getExplicitWait()));
     }
 
     @Override
     public void explicitWait(WebDriver driver, WebElement element, int timeOut) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeOut > 0 ? timeOut : FrameworkConstants.getExplicitWait()));
         wait.until(ExpectedConditions.visibilityOf(element));
         log.info("Element is visible");
     }
 
     @Override
     public void pageLoadTimeOut(WebDriver driver, int timeOut) {
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(timeOut > 0 ? timeOut : FrameworkConstants.getExplicitWait()));
         log.info("Page is loaded");
     }
 

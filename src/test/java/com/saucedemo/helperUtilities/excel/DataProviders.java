@@ -1,7 +1,7 @@
-package com.saucedemo.helperUtilities.excel;
+package com.saucedemo.helperutilities.excel;
 
 
-import com.saucedemo.helperUtilities.logger.LoggerHelper;
+import com.saucedemo.helperutilities.logger.LoggerHelper;
 import com.saucedemo.utils.PathUtil;
 import org.apache.log4j.Logger;
 import org.testng.annotations.DataProvider;
@@ -39,7 +39,7 @@ public class DataProviders {
         ExcelHelper excelHelper = new ExcelHelper(filePath, sheetName);
         List<Map<String, String>> dataList = excelHelper.getData();
 
-        // Determine the number of columns based on the method's parameters
+
         Parameter[] parameters = method.getParameters();
         int parameterCount = parameters.length;
         log.info("Parameter count for method " + method.getName() + ": " + parameterCount);
@@ -53,11 +53,11 @@ public class DataProviders {
             int j = 0;
             log.info("Processing row: " + (i + 1));
 
-            // Iterate through the method's parameters and populate the data array
+
             for (Parameter parameter : parameters) {
                 String parameterName = parameter.getName();
                 log.info("Processing parameter: " + parameterName);
-                // Check if the parameter is annotated with @Parameters
+
                 Parameters parametersAnnotation = method.getAnnotation(Parameters.class);
                 if (parametersAnnotation != null) {
                     String[] parameterNames = parametersAnnotation.value();
@@ -78,9 +78,9 @@ public class DataProviders {
                     data[i][j] = excelHelper.getTestCaseDescription(i + 1);
                     log.info("Data found for parameter 'testCaseDescription': " + data[i][j] + " in row " + (i + 1));
                 } else {
-                    // Handle cases where the parameter name doesn't match a column
+
                     log.warn("Warning: No data found for parameter '" + parameterName + "' in row " + (i + 1));
-                    data[i][j] = ""; // Or handle it differently (e.g., null, default value)
+                    data[i][j] = "";
                 }
                 j++;
             }

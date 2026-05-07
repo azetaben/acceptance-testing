@@ -1,18 +1,18 @@
 package com.saucedemo.steps;
 
-import com.saucedemo.configReader.FrameworkConfig;
+import com.saucedemo.configreader.FrameworkConfig;
 import com.saucedemo.constants.EndPoint;
 import com.saucedemo.constants.SauceDemoConstants;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import com.saucedemo.pages.*;
 import com.saucedemo.utils.PageElementChecker;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.openqa.selenium.By;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
@@ -34,9 +34,8 @@ public class CommonSteps {
         driver.manage().deleteAllCookies();
         driver.navigate().to(url);
         driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(GlobalVarsHelper.PAGE_LOAD_TIME));
 
-        // Wait for a stable document state before subsequent URL/title checks.
+
         try {
             Object readyState = ((JavascriptExecutor) driver).executeScript("return document.readyState");
             log.info("Navigation readyState: " + readyState + " | currentUrl: " + driver.getCurrentUrl());
@@ -116,7 +115,7 @@ public class CommonSteps {
 
     @Given("I restore the session to the login page")
     public void iRestoreTheSessionToTheLoginPage() {
-        // For session/cookie tests: start from a clean unauthenticated state on the login page.
+
         if (WebDrv.getInstance().getWebDriver() == null) {
             i_navigate_to_login_page();
             return;
@@ -125,12 +124,12 @@ public class CommonSteps {
         WebDriver driver = WebDrv.getInstance().getWebDriver();
         try {
             driver.manage().deleteAllCookies();
-            // Best-effort clear of web storage to avoid session bleed between scenarios.
+
             try {
                 ((JavascriptExecutor) driver).executeScript("window.localStorage && window.localStorage.clear();");
                 ((JavascriptExecutor) driver).executeScript("window.sessionStorage && window.sessionStorage.clear();");
             } catch (Exception ignored) {
-                // Some pages/drivers may block storage access; ignore and continue.
+
             }
         } catch (Exception ignored) {
         }
@@ -140,8 +139,8 @@ public class CommonSteps {
 
     @And("I restore the session to the inventory page")
     public void iRestoreTheSessionToTheInventoryPage() {
-        // "Restore" here means: ensure we can still access the inventory page using the current browser state
-        // (cookies/session). We do NOT clear cookies in this step.
+
+
         String baseUrl = FrameworkConfig.getInstance().getString("url", GlobalVarsHelper.getInstance().getURL());
         String inventoryPath = SauceDemoConstants.INVENTORY_PAGE_PATH != null && !SauceDemoConstants.INVENTORY_PAGE_PATH.isBlank()
                 ? SauceDemoConstants.INVENTORY_PAGE_PATH
@@ -156,12 +155,11 @@ public class CommonSteps {
         WebDriver driver = WebDrv.getInstance().getWebDriver();
         driver.navigate().to(targetUrl);
         driver.manage().window().maximize();
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(GlobalVarsHelper.PAGE_LOAD_TIME));
 
-        // Best-effort: wait for the inventory list if present; if access was not restored, subsequent assertions will fail.
+
         try {
             pm.getPage(Page.class).isPageFullyLoaded();
-            // quick presence check without hard failing here
+
             driver.findElements(By.className("inventory_list"));
         } catch (Exception ignored) {
         }
@@ -175,7 +173,7 @@ public class CommonSteps {
         webDrv.openBrowser(GlobalVarsHelper.getLoginPageUrl());
         WebDrv.getInstance().getWebDriver().get(GlobalVarsHelper.getLoginPageUrl());
         LoginPage loginPage = pm.getPage(LoginPage.class);
-        loginPage.enterUsername(GlobalVarsHelper.get_standard_user());
+        loginPage.enterUsername(GlobalVarsHelper.getStandardUser());
         loginPage.enterPassword(GlobalVarsHelper.getPasswordForAllUsers());
         loginPage.clickLoginButton();
     }

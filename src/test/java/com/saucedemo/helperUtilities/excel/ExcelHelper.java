@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.excel;
+package com.saucedemo.helperutilities.excel;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -40,15 +40,15 @@ public class ExcelHelper {
         for (int i = 1; i <= totalRows; i++) {
             Row dataRow = sheet.getRow(i);
             if (dataRow == null || isRowEmpty(dataRow)) {
-                continue; // Skip empty rows
+                continue;
             }
             Map<String, String> rowData = new HashMap<>();
             for (int j = 0; j < headerRow.getLastCellNum(); j++) {
                 Cell headerCell = headerRow.getCell(j);
                 Cell dataCell = dataRow.getCell(j);
                 if (headerCell != null && dataCell != null) {
-                    String headerValue = headerCell.getStringCellValue().trim(); // Trim header value
-                    String dataValue = getCellValueAsString(dataCell).trim(); // Trim data value
+                    String headerValue = headerCell.getStringCellValue().trim();
+                    String dataValue = getCellValueAsString(dataCell).trim();
                     rowData.put(headerValue, dataValue);
                 }
             }
@@ -86,17 +86,17 @@ public class ExcelHelper {
     private String getCellDataByColumnName(int rowNum, String columnName) {
         int columnIndex = getColumnIndex(columnName);
         if (columnIndex == -1) {
-            return null; // Column not found
+            return null;
         }
 
         Row dataRow = sheet.getRow(rowNum);
         if (dataRow == null) {
-            return null; // Row not found
+            return null;
         }
 
         Cell cell = dataRow.getCell(columnIndex);
         if (cell == null) {
-            return null; // Cell is empty
+            return null;
         }
 
         return getCellValueAsString(cell);
@@ -109,7 +109,7 @@ public class ExcelHelper {
                 return i;
             }
         }
-        return -1; // Column not found
+        return -1;
     }
 
     private boolean isRowEmpty(Row row) {

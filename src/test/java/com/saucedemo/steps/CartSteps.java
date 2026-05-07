@@ -1,21 +1,20 @@
 package com.saucedemo.steps;
-
-import com.saucedemo.pages.CartPage;
-import com.saucedemo.pages.CheckoutStepOnePage;
-import com.saucedemo.pages.CheckoutStepTwoPage;
-import com.saucedemo.pages.Page;
-import com.saucedemo.pages.PageManager;
-import com.saucedemo.pages.TopNavigationLinksPage;
+import com.saucedemo.pages.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
 public class CartSteps {
+    private static final Logger log = LogManager.getLogger(CartSteps.class);
+
     private final PageManager pm;
 
     public CartSteps() {
@@ -45,7 +44,7 @@ public class CartSteps {
 
         if (isOnCheckoutOverviewPage()) {
             List<String> actualProductNames = checkoutOverviewPage().getItemNames();
-            System.out.println("DEBUG: Actual products in checkout overview: " + actualProductNames);
+            log.info(String.valueOf("DEBUG: Actual products in checkout overview: " + actualProductNames));
 
             for (Map<String, String> item : items) {
                 String productName = getRequiredValue(item, "DESCRIPTION");
@@ -67,7 +66,7 @@ public class CartSteps {
         }
 
         List<String> actualProductNames = cartPage().getAllItemNames();
-        System.out.println("DEBUG: Actual products in cart: " + actualProductNames);
+        log.info(String.valueOf("DEBUG: Actual products in cart: " + actualProductNames));
 
         for (Map<String, String> item : items) {
             String productName = getRequiredValue(item, "DESCRIPTION");
@@ -76,8 +75,8 @@ public class CartSteps {
             boolean found = cartPage().hasItemWithQuantityByName(productName, Integer.parseInt(quantity.trim()));
 
             if (!found) {
-                System.out.println("DEBUG: Expected product '" + productName + "' not found.");
-                System.out.println("DEBUG: Available products: " + actualProductNames);
+                log.info(String.valueOf("DEBUG: Expected product '" + productName + "' not found."));
+                log.info(String.valueOf("DEBUG: Available products: " + actualProductNames));
             }
 
             Assert.assertTrue(found,

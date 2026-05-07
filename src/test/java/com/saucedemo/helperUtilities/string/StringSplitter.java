@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.string;
+package com.saucedemo.helperutilities.string;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -7,7 +7,6 @@
     <artifactId>acceptance-testing</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
     <name>acceptance-testing</name>
     <url>https://maven.apache.org</url>
 
@@ -285,16 +284,6 @@
             <version>2.1.4</version>
         </dependency>
         <dependency>
-            <groupId>tech.grasshopper</groupId>
-            <artifactId>extentreports-cucumber7-adapter</artifactId>
-            <version>1.14.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.trivago.rta</groupId>
-            <artifactId>cluecumber-report-plugin</artifactId>
-            <version>2.9.4</version>
-        </dependency>
-        <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
             <version>${plexus-utils.version}</version>
@@ -409,12 +398,6 @@
             <groupId>com.relevantcodes</groupId>
             <artifactId>extentreports</artifactId>
             <version>2.41.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.aventstack</groupId>
-            <artifactId>extentreports</artifactId>
-            <version>5.1.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.trivago.rta/cluecumber-report-plugin -->
         <dependency>

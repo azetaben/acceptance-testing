@@ -1,4 +1,4 @@
 package com.saucedemo.interfaces;
 
-public interface IwebComponent {
+public interface IWebComponent {
 }

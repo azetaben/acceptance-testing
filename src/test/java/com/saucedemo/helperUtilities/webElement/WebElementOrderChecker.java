@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.webElement;
+package com.saucedemo.helperutilities.webelement;
 
 import java.util.List;
 

@@ -1,0 +1,10 @@
+HashMap: In Java, HashMap is a class that implements the Map
+interface, which represents a collection of key-value pairs where each
+key is unique. It is part of the Java Collections Framework and is used to
+store elements as key-value pairs.
+
+● Keys in a HashMap must be unique. Duplicate keys are not
+allowed
+● A HashMap allows null as a key or as a value. This means you
+can have a key-value pair where either or both are null.
+● The order of elements in a HashMap is not guaranteed.

@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.Actions;
+package com.saucedemo.helperutilities.actions;
 
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
@@ -159,9 +159,7 @@ public class ActionHelper {
         log.info("Right-clicked at current location.");
     }
 
-    /**
-     * Performs a click and hold at the current mouse location.
-     */
+
     public void clickAndHoldAtCurrentLocation() {
         actions.clickAndHold().build().perform();
         log.info("Clicked and held at current location.");
@@ -172,13 +170,7 @@ public class ActionHelper {
         log.info("Paused for " + duration + " milliseconds.");
     }
 
-    // --- Multiple Elements Actions ---
 
-    /**
-     * Clicks on each WebElement in a list.
-     *
-     * @param elements The list of WebElements to click.
-     */
     public void clickOnEachElement(List<WebElement> elements) {
         for (WebElement element : elements) {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);
@@ -235,11 +227,7 @@ public class ActionHelper {
         }
     }
 
-    /**
-     * Scrolls to each element in a list.
-     *
-     * @param elements The list of WebElements to scroll to.
-     */
+
     public void scrollToEachElement(List<WebElement> elements) {
         for (WebElement element : elements) {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
@@ -248,11 +236,7 @@ public class ActionHelper {
         }
     }
 
-    /**
-     * Clears the text from each input field in a list.
-     *
-     * @param elements The list of WebElements representing the input fields.
-     */
+
     public void clearEachInputField(List<WebElement> elements) {
         for (WebElement element : elements) {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
@@ -261,11 +245,7 @@ public class ActionHelper {
         }
     }
 
-    /**
-     * Selects multiple elements by clicking on them sequentially.
-     *
-     * @param elements The list of WebElements to select.
-     */
+
     public void selectMultipleElements(List<WebElement> elements) {
         for (WebElement element : elements) {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);

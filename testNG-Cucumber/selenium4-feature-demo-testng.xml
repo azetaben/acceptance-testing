@@ -4,11 +4,11 @@
 
     <test name="Selenium4 Feature Examples" thread-count="1">
         <classes>
-            <class name="com.saucedemo.tests.selenium_4_features.CdpNetworkAndDebugDemoTest"/>
-            <class name="com.saucedemo.tests.selenium_4_features.WindowSwitchingDemoTest"/>
-            <class name="com.saucedemo.tests.selenium_4_features.RelativeLocatorsDemoTest"/>
-            <class name="com.saucedemo.tests.selenium_4_features.WebDriverListenerHooksDemoTest"/>
-            <class name="com.saucedemo.tests.selenium_4_features.FirefoxFullPageScreenshotDemoTest"/>
+            <class name="com.saucedemo.tests.selenium4features.CdpNetworkAndDebugDemoTest"/>
+            <class name="com.saucedemo.tests.selenium4features.WindowSwitchingDemoTest"/>
+            <class name="com.saucedemo.tests.selenium4features.RelativeLocatorsDemoTest"/>
+            <class name="com.saucedemo.tests.selenium4features.WebDriverListenerHooksDemoTest"/>
+            <class name="com.saucedemo.tests.selenium4features.FirefoxFullPageScreenshotDemoTest"/>
         </classes>
     </test>
 

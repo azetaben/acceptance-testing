@@ -1,16 +1,15 @@
 package com.saucedemo.pages;
 
-import com.google.common.util.concurrent.Uninterruptibles;
-import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.constants.FrameworkConstants;
+import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.assertion.VerificationHelper;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
-import com.saucedemo.helperUtilities.javaScript.JavaScriptHelper;
-import com.saucedemo.helperUtilities.navigation.NavigateToNewTab;
-import com.saucedemo.helperUtilities.webElement.WebElementOrderChecker;
-import com.saucedemo.helperUtilities.webElement.WebElementOrderCheckerImpl;
+import com.saucedemo.helperutilities.assertion.VerificationHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.javascript.JavaScriptHelper;
+import com.saucedemo.helperutilities.navigation.NavigateToNewTab;
+import com.saucedemo.helperutilities.webelement.WebElementOrderChecker;
+import com.saucedemo.helperutilities.webelement.WebElementOrderCheckerImpl;
 import com.saucedemo.utils.ConfigLoader;
 import com.saucedemo.utils.PathUtil;
 import com.saucedemo.webdriverutilities.WebDrv;
@@ -50,7 +49,6 @@ public class Page {
     @FindBy(css = ".subheader")
     private WebElement subHeader;
 
-    // --- Static helpers (By-based; used for presence/existence checks) ---
 
     public static boolean elementExists(By locator) {
         try {
@@ -69,26 +67,24 @@ public class Page {
         return ExplicitWaitFactory.performExplicitWait(WaitStrategy.PRESENCE, locator);
     }
 
-    // --- Page resolution helpers ---
 
     private CheckoutStepOnePage checkoutYourInformationPage() {
         return PageManager.getInstance().getPage(CheckoutStepOnePage.class);
     }
 
-    // --- Navigation ---
 
-    public void load(String endPoint){
+    public void load(String endPoint) {
         driver.get(ConfigLoader.getInstance().getBaseUrl() + endPoint);
     }
 
-    public void waitForOverlaysToDisappear(By overlay){
+    public void waitForOverlaysToDisappear(By overlay) {
         List<WebElement> overlays = driver.findElements(overlay);
-        System.out.println("OVERLAY SIZE" + overlays.size());
-        if(!overlays.isEmpty()){
+        log.debug("Overlay count: " + overlays.size());
+        if (!overlays.isEmpty()) {
             wait.until(ExpectedConditions.invisibilityOfAllElements(overlays));
-            System.out.println("OVERLAYS INVISIBLE");
-        } else{
-            System.out.println("OVERLAY NOT FOUND");
+            log.debug("Overlays are invisible");
+        } else {
+            log.debug("No overlays found");
         }
     }
 
@@ -168,7 +164,6 @@ public class Page {
         return WebDrv.getInstance().getWebDriver().getPageSource();
     }
 
-    // --- Page readiness ---
 
     public boolean isPageFullyLoaded() {
         String state = (String) tryJavascript("return document.readyState;");
@@ -177,7 +172,7 @@ public class Page {
 
     public void waitForLoad() {
         ExpectedCondition<Boolean> pageLoadCondition = wd -> {
-            assert wd != null;
+            if (wd == null) return false;
             return "complete".equals(((JavascriptExecutor) wd).executeScript("return document.readyState"));
         };
         new WebDriverWait(WebDrv.getInstance().getWebDriver(), Duration.ofSeconds(GlobalVarsHelper.explicitWait))
@@ -194,7 +189,6 @@ public class Page {
                 .until(pageLoadCondition);
     }
 
-    // --- Logo / heading helpers ---
 
     public boolean isLogoIsDisplayed() {
         return verificationHelper.isDisplayed(logo);
@@ -243,7 +237,6 @@ public class Page {
         return displayed;
     }
 
-    // --- Core element finders (By kept — fundamentally about locating) ---
 
     public WebElement findElement(By by) {
         log.info("Finding element: " + by);
@@ -265,7 +258,6 @@ public class Page {
         }
     }
 
-    // --- Element interaction (WebElement-based) ---
 
     public void click(WebElement element) {
         WebElement clickable = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);
@@ -351,7 +343,6 @@ public class Page {
         return getAttribute(element, "placeholder");
     }
 
-    // --- Element state checks ---
 
     public boolean isDisplayed(WebElement element) {
         log.info("Checking if element is displayed: " + element);
@@ -383,45 +374,6 @@ public class Page {
         }
     }
 
-    public boolean isElementPresentAndDisplayed(WebElement element) {
-        try {
-            return element.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            log.error("Element not found or stale: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean areElementsPresentAndDisplayed(List<WebElement> elements) {
-        return elements.stream().allMatch(this::isElementPresentAndDisplayed);
-    }
-
-    public boolean isAllElementsDisplayed(List<WebElement> elements) {
-        log.info("Checking if all elements are displayed");
-        return elements.stream().allMatch(this::isDisplayed);
-    }
-
-    // --- By-based element state (inherently need By for locating) ---
-
-    public boolean isElementPresent(WebElement element) {
-        log.info("Checking if element is present: " + element);
-        try {
-            element.isEnabled();
-            return true;
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
-        }
-    }
-
-    public boolean isElementVisible(WebElement element) {
-        log.info("Checking if element is visible: " + element);
-        try {
-            return element.isDisplayed();
-        } catch (NoSuchElementException | StaleElementReferenceException e) {
-            return false;
-        }
-    }
-
     public boolean isElementClickable(WebElement element) {
         log.info("Checking if element is clickable: " + element);
         try {
@@ -432,23 +384,6 @@ public class Page {
         }
     }
 
-    public boolean isLinkDisplayed(String linkText) {
-        return !WebDrv.getInstance().getWebDriver().findElements(By.linkText(linkText)).isEmpty();
-    }
-
-    public boolean isFramePresent(WebElement frameElement) {
-        log.info("Checking if frame is present: " + frameElement);
-        try {
-            WebDrv.getInstance().getWebDriver().switchTo().frame(frameElement);
-            WebDrv.getInstance().getWebDriver().switchTo().defaultContent();
-            return true;
-        } catch (NoSuchFrameException e) {
-            log.error("Frame not present", e);
-            return false;
-        }
-    }
-
-    // --- Waits (WebElement-based) ---
 
     public void waitForElementToBeVisible(WebElement element) {
         log.info("Waiting for element to be visible: " + element);
@@ -503,7 +438,7 @@ public class Page {
 
     public void waitForAllElementsToBeClickable(List<WebElement> elements) {
         log.info("Waiting for all elements to be clickable");
-        wait.until(ExpectedConditions.visibilityOfAllElements(elements));
+        elements.forEach(el -> wait.until(ExpectedConditions.elementToBeClickable(el)));
     }
 
     public void waitForAllElementsToBeInvisible(List<WebElement> elements) {
@@ -522,15 +457,21 @@ public class Page {
     }
 
     public void waitForAnyElementToBeVisible(List<WebElement> elements) {
-        wait.until(ExpectedConditions.visibilityOfAllElements(elements));
+        wait.until(d -> elements.stream().anyMatch(el -> {
+            try { return el.isDisplayed(); } catch (Exception e) { return false; }
+        }));
     }
 
     public void waitForAnyElementToBeClickable(List<WebElement> elements) {
-        wait.until(ExpectedConditions.visibilityOfAllElements(elements));
+        wait.until(d -> elements.stream().anyMatch(el -> {
+            try { return el.isDisplayed() && el.isEnabled(); } catch (Exception e) { return false; }
+        }));
     }
 
     public void waitForAnyElementToBeInvisible(List<WebElement> elements) {
-        wait.until(ExpectedConditions.invisibilityOfAllElements(elements));
+        wait.until(d -> elements.stream().anyMatch(el -> {
+            try { return !el.isDisplayed(); } catch (Exception e) { return true; }
+        }));
     }
 
     public void waitForAnyElementAttributeToContain(List<WebElement> elements, String attribute, String value) {
@@ -540,7 +481,6 @@ public class Page {
                         .toArray(ExpectedCondition[]::new)));
     }
 
-    // --- Waits (By kept — ExpectedConditions element-count methods require By) ---
 
     public void waitForElementToBePresent(By by) {
         log.info("Waiting for element to be present: " + by);
@@ -582,7 +522,6 @@ public class Page {
         wait.until(ExpectedConditions.titleIs(title));
     }
 
-    // --- Actions (WebElement-based) ---
 
     public void moveToElement(WebElement element) {
         log.info("Moving to element: " + element);
@@ -608,7 +547,6 @@ public class Page {
     public void moveToTheElement(WebElement element) {
         Actions actions = new Actions(WebDrv.getInstance().getWebDriver());
         actions.moveToElement(element).build().perform();
-        Uninterruptibles.sleepUninterruptibly(Duration.ofMillis(500));
     }
 
     public void hoverOverElement(WebElement element) {
@@ -667,7 +605,6 @@ public class Page {
         action.perform();
     }
 
-    // --- Select ---
 
     public void selectByVisibleText(WebElement element, String text) {
         log.info("Selecting by visible text: " + text);
@@ -696,7 +633,6 @@ public class Page {
         return new Select(element).getFirstSelectedOption().getText();
     }
 
-    // --- Click helpers ---
 
     public void clickAnItemFromListByText(List<WebElement> elements, String itemText) {
         elements.stream()
@@ -785,7 +721,6 @@ public class Page {
         }
     }
 
-    // --- Scroll / JS ---
 
     public void ScrollToElementWaitUntilDisplayedAndClick(WebElement element) {
         try {
@@ -845,7 +780,6 @@ public class Page {
         executeJavaScript("arguments[0].value='" + text + "';", element);
     }
 
-    // --- JavaScript execution ---
 
     public synchronized Object tryJavascript(String script, Object... args) {
         try {
@@ -874,7 +808,6 @@ public class Page {
         return ((JavascriptExecutor) WebDrv.getInstance().getWebDriver()).executeScript(script, args);
     }
 
-    // --- Text / content verification ---
 
     public boolean verifyPageContentByText(String expectedText) {
         try {
@@ -920,7 +853,6 @@ public class Page {
         }
     }
 
-    // --- List helpers ---
 
     public List<WebElement> getElements(List<WebElement> elements) {
         return elements;
@@ -951,11 +883,10 @@ public class Page {
         return result;
     }
 
-    // --- Upload ---
 
     public void fileUpload(String filePath, WebElement element) {
         String path = filePath == null || filePath.isBlank() ? PathUtil.getTestDataDir() : filePath;
-        Uninterruptibles.sleepUninterruptibly(Duration.ofSeconds(FrameworkConstants.getExplicitWait()));
+        ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         element.sendKeys(path);
     }
 
@@ -979,7 +910,6 @@ public class Page {
         Arrays.stream(filePaths).forEach(fp -> uploadFile(element, fp));
     }
 
-    // --- Window / tab handling ---
 
     public void switchToNextTab() {
         ArrayList<String> tabs = new ArrayList<>(WebDrv.getInstance().getWebDriver().getWindowHandles());
@@ -1030,7 +960,6 @@ public class Page {
         return WebDrv.getInstance().getWebDriver().getWindowHandles();
     }
 
-    // --- Frame handling ---
 
     public void switchToIframe(WebElement iframe) {
         WebDrv.getInstance().getWebDriver().switchTo().frame(iframe);
@@ -1052,7 +981,6 @@ public class Page {
         WebDrv.getInstance().getWebDriver().switchTo().frame(frameElement);
     }
 
-    // --- Alerts ---
 
     public void acceptAlert() {
         log.info("Accepting alert");
@@ -1084,7 +1012,6 @@ public class Page {
         }
     }
 
-    // --- Cookies ---
 
     public List<Cookie> getCookies() {
         log.info("Getting all cookies");
@@ -1111,7 +1038,6 @@ public class Page {
         WebDrv.getInstance().getWebDriver().manage().deleteAllCookies();
     }
 
-    // --- Screenshots & logs ---
 
     public void takeScreenshot(String fileName) {
         log.info("Taking screenshot: " + fileName);
@@ -1135,7 +1061,6 @@ public class Page {
         return WebDrv.getInstance().getWebDriver().manage().logs().get(LogType.PERFORMANCE).getAll();
     }
 
-    // --- Checkout / SauceDemo-specific ---
 
     public CheckoutStepTwoPage clickContinue() {
         checkoutYourInformationPage().clickOnContinueButton();
@@ -1151,7 +1076,7 @@ public class Page {
         WebDrv.getInstance().getWebDriver()
                 .findElement(By.xpath("//a[normalize-space()='" + SauceDemoConstants.BUTTON_LABEL_CANCEL + "']"))
                 .click();
-        return null;
+        return PageManager.getInstance().getPage(CartPage.class);
     }
 
     public boolean hasSubHeadingText(String subHeading) {
@@ -1159,7 +1084,6 @@ public class Page {
         return subHeading.equals(ele.getText());
     }
 
-    // --- Element order checking ---
 
     public boolean areWebElementsInOrderByListOrder(List<String> elementIds) {
         String idOfParentElement = elementIds.get(0);

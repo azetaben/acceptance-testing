@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.dropdown;
+package com.saucedemo.helperutilities.dropdown;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;

@@ -1,7 +1,7 @@
-package com.saucedemo.helperUtilities.window;
+package com.saucedemo.helperutilities.window;
 
-import org.openqa.selenium.WebDriver;
 import com.saucedemo.constants.FrameworkConstants;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;

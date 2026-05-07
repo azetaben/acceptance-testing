@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.radioButton;
+package com.saucedemo.helperutilities.radiobutton;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

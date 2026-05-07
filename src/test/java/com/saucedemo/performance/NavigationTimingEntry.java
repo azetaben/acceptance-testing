@@ -7,23 +7,23 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class NavigationTimingEntry {
     private String scenarioName;
-    private String trigger; // e.g. afterStep, navigateTo, refresh, back, forward
+    private String trigger;
     private String url;
 
-    // Epoch millis when we collected the metrics (useful for correlating across runs/logs).
+
     private long collectedAtEpochMs;
 
-    // Navigation Timing (PerformanceNavigationTiming) - values are in milliseconds.
+
     private Double ttfbMs;
     private Double domContentLoadedMs;
     private Double loadEventMs;
 
-    // Sizes (bytes) when available.
+
     private Long transferSizeBytes;
     private Long encodedBodySizeBytes;
     private Long decodedBodySizeBytes;
 
-    // Optional: raw payload in case you want to extend later without changing schema.
+
     private Map<String, Object> raw;
 
     public String getScenarioName() {
@@ -114,4 +114,3 @@ public class NavigationTimingEntry {
         this.raw = raw;
     }
 }
-

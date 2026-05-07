@@ -1,13 +1,13 @@
-package com.saucedemo.configReader;
+package com.saucedemo.configreader;
 
-import com.saucedemo.userTestData.UserTestData;
-import com.saucedemo.utils.IconfigReader;
+import com.saucedemo.usertestdata.UserTestData;
+import com.saucedemo.utils.IConfigReader;
 import org.apache.log4j.Level;
 
 import java.util.Locale;
 import java.util.Objects;
 
-public class PropertyFileReader implements IconfigReader {
+public class PropertyFileReader implements IConfigReader {
     private final FrameworkConfig config;
 
     public PropertyFileReader() {

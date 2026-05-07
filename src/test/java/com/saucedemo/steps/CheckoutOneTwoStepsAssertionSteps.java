@@ -1,8 +1,8 @@
 package com.saucedemo.steps;
 
 import com.saucedemo.constants.SauceDemoConstants;
-import com.saucedemo.pages.CheckoutStepTwoPage;
 import com.saucedemo.pages.CheckoutStepOnePage;
+import com.saucedemo.pages.CheckoutStepTwoPage;
 import com.saucedemo.pages.PageManager;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.datatable.DataTable;
@@ -11,9 +11,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CheckoutOneTwoStepsAssertionSteps {
@@ -175,7 +175,8 @@ public class CheckoutOneTwoStepsAssertionSteps {
                             matchesButtonLabelIgnoreCase(checkoutYourInformationPage().getCancelButtonText(), "Cancel"),
                             "Expected Cancel button label to be 'Cancel'.");
                 }
-                default -> throw new IllegalArgumentException("Unsupported checkout information control expectation: " + control);
+                default ->
+                        throw new IllegalArgumentException("Unsupported checkout information control expectation: " + control);
             }
         }
     }
@@ -203,7 +204,8 @@ public class CheckoutOneTwoStepsAssertionSteps {
                     Assert.assertTrue(matchesButtonLabelIgnoreCase(checkoutOverviewPage().getCancelButtonText(), "Cancel"),
                             "Expected Cancel button label to be 'Cancel'.");
                 }
-                default -> throw new IllegalArgumentException("Unsupported checkout overview control expectation: " + control);
+                default ->
+                        throw new IllegalArgumentException("Unsupported checkout overview control expectation: " + control);
             }
         }
     }
@@ -307,5 +309,3 @@ public class CheckoutOneTwoStepsAssertionSteps {
         return lastMatch;
     }
 }
-
-

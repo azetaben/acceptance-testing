@@ -3,20 +3,20 @@ package com.saucedemo.steps;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.saucedemo.constants.SauceDemoConstants;
+import com.saucedemo.context.TestContext;
 import com.saucedemo.domainobjects.LoginDetails;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import com.saucedemo.models.ExternalLoginDataRow;
 import com.saucedemo.models.LoginData;
 import com.saucedemo.models.LoginModel;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
+import com.saucedemo.testdata.LoginDataSources;
 import com.saucedemo.utils.ExcelUtils;
 import com.saucedemo.utils.PathUtil;
 import com.saucedemo.webdriverutilities.WebDrv;
-import com.saucedemo.testdata.LoginDataSources;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.DataTableType;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -24,15 +24,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.saucedemo.context.TestContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LoginSteps {
@@ -141,6 +136,19 @@ public class LoginSteps {
         }
     }
 
+    private static String decodeBase64(String encoded) {
+        try {
+            if (encoded == null) {
+                return "";
+            }
+            byte[] decoded = Base64.getDecoder().decode(encoded.trim());
+            return new String(decoded, StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+
+            return encoded == null ? "" : encoded;
+        }
+    }
+
     private LoginPage loginPage() {
         if (WebDrv.getInstance().getWebDriver() == null) {
             WebDrv.getInstance().openBrowser(GlobalVarsHelper.getLoginPageUrl());
@@ -173,7 +181,7 @@ public class LoginSteps {
     }
 
     private ExternalLoginDataRow resolveExternalRow(String source, String testCaseId) {
-        // Uses a LoginDataSource interface so storage can change without touching step definitions.
+
         return LoginDataSources.byName(source).findById(testCaseId);
     }
 
@@ -259,7 +267,7 @@ public class LoginSteps {
         WebElement activeElement = driver.switchTo().activeElement();
         activeElement.sendKeys(key);
 
-        // If Enter is pressed while still on the login page, ensure login submit is triggered.
+
         if (key == Keys.ENTER && loginPage().isLoginFormDisplayed()) {
             submitLogin();
         }
@@ -287,22 +295,9 @@ public class LoginSteps {
         loginWithCredentials(username, password);
     }
 
-    private static String decodeBase64(String encoded) {
-        try {
-            if (encoded == null) {
-                return "";
-            }
-            byte[] decoded = Base64.getDecoder().decode(encoded.trim());
-            return new String(decoded, StandardCharsets.UTF_8);
-        } catch (IllegalArgumentException e) {
-            // Treat invalid Base64 as a raw value; let the login attempt fail normally.
-            return encoded == null ? "" : encoded;
-        }
-    }
-
     @Given("I navigate login page and login")
     public void iNavigateLoginPageAndLogin() {
-        loginWithCredentials(GlobalVarsHelper.get_standard_user(), GlobalVarsHelper.getPasswordForAllUsers());
+        loginWithCredentials(GlobalVarsHelper.getStandardUser(), GlobalVarsHelper.getPasswordForAllUsers());
     }
 
     @DataTableType
@@ -322,7 +317,7 @@ public class LoginSteps {
     @When("I login in login page")
     public void i_login_in_login_page(List<LoginModel> loginModelList) {
         loginModelList.stream().findFirst().ifPresentOrElse(
-                loginModel -> loginWithCredentials(loginModel.getUsername(), loginModel.getPassword()),
+                loginModel -> loginWithCredentials(loginModel.username(), loginModel.password()),
                 () -> {
                     throw new IllegalArgumentException("Login model list is empty. Cannot perform login.");
                 }
@@ -352,13 +347,13 @@ public class LoginSteps {
 
     @Given("my login credentials are:")
     public void myLoginCredentialsAre(LoginDetails loginDetails) {
-            context.loginDetails = loginDetails;
-        }
+        context.loginDetails = loginDetails;
+    }
 
 
     @When("I provide login credentials")
     public void iProvideLoginCredentials() {
-        enterCredentials(context.loginDetails.getUsername(), context.loginDetails.getPassword());
+        enterCredentials(context.loginDetails.username(), context.loginDetails.password());
     }
 
     @When("I click on {string} button")

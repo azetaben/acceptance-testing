@@ -22,8 +22,8 @@ public class TopNavigationSteps {
 
     @And("I tap on {string} link")
     public void iTapOnLink(String linkName) {
-        switch (linkName) {
-            case "Cart" -> topNaviLinksPage().clickCartIcon();
+        if (linkName.equals("Cart")) {
+            topNaviLinksPage().clickCartIcon();
         }
     }
 }

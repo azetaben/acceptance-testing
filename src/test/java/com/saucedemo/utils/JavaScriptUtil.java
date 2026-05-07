@@ -1,15 +1,16 @@
 package com.saucedemo.utils;
 
+import com.saucedemo.constants.FrameworkConstants;
 import com.saucedemo.webdriverutilities.WebDrv;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import com.saucedemo.constants.FrameworkConstants;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class JavaScriptUtil {
 
@@ -22,7 +23,7 @@ public class JavaScriptUtil {
     }
 
     public String getTitleByJS() {
-        return js.executeScript("return document.title;").toString();
+        return Objects.requireNonNull(js.executeScript("return document.title;")).toString();
     }
 
     public void goBackWithJS() {

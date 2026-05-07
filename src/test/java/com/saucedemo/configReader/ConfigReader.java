@@ -1,4 +1,4 @@
-package com.saucedemo.configReader;
+package com.saucedemo.configreader;
 
 import com.saucedemo.utils.PathUtil;
 import org.apache.log4j.LogManager;
@@ -24,7 +24,7 @@ public class ConfigReader {
         String value = config.getString(key);
         if (value == null || value.trim().isEmpty()) {
             throw new IllegalStateException(
-                "Required config property '" + key + "' is missing or empty in " + PathUtil.getConfigPropertiesPath()
+                    "Required config property '" + key + "' is missing or empty in " + PathUtil.getConfigPropertiesPath()
             );
         }
         return value;

@@ -1,14 +1,15 @@
 package com.saucedemo.steps;
-
 import com.saucedemo.constants.SauceDemoConstants;
 import com.saucedemo.factories.ExplicitWaitFactory;
-import com.saucedemo.helperUtilities.globalVar.GlobalVarsHelper;
+import com.saucedemo.helperutilities.globalvar.GlobalVarsHelper;
 import com.saucedemo.pages.Page;
 import com.saucedemo.pages.PageManager;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -17,7 +18,10 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+
 public class CommonAssertionSteps {
+    private static final Logger log = LogManager.getLogger(CommonAssertionSteps.class);
+
     private final PageManager pm = PageManager.getInstance();
 
     private Page page() {
@@ -61,10 +65,10 @@ public class CommonAssertionSteps {
                 break;
             default:
                 expectedHeadingText = heading;
-                System.out.println("INFO: No specific heading mapping for '" + heading + "'. Using the provided string '" + expectedHeadingText + "' directly for assertion.");
+                log.info(String.valueOf("INFO: No specific heading mapping for '" + heading + "'. Using the provided string '" + expectedHeadingText + "' directly for assertion."));
                 break;
         }
-        System.out.println("INFO: Attempting to assert page heading. Expected: '" + expectedHeadingText + "' (derived from input: '" + heading + "')");
+        log.info(String.valueOf("INFO: Attempting to assert page heading. Expected: '" + expectedHeadingText + "' (derived from input: '" + heading + "')"));
         Assert.assertTrue(page.isHeadingTextDisplayed(expectedHeadingText),
                 "Expected heading text '" + expectedHeadingText + "' was not found on the page.");
     }
@@ -135,4 +139,3 @@ public class CommonAssertionSteps {
         Assert.assertTrue(page().isLogoIsDisplayed());
     }
 }
-

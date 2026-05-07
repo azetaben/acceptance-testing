@@ -8,10 +8,10 @@ Feature: restore an authenticated session with cookie bypass
   Scenario: restore an authenticated session to the login page
     Given I navigate to "/"
     And I restore the session to the login page
-     And I login with valid credentials as standard user
+    And I login with valid credentials as standard user
       | username      | password     |
       | standard_user | secret_sauce |
-     And I should be taken to the "Products" page
+    And I should be taken to the "Products" page
     And I restore the session to the inventory page
 
 

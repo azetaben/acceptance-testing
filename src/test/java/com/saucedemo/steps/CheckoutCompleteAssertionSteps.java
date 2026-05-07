@@ -87,7 +87,8 @@ public class CheckoutCompleteAssertionSteps {
                 case "twitter", "facebook", "linkedin" -> Assert.assertTrue(
                         checkoutFinishPage().hasSocialControl(control),
                         "Expected social control to be visible on checkout complete page: " + control);
-                default -> throw new IllegalArgumentException("Unsupported checkout complete control expectation: " + control);
+                default ->
+                        throw new IllegalArgumentException("Unsupported checkout complete control expectation: " + control);
             }
         }
     }
@@ -147,11 +148,10 @@ public class CheckoutCompleteAssertionSteps {
                 pathOnly = uri.getPath();
             }
         } catch (Exception ignored) {
-            // Keep raw value when src is not a valid URI.
+
         }
 
         String normalized = pathOnly.replace('\\', '/').trim().toLowerCase(Locale.ROOT);
         return normalized.replaceFirst("(?i)(\\.[a-f0-9]{6,})(\\.[a-z0-9]+)$", "$2");
     }
 }
-

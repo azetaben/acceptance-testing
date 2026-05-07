@@ -54,7 +54,7 @@ public final class PerformanceNavigationContext {
             s.lastRecordedUrl = currentUrl;
             return;
         }
-        // De-dupe again in case collector got a different url representation.
+
         if (entry.getUrl() != null && entry.getUrl().equals(s.lastRecordedUrl)) {
             return;
         }
@@ -104,13 +104,13 @@ public final class PerformanceNavigationContext {
     }
 
     private static String safeFileName(String s) {
-        // Keep this ASCII and Windows-safe.
+
         return s.replaceAll("[^a-zA-Z0-9._-]+", "_");
     }
 
     private static final class State {
+        final List<NavigationTimingEntry> entries = new ArrayList<>();
         String scenarioName;
         String lastRecordedUrl;
-        final List<NavigationTimingEntry> entries = new ArrayList<>();
     }
 }

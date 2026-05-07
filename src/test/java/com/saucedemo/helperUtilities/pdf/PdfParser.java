@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.pdf;
+package com.saucedemo.helperutilities.pdf;
 
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;

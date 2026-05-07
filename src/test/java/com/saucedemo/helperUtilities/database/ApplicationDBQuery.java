@@ -1,25 +1,26 @@
-package com.saucedemo.helperUtilities.database;
+package com.saucedemo.helperutilities.database;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ApplicationDBQuery {
+    private static final Logger log = LogManager.getLogger(ApplicationDBQuery.class);
+
 
     public static void main(String[] args) throws NumberFormatException, SQLException {
         ApplicationDBQuery applicationDBQuery = new ApplicationDBQuery();
         int salary = applicationDBQuery.getEmpSalary(2);
-        System.out.println(salary);
+        log.info(String.valueOf(salary));
         List<Employee> listOfData = applicationDBQuery.getEmployee();
         for (Employee data : listOfData) {
-            System.out.println(
-                    "empId is :"
-                            + data.getEmpId()
-                            + " emp salary is: "
-                            + data.getSalary()
-                            + " emp name is: "
-                            + data.getName());
+            log.info("empId is :" + data.getEmpId()
+                    + " emp salary is: " + data.getSalary()
+                    + " emp name is: " + data.getName());
         }
     }
 
@@ -27,7 +28,9 @@ public class ApplicationDBQuery {
         int salary = 0;
         String dbQuery = "SELECT salary FROM person.employee where idemployee=" + empId;
         ResultSet result = DataBaseHelper.getResultSet(dbQuery);
-        while (result.next()) {
+        while (true) {
+            assert result != null;
+            if (!result.next()) break;
             salary = Integer.parseInt(result.getString("salary"));
         }
         return salary;

@@ -6,7 +6,7 @@ public enum EndPoint {
     CART("/cart"),
     CHECKOUT_STEP_ONE("/checkout-step-one"),
     CHECKOUT_STEP_TWO("/checkout-step-two"),
-    CHECKOUT_COMPLETE("/checkout-step-two");
+    CHECKOUT_COMPLETE("/checkout-complete");
 
 
     public final String url;

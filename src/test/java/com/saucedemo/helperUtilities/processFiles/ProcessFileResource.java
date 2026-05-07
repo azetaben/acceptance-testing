@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.processFiles;
+package com.saucedemo.helperutilities.processfiles;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;

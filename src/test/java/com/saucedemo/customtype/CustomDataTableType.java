@@ -8,7 +8,7 @@ import java.util.Map;
 public class CustomDataTableType {
 
     @DataTableType
-    public LoginDetails loginDetailsEntry(Map<String, String> entry){
+    public LoginDetails loginDetailsEntry(Map<String, String> entry) {
         return new LoginDetails(
                 entry.get("Accepted username"),
                 entry.get("Password for all users"));

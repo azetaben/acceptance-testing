@@ -201,7 +201,7 @@ public class CartPage extends Page {
 
                 log.debug("Checking cart item: Name='" + actualItemName + "', Quantity='" + actualQuantity + "'");
 
-                // Try exact match first
+
                 if (actualItemName.equals(expectedItemName)) {
                     if (actualQuantity == expectedQuantity) {
                         log.info("Verified item '" + expectedItemName + "' with quantity " + expectedQuantity + ".");
@@ -212,7 +212,7 @@ public class CartPage extends Page {
                     }
                 }
 
-                // Try flexible match (case-insensitive, whitespace-tolerant)
+
                 String normalizedActual = normalizeProductName(actualItemName);
                 String normalizedExpected = normalizeProductName(expectedItemName);
 
@@ -258,12 +258,12 @@ public class CartPage extends Page {
         if (productName == null || productName.isBlank()) {
             return "";
         }
-        // Convert to lowercase and replace common variations
+
         return productName.trim()
                 .toLowerCase()
-                .replaceAll("\\s+", " ") // normalize whitespace
-                .replaceAll("[\\(\\)\\-\\u2013\\u2014]", " ") // replace parentheses and dashes with space
-                .replaceAll("\\s+", " ") // normalize whitespace again
+                .replaceAll("\\s+", " ")
+                .replaceAll("[\\(\\)\\-\\u2013\\u2014]", " ")
+                .replaceAll("\\s+", " ")
                 .trim();
     }
 

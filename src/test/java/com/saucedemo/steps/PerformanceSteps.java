@@ -4,6 +4,7 @@ import com.saucedemo.enums.WaitStrategy;
 import com.saucedemo.factories.ExplicitWaitFactory;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.pages.PageManager;
+import com.saucedemo.utils.PerformanceUtil;
 import com.saucedemo.webdriverutilities.WebDrv;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -11,12 +12,14 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 
 public class PerformanceSteps {
     private static final Logger log = LogManager.getLogger(PerformanceSteps.class);
     private static final ThreadLocal<Long> START_TIME = ThreadLocal.withInitial(() -> 0L);
     private static final ThreadLocal<Long> END_TIME = ThreadLocal.withInitial(() -> 0L);
     private final PageManager pm;
+    WebDriver driver = WebDrv.getInstance().getWebDriver();
 
     public PerformanceSteps() {
         this.pm = PageManager.getInstance();
@@ -33,16 +36,16 @@ public class PerformanceSteps {
 
     @Given("I collect performance metrics for {string}")
     public void i_collect_performance_metrics_for(String url) {
-        // Navigate to the specified URL
+
         WebDrv.getInstance().getWebDriver().get(url);
 
-        // Clear any previous performance entries
+
         ((JavascriptExecutor) WebDrv.getInstance().getWebDriver()).executeScript("performance.clearResourceTimings();");
         ((JavascriptExecutor) WebDrv.getInstance().getWebDriver()).executeScript("performance.clearMarks();");
         ((JavascriptExecutor) WebDrv.getInstance().getWebDriver()).executeScript("performance.clearMeasures();");
 
-        // Optionally, wait for a specific element to ensure the page is loaded
-        ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, By.className("login_logo")); // Adjust the locator as needed
+
+        ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, By.className("login_logo"));
     }
 
     @Given("I log in with user {string} and password {string}")
@@ -79,5 +82,10 @@ public class PerformanceSteps {
         END_TIME.set(System.currentTimeMillis());
         log.info("Performance measurement ended at " + END_TIME.get());
         log.info("Duration of login process: " + getDuration());
+    }
+
+    public long measureLoginPerformance(String url) {
+        log.info("Measuring login performance...");
+        return PerformanceUtil.measurePageLoadTime(driver, url);
     }
 }

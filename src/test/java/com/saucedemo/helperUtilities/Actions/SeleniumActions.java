@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.Actions;
+package com.saucedemo.helperutilities.actions;
 
 import com.saucedemo.constants.FrameworkConstants;
 import com.saucedemo.enums.WaitStrategy;
@@ -46,9 +46,7 @@ public class SeleniumActions {
         log.info("Element clicked successfully.");
     }
 
-    /**
-     * 2. Clicks on an element located by 'by' after ensuring it's clickable.
-     */
+
     public void clickElement(By locator) {
         log.info("Clicking on element with locator: " + locator);
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, locator);
@@ -58,9 +56,7 @@ public class SeleniumActions {
         log.info("Element clicked successfully.");
     }
 
-    /**
-     * 3. Sends keys to a WebElement after ensuring its visible and clearing it first.
-     */
+
     public void sendKeysToElement(WebElement element, String text) {
         WebElement visibleElement = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         if (visibleElement == null) {
@@ -72,9 +68,7 @@ public class SeleniumActions {
         log.info("Keys sent successfully: " + text);
     }
 
-    /**
-     * 4. Sends keys to an element located by 'by' after ensuring its visible and clearing it first.
-     */
+
     public void sendKeysToElement(By locator, String text) {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, locator);
         if (element == null) {
@@ -86,9 +80,7 @@ public class SeleniumActions {
         log.info("Keys sent successfully: " + text);
     }
 
-    /**
-     * 5. Clears the text from an input field or textarea element.
-     */
+
     public void clearElement(WebElement element) {
         WebElement visible = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         if (visible != null) {
@@ -97,18 +89,14 @@ public class SeleniumActions {
         log.info("Text cleared from element: " + element);
     }
 
-    /**
-     * 6. Clears the text from an input field or textarea element located by 'by'.
-     */
+
     public void clearElement(By locator) {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, locator);
         if (element != null) element.clear();
         log.info("Text cleared from element with locator: " + locator);
     }
 
-    /**
-     * 7. Submits a form via a WebElement (usually a button within the form).
-     */
+
     public void submitElement(WebElement element) {
         log.info("Form submitted via element: " + element.getText());
         WebElement clickable = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);
@@ -117,9 +105,7 @@ public class SeleniumActions {
         }
     }
 
-    /**
-     * 8. Submits a form via an element located by 'by'.
-     */
+
     public void submitElement(By locator) {
         log.info("Form submitted via element with locator: " + locator);
         WebElement clickable = ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, locator);
@@ -129,9 +115,7 @@ public class SeleniumActions {
         log.info("Form submitted successfully.");
     }
 
-    /**
-     * 9. Performs a mouse hover action over a WebElement.
-     */
+
     public void hoverOverElement(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         actions.moveToElement(element).perform();
@@ -139,9 +123,6 @@ public class SeleniumActions {
     }
 
 
-    /**
-     * 11. Performs a double-click action on a WebElement.
-     */
     public void doubleClickElement(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);
         log.info("Double-clicking on element: " + element.getText());
@@ -149,18 +130,14 @@ public class SeleniumActions {
         log.info("Double-click action performed successfully.");
     }
 
-    /**
-     * 12. Performs a right-click (context click) action on a WebElement.
-     */
+
     public void rightClickElement(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, element);
         actions.contextClick(element).perform();
         log.info("Right-click action performed successfully.");
     }
 
-    /**
-     * 13. Drags a source WebElement and drops it onto a target WebElement.
-     */
+
     public void dragAndDrop(WebElement source, WebElement target) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, source);
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, target);
@@ -169,18 +146,14 @@ public class SeleniumActions {
         log.info("Drag and drop action performed successfully.");
     }
 
-    /**
-     * 14. Clicks on a WebElement using JavaScript (useful for obscured elements).
-     */
+
     public void jsClick(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         log.info("Element clicked using JavaScript: " + element.getText());
     }
 
-    /**
-     * 15. Gets the visible text of a WebElement after ensuring it's visible.
-     */
+
     public String getTextFromElement(WebElement element) {
         WebElement visible = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         if (visible == null) return "";
@@ -188,9 +161,7 @@ public class SeleniumActions {
         return visible.getText();
     }
 
-    /**
-     * 16. Gets the visible text of an element located by 'by' after ensuring it's visible.
-     */
+
     public String getTextFromElement(By locator) {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, locator);
         if (element == null) {
@@ -200,18 +171,14 @@ public class SeleniumActions {
         return element.getText();
     }
 
-    /**
-     * 17. Gets the value of a specific attribute from a WebElement.
-     */
+
     public String getAttributeFromElement(WebElement element, String attributeName) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         log.info("Getting attribute value: " + attributeName + " from element: " + element.getText());
         return element.getDomAttribute(attributeName);
     }
 
-    /**
-     * 18. Gets the value of a specific attribute from an element located by 'by'.
-     */
+
     public String getAttributeFromElement(By locator, String attributeName) {
         WebElement element = ExplicitWaitFactory.performExplicitWait(WaitStrategy.PRESENCE, locator);
         if (element == null) {
@@ -221,9 +188,7 @@ public class SeleniumActions {
         return element.getDomAttribute(attributeName);
     }
 
-    /**
-     * 19. Checks if a WebElement is displayed.
-     */
+
     public boolean isElementDisplayed(WebElement element) {
         try {
             ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
@@ -236,29 +201,20 @@ public class SeleniumActions {
     }
 
 
-    /**
-     * 21. Checks if a WebElement is enabled.
-     */
     public boolean isElementEnabled(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         log.info("Checking if element is enabled: " + element.getText());
         return element.isEnabled();
     }
 
-    /**
-     * 22. Checks if a WebElement (like checkbox or radio button) is selected.
-     */
+
     public boolean isElementSelected(WebElement element) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, element);
         log.info("Checking if element is selected: " + element.getText());
         return element.isSelected();
     }
 
-    // --- Dropdown (Select) Handling ---
 
-    /**
-     * 23. Selects an option from a dropdown WebElement by its visible text.
-     */
     public void selectDropdownByVisibleText(WebElement dropdownElement, String visibleText) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, dropdownElement);
         Select select = new Select(dropdownElement);
@@ -266,8 +222,6 @@ public class SeleniumActions {
         select.selectByVisibleText(visibleText);
         log.info("Option selected successfully.");
     }
-
-    // Element Interactions
 
 
     public void sendKeys(By locator, String keys) {
@@ -315,7 +269,7 @@ public class SeleniumActions {
         return driver.findElement(locator).isSelected();
     }
 
-    // Navigation
+
     public void navigateTo(String url) {
         driver.get(url);
         log.info("Navigated to URL: " + url);
@@ -336,7 +290,7 @@ public class SeleniumActions {
         log.info("Navigated forward.");
     }
 
-    // Waits
+
     public void waitForElementToBeVisible(By locator) {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, locator);
         log.info("Element with locator: " + locator + " is visible.");
@@ -347,7 +301,7 @@ public class SeleniumActions {
         ExplicitWaitFactory.performExplicitWait(WaitStrategy.CLICKABLE, locator);
     }
 
-    // Window and Frame Handling
+
     public void switchToWindow(String windowHandle) {
         log.info("Switching to window with handle: " + windowHandle);
         driver.switchTo().window(windowHandle);
@@ -364,7 +318,7 @@ public class SeleniumActions {
         log.info("Switched to default content.");
     }
 
-    // JavaScript Executor
+
     public Object executeJavaScript(String script, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return js.executeScript(script);
@@ -376,7 +330,7 @@ public class SeleniumActions {
         log.info("Scrolled to element with locator: " + locator);
     }
 
-    // Alerts and Pop-ups
+
     public void acceptAlert() {
         log.info("Accepting alert.");
         wait.until(ExpectedConditions.alertIsPresent()).accept();
@@ -392,7 +346,7 @@ public class SeleniumActions {
         return wait.until(ExpectedConditions.alertIsPresent()).getText();
     }
 
-    // Cookies
+
     public void addCookie(String name, String value) {
         driver.manage().addCookie(new Cookie(name, value));
         log.info("Cookie added with name: " + name + " and value: " + value);
@@ -408,7 +362,7 @@ public class SeleniumActions {
         log.info("All cookies deleted.");
     }
 
-    // Screenshots
+
     public String takeScreenshot(String filePath) throws IOException {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String destinationPath = filePath + "/" + System.currentTimeMillis() + ".png";
@@ -416,13 +370,13 @@ public class SeleniumActions {
         return destinationPath;
     }
 
-    // File Uploads
+
     public void uploadFile(By locator, String filePath) {
         driver.findElement(locator).sendKeys(filePath);
         log.info("File uploaded successfully.");
     }
 
-    // Miscellaneous
+
     public Set<String> getWindowHandles() {
         log.info("Getting window handles.");
         return driver.getWindowHandles();
@@ -438,7 +392,7 @@ public class SeleniumActions {
         return driver.getTitle();
     }
 
-    // Additional Element Interactions
+
     public void doubleClick(By locator) {
         Actions actions = new Actions(driver);
         log.info("Double-clicked on element with locator: " + locator);
@@ -732,7 +686,6 @@ public class SeleniumActions {
     }
 
 
-    // JavaScript Executor
     public Object executeJavaScript(String script) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         return js.executeScript(script);

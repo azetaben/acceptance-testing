@@ -1,4 +1,4 @@
-package com.saucedemo.helperUtilities.json;
+package com.saucedemo.helperutilities.json;
 
 import com.saucedemo.utils.PathUtil;
 import org.testng.annotations.DataProvider;
@@ -32,7 +32,7 @@ public class GenericDataProvider {
             case "registrationTestValidCredentials" -> "createAccountExternal.json";
             case "verifyAccountCreation" -> "createAnAccount.json";
             case "loginTestValidCredentials" -> "login.json";
-            // Add more cases for other test methods and their corresponding JSON files
+
             default ->
                     throw new IllegalArgumentException("No JSON file mapping found for test method: " + testMethodName);
         };
